@@ -1,0 +1,692 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>BMC Hyundai — home, versão B</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+.bh{
+  --navy:#14298D;--deep:#0B1640;--deeper:#070E2B;--action:#057EEC;--accent:#3198F7;
+  --paper:#F4F6FB;--ink:#1B2134;--muted:#5A6275;--line:rgba(11,22,64,.12);--line-d:rgba(255,255,255,.14);
+  --r:6px;--max:1240px;--gut:clamp(16px,4vw,40px);
+  font-family:Inter,system-ui,sans-serif;color:var(--ink);background:#fff;-webkit-font-smoothing:antialiased;
+}
+.bh *,.bh *::before,.bh *::after{box-sizing:border-box}
+.bh img{display:block;max-width:100%}
+.bh a{color:inherit;text-decoration:none}
+.bh h1,.bh h2,.bh h3{font-family:Montserrat,sans-serif;font-weight:800;letter-spacing:-.02em;margin:0;line-height:1.02}
+.bh p{margin:0}
+.bh .wrap{max-width:var(--max);margin:0 auto;padding:0 var(--gut)}
+.bh .btn{display:inline-flex;align-items:center;gap:10px;height:52px;padding:0 24px;border-radius:var(--r);font:600 15px/1 Inter,sans-serif;border:1px solid transparent;cursor:pointer;transition:background .2s,border-color .2s,color .2s}
+.bh .btn-p{background:var(--action);color:#fff}
+.bh .btn-p:hover{background:#0369C9}
+.bh .btn-g{border-color:rgba(255,255,255,.4);color:#fff;background:rgba(255,255,255,.04)}
+.bh .btn-g:hover{border-color:#fff;background:rgba(255,255,255,.1)}
+.bh .btn-l{border-color:var(--line);color:var(--deep);background:#fff}
+.bh .btn-l:hover{border-color:var(--deep)}
+.bh :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.bh .sec-h{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:clamp(28px,4vw,48px)}
+.bh .sec-h h2{font-size:clamp(32px,4.6vw,56px)}
+.bh .sec-h p{max-width:420px;color:var(--muted);font-size:16px;line-height:1.55}
+.bh .rule{border-top:2px solid var(--action);width:48px;margin-bottom:20px}
+
+/* header */
+.bh .top{position:fixed;inset:0 0 auto 0;z-index:50;transition:background .3s,backdrop-filter .3s,border-color .3s;border-bottom:1px solid transparent}
+.bh .top.solid{background:rgba(7,14,43,.78);backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%);border-color:var(--line-d)}
+.bh .top .wrap{display:flex;align-items:center;height:76px;gap:32px}
+.bh .logo img{height:22px;width:auto}
+.bh .nav{display:flex;gap:4px;margin-left:auto}
+.bh .nav>a,.bh .nav>button{color:rgba(255,255,255,.86);font:500 14px Inter,sans-serif;padding:10px 14px;border-radius:var(--r);background:none;border:0;cursor:pointer}
+.bh .nav>a:hover,.bh .nav>button:hover,.bh .nav>button[aria-expanded=true]{color:#fff;background:rgba(255,255,255,.08)}
+.bh .top .btn{height:42px;padding:0 18px;font-size:14px}
+.bh .burger{display:none;margin-left:auto;width:44px;height:44px;border:1px solid var(--line-d);border-radius:var(--r);background:none;color:#fff;cursor:pointer}
+.bh .mega{position:absolute;left:0;right:0;top:76px;background:rgba(7,14,43,.94);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid var(--line-d);opacity:0;visibility:hidden;transform:translateY(-8px);transition:opacity .2s,transform .2s,visibility .2s}
+.bh .mega.open{opacity:1;visibility:visible;transform:none}
+.bh .mega .wrap{display:grid;grid-template-columns:repeat(6,1fr);gap:24px;height:auto;padding-top:28px;padding-bottom:32px;align-items:start}
+.bh .mega h4{font:700 14px Montserrat,sans-serif;color:#fff;margin:0 0 12px;padding-bottom:10px;border-bottom:1px solid var(--line-d)}
+.bh .mega a{display:block;color:rgba(255,255,255,.7);font-size:14px;padding:5px 0}
+.bh .mega a:hover{color:#fff}
+
+/* hero */
+.bh .hero{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;color:#fff;background:var(--deeper);overflow:hidden}
+.bh .hero video,.bh .hero .poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.bh .hero::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 70% 65% at 10% 85%,rgba(7,14,43,.9) 0%,rgba(7,14,43,.55) 45%,rgba(7,14,43,0) 75%),linear-gradient(180deg,rgba(7,14,43,.45) 0%,rgba(7,14,43,0) 18%,rgba(7,14,43,0) 75%,rgba(7,14,43,.6) 100%)}
+.bh .hero-in{position:relative;z-index:2;width:100%;padding-top:140px;padding-bottom:clamp(28px,5vw,56px)}
+.bh .hero-k{font:500 15px Inter,sans-serif;color:rgba(255,255,255,.78);margin-bottom:22px;display:flex;align-items:center;gap:12px}
+.bh .hero-k::before{content:"";width:28px;border-top:2px solid var(--accent)}
+.bh .hero h1{font-size:clamp(36px,4vw,66px);line-height:1;max-width:12ch}
+.bh .hero h1 .ln{display:block;overflow:hidden;padding-bottom:.04em}
+.bh .hero h1 .ln span{display:block;transform:translateY(105%);animation:bhUp .9s cubic-bezier(.2,.8,.2,1) 1s forwards}
+.bh .hero h1 .ln:nth-child(2) span{animation-delay:1.12s}
+.bh .hero h1 .ln:nth-child(3) span{animation-delay:1.24s}
+.bh .hero-k,.bh .hero-sub,.bh .hero-cta{opacity:0;animation:bhIn .6s ease 1.5s forwards}
+@keyframes bhIn{to{opacity:1}}
+@keyframes bhUp{to{transform:none}}
+.bh .hero-sub{max-width:460px;margin-top:20px;font-size:clamp(15px,1.3vw,18px);line-height:1.55;color:rgba(255,255,255,.84)}
+.bh .hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
+.bh .quick{position:relative;z-index:2;border-top:1px solid var(--line-d);background:rgba(7,14,43,.5);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.bh .quick .wrap{display:grid;grid-template-columns:repeat(6,1fr)}
+.bh .quick a{display:flex;flex-direction:column;gap:4px;padding:18px 18px 20px;border-left:1px solid var(--line-d);transition:background .2s}
+.bh .quick a:last-child{border-right:1px solid var(--line-d)}
+.bh .quick a:hover{background:rgba(255,255,255,.07)}
+.bh .quick b{font:700 15px Montserrat,sans-serif}
+.bh .quick small{color:rgba(255,255,255,.6);font-size:13px}
+
+/* prova */
+.bh .proof{background:var(--deep);color:#fff}
+.bh .proof .wrap{display:grid;grid-template-columns:repeat(4,1fr)}
+.bh .proof div{padding:30px 24px;border-left:1px solid var(--line-d)}
+.bh .proof div:last-child{border-right:1px solid var(--line-d)}
+.bh .proof b{display:block;white-space:nowrap;font:800 clamp(22px,2.6vw,34px) Montserrat,sans-serif;letter-spacing:-.02em}
+.bh .proof span{color:rgba(255,255,255,.66);font-size:14px}
+
+/* buscador */
+.bh .finder{padding:clamp(72px,10vw,128px) 0;background:var(--paper)}
+.bh .tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--line);margin-bottom:0}
+.bh .tabs::-webkit-scrollbar{display:none}
+.bh .tab{flex:none;background:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;padding:14px 18px;font:600 15px Inter,sans-serif;color:var(--muted);cursor:pointer;white-space:nowrap}
+.bh .tab:hover{color:var(--deep)}
+.bh .tab[aria-selected=true]{color:var(--deep);border-color:var(--action)}
+.bh .tab sup{font-size:11px;color:var(--accent);margin-left:3px}
+.bh .panel{display:grid;grid-template-columns:1.25fr 1fr;background:#fff;border:1px solid var(--line);border-top:0;border-radius:0 0 var(--r) var(--r);min-height:480px}
+.bh .stage{position:relative;display:flex;align-items:center;justify-content:center;padding:40px;border-right:1px solid var(--line);overflow:hidden;background:radial-gradient(ellipse at 50% 70%,#E7ECF7 0%,#fff 70%)}
+.bh .stage img{max-height:380px;width:auto;transition:opacity .35s,transform .5s cubic-bezier(.2,.8,.2,1)}
+.bh .stage img.out{opacity:0;transform:translateX(-24px)}
+.bh .stage .ghost{position:absolute;left:28px;bottom:18px;font:800 clamp(56px,8vw,112px) Montserrat,sans-serif;color:rgba(11,22,64,.05);letter-spacing:-.04em;pointer-events:none;line-height:1}
+.bh .info{padding:clamp(28px,4vw,48px);display:flex;flex-direction:column}
+.bh .info h3{font-size:clamp(28px,3vw,40px)}
+.bh .info p{color:var(--muted);line-height:1.6;margin-top:14px;max-width:44ch}
+.bh .models{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px}
+.bh .models a{padding:9px 14px;border:1px solid var(--line);border-radius:var(--r);font:600 14px Inter,sans-serif;color:var(--deep);transition:border-color .2s,background .2s}
+.bh .models a:hover{border-color:var(--action);background:#F0F6FE}
+.bh .info .acts{margin-top:auto;padding-top:32px;display:flex;flex-wrap:wrap;gap:10px}
+
+/* lançamento */
+.bh .launch{background:var(--deeper);color:#fff;padding:clamp(72px,10vw,128px) 0}
+.bh .launch-g{display:grid;grid-template-columns:1.5fr 1fr;gap:clamp(24px,4vw,56px);align-items:end}
+.bh .launch-img{position:relative;border-radius:var(--r);overflow:hidden;aspect-ratio:16/10}
+.bh .launch-img img{width:100%;height:100%;object-fit:cover}
+.bh .launch .tag{display:inline-block;font:600 13px Inter,sans-serif;color:var(--accent);border:1px solid rgba(49,152,247,.45);border-radius:var(--r);padding:6px 10px;margin-bottom:22px}
+.bh .launch h2{font-size:clamp(44px,6vw,84px)}
+.bh .launch p{color:rgba(255,255,255,.76);line-height:1.6;margin-top:18px;max-width:40ch}
+.bh .launch .thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:28px}
+.bh .launch .thumbs img{aspect-ratio:1;object-fit:cover;border-radius:4px}
+.bh .launch .btn{margin-top:32px}
+
+/* aplicações */
+.bh .apps{padding:clamp(72px,10vw,128px) 0}
+.bh .rail{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.bh .app{position:relative;border-radius:var(--r);overflow:hidden;aspect-ratio:3/4;color:#fff;display:flex;flex-direction:column;justify-content:flex-end;padding:22px}
+.bh .app img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.bh .app::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,14,43,0) 40%,rgba(7,14,43,.88) 100%)}
+.bh .app>*:not(img){position:relative;z-index:1}
+.bh .app h3{font-size:22px;line-height:1.1}
+.bh .app span{font-size:14px;color:rgba(255,255,255,.75);margin-top:8px}
+.bh .app:hover img{transform:scale(1.04)}
+
+/* pós-venda */
+.bh .after{background:var(--paper);padding:clamp(72px,10vw,128px) 0}
+.bh .after-g{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.bh .card{background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column}
+.bh .card img{aspect-ratio:16/10;object-fit:cover;width:100%}
+.bh .card div{padding:24px;display:flex;flex-direction:column;gap:10px;flex:1}
+.bh .card h3{font-size:22px}
+.bh .card p{color:var(--muted);line-height:1.55;font-size:15px}
+.bh .card a.lnk{margin-top:auto;padding-top:10px;color:var(--action);font-weight:600;font-size:15px}
+.bh .card a.lnk:hover{text-decoration:underline}
+
+/* filiais */
+.bh .branches{padding:clamp(72px,10vw,128px) 0}
+.bh .br-g{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,56px);align-items:start}
+.bh .states{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.bh .state{text-align:left;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;font:600 15px Inter,sans-serif;color:var(--deep);cursor:pointer;transition:border-color .2s,background .2s,color .2s}
+.bh .state small{display:block;font-weight:400;color:var(--muted);font-size:13px;margin-top:2px}
+.bh .state:hover{border-color:var(--deep)}
+.bh .state[aria-pressed=true]{background:var(--deep);border-color:var(--deep);color:#fff}
+.bh .state[aria-pressed=true] small{color:rgba(255,255,255,.7)}
+.bh .br-card{position:sticky;top:100px;background:var(--deep);color:#fff;border-radius:var(--r);padding:clamp(28px,4vw,44px);min-height:300px;display:flex;flex-direction:column}
+.bh .br-card h3{font-size:clamp(30px,3.4vw,44px)}
+.bh .br-card p{color:rgba(255,255,255,.78);line-height:1.6;margin-top:14px}
+.bh .br-card .acts{margin-top:auto;padding-top:28px;display:flex;flex-wrap:wrap;gap:10px}
+
+/* orçamento */
+.bh .quote{background:var(--deep);color:#fff;padding:clamp(72px,10vw,128px) 0;position:relative;overflow:hidden}
+.bh .quote::before{content:"";position:absolute;inset:0;background:url(../assets/hl757-1.webp) center/cover;opacity:.16}
+.bh .q-g{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,5vw,72px);align-items:center}
+.bh .quote h2{font-size:clamp(36px,5vw,64px)}
+.bh .quote .lead{color:rgba(255,255,255,.8);margin-top:18px;line-height:1.6;max-width:40ch}
+.bh .form{background:rgba(255,255,255,.96);color:var(--ink);border-radius:var(--r);padding:clamp(24px,3vw,36px);display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.bh .form label{display:flex;flex-direction:column;gap:6px;font:600 13px Inter,sans-serif;color:var(--deep)}
+.bh .form .full{grid-column:1/-1}
+.bh .form input,.bh .form select{height:48px;border:1px solid var(--line);border-radius:4px;padding:0 14px;font:400 15px Inter,sans-serif;color:var(--ink);background:#fff}
+.bh .form input:focus,.bh .form select:focus{outline:2px solid var(--action);outline-offset:0;border-color:transparent}
+.bh .form .btn{width:100%;justify-content:center}
+.bh .form .note{grid-column:1/-1;font-size:13px;color:var(--muted);text-align:center}
+.bh .form .ok{grid-column:1/-1;display:none;background:#EAF4FE;border:1px solid #BFDDFB;border-radius:4px;padding:14px;color:var(--deep);font-size:14px}
+
+.bh .proto{background:#FFF7D6;color:#5C4A00;font-size:13px;text-align:center;padding:8px 16px}
+
+@media (max-width:1000px){
+  .bh .nav,.bh .top .btn{display:none}
+  .bh .burger{display:inline-flex;align-items:center;justify-content:center}
+  .bh .top.menu-open{background:var(--deeper)}
+  .bh .mobile{display:none;position:fixed;inset:76px 0 0 0;background:var(--deeper);overflow:auto;padding:20px var(--gut) 40px;z-index:49}
+  .bh .mobile.open{display:block}
+  .bh .mobile a{display:block;color:#fff;font:700 22px Montserrat,sans-serif;padding:14px 0;border-bottom:1px solid var(--line-d)}
+  .bh .mobile .btn{margin-top:24px;width:100%;justify-content:center;font-size:16px}
+  .bh .hero::after{background:linear-gradient(180deg,rgba(7,14,43,.4) 0%,rgba(7,14,43,0) 14%,rgba(7,14,43,.15) 24%,rgba(7,14,43,.82) 42%,rgba(7,14,43,.95) 100%)}
+  .bh .quick .wrap{grid-template-columns:repeat(3,1fr);padding:0}
+  .bh .quick a{border-top:1px solid var(--line-d);padding:14px 16px}
+  .bh .quick a:last-child{border-right:0}
+  .bh .proof .wrap{grid-template-columns:repeat(2,1fr);padding:0}
+  .bh .proof div{border-top:1px solid var(--line-d);padding:22px var(--gut)}
+  .bh .panel{grid-template-columns:1fr}
+  .bh .stage{border-right:0;border-bottom:1px solid var(--line);min-height:260px;padding:24px}
+  .bh .stage img{max-height:220px}
+  .bh .launch-g,.bh .br-g,.bh .q-g{grid-template-columns:1fr}
+  .bh .rail{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 calc(var(--gut)*-1);padding:0 var(--gut);scrollbar-width:none}
+  .bh .rail::-webkit-scrollbar{display:none}
+  .bh .app{flex:0 0 72%;scroll-snap-align:start}
+  .bh .after-g{grid-template-columns:1fr}
+  .bh .sec-h{flex-direction:column;align-items:start}
+  .bh .br-card{position:static}
+}
+@media (min-width:1001px){.bh .mobile{display:none!important}}
+@media (max-width:560px){
+  .bh .quick .wrap{grid-template-columns:repeat(2,1fr)}
+  .bh .form{grid-template-columns:1fr}
+  .bh .hero-cta .btn{width:100%;justify-content:center}
+}
+@media (prefers-reduced-motion:reduce){
+  .bh *{animation:none!important;transition:none!important}
+  .bh .hero h1 .ln span{transform:none}
+  .bh .hero-k,.bh .hero-sub,.bh .hero-cta{opacity:1}
+}
+/* ===== versão B: carrossel em arco preso ao scroll ===== */
+.bh .arc{position:relative;background:var(--deeper);color:#fff}
+.bh .arc.light{background:var(--paper);color:var(--ink)}
+.bh .arc-pin{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;display:flex;flex-direction:column}
+.bh .arc-pin>.wrap,.bh .fan>.wrap{width:100%}
+.bh .arc-head{padding-top:104px;display:flex;justify-content:space-between;align-items:end;gap:24px}
+.bh .arc-head h2{font-size:clamp(30px,4vw,52px)}
+.bh .arc-head p{max-width:380px;color:rgba(255,255,255,.66);font-size:15px;line-height:1.55}
+.bh .arc.light .arc-head p{color:var(--muted)}
+.bh .arc-stage{position:relative;flex:1;touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none}
+.bh .arc-stage.drag{cursor:grabbing}
+.bh .cv{position:absolute;left:50%;top:50%;width:var(--cw);height:var(--ch);margin:calc(var(--ch)/-2) 0 0 calc(var(--cw)/-2);border-radius:8px;overflow:hidden;will-change:transform,opacity;background:var(--deep);box-shadow:0 30px 60px -30px rgba(0,0,0,.6);border:0;padding:0;color:#fff;text-align:left;cursor:pointer;font:inherit}
+.bh .cv img.ph{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+.bh .cv::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,14,43,0) 45%,rgba(7,14,43,.9) 100%);pointer-events:none}
+.bh .cv.cut{background:radial-gradient(ellipse 90% 60% at 50% 42%,#1D3AB0 0%,#0B1640 70%)}
+.bh .cv.cut img.ph{object-fit:contain;inset:auto;left:6%;top:16%;width:88%;height:52%}
+.bh .cv .cv-t{position:absolute;left:20px;right:20px;bottom:20px;z-index:1;pointer-events:none}
+.bh .cv .cv-t b{display:block;font:800 clamp(20px,2vw,26px)/1.08 Montserrat,sans-serif;letter-spacing:-.01em}
+.bh .cv .cv-t small{display:block;margin-top:6px;font-size:13px;color:rgba(255,255,255,.72)}
+.bh .cv .cv-n{position:absolute;top:16px;left:20px;z-index:1;text-shadow:0 1px 6px rgba(0,0,0,.6);font:600 12px Inter,sans-serif;color:rgba(255,255,255,.7)}
+.bh .arc-foot{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-bottom:clamp(20px,4vh,40px)}
+.bh .arc-cap{min-height:96px;max-width:560px;transition:opacity .25s}
+.bh .arc-cap.swap{opacity:0}
+.bh .arc-cap h3{font-size:clamp(22px,2.4vw,30px)}
+.bh .arc-cap p{margin-top:8px;color:rgba(255,255,255,.72);line-height:1.5;font-size:15px}
+.bh .arc.light .arc-cap p{color:var(--muted)}
+.bh .arc-cap .btn{margin-top:14px;height:44px;padding:0 18px;font-size:14px}
+.bh .arc-ctl{display:flex;align-items:center;gap:14px;flex:none}
+.bh .arc-ctl output{font:600 14px Inter,sans-serif;min-width:56px;text-align:center;font-variant-numeric:tabular-nums}
+.bh .arc-ctl button{width:46px;height:46px;border-radius:50%;border:1px solid var(--line-d);background:rgba(255,255,255,.04);color:inherit;cursor:pointer;display:grid;place-items:center}
+.bh .arc.light .arc-ctl button{border-color:var(--line);background:#fff}
+.bh .arc-ctl button:hover{border-color:var(--accent)}
+.bh .arc-bar{position:absolute;left:0;bottom:0;height:2px;background:var(--action);width:0}
+
+/* ===== leque de modelos ===== */
+.bh .fan{position:fixed;inset:0;z-index:80;display:flex;flex-direction:column;background:rgba(7,14,43,.86);backdrop-filter:blur(16px) saturate(140%);-webkit-backdrop-filter:blur(16px) saturate(140%);color:#fff;opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s}
+.bh .fan.open{opacity:1;visibility:visible}
+.bh .fan-h{display:flex;justify-content:space-between;align-items:start;gap:16px;padding-top:28px}
+.bh .fan-h h3{font-size:clamp(28px,3.4vw,44px)}
+.bh .fan-h p{color:rgba(255,255,255,.66);margin-top:6px;font-size:15px}
+.bh .fan-x{flex:none;width:48px;height:48px;border-radius:50%;border:1px solid var(--line-d);background:none;color:#fff;cursor:pointer;display:grid;place-items:center}
+.bh .fan-x:hover{border-color:#fff}
+.bh .fan-track{flex:1;display:flex;align-items:center;gap:var(--fg);overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;padding:0 calc(50vw - var(--fw)/2);scrollbar-width:none;--fw:clamp(200px,17vw,250px);--fg:clamp(10px,1.4vw,18px)}
+.bh .fan-track::-webkit-scrollbar{display:none}
+.bh .fw{flex:0 0 var(--fw);scroll-snap-align:center}
+.bh .fc{display:flex;flex-direction:column;background:#fff;color:var(--ink);border-radius:8px;overflow:hidden;will-change:transform;transform-origin:50% 120%;box-shadow:0 30px 50px -28px rgba(0,0,0,.7)}
+.bh .fc .im{aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;padding:12px;overflow:hidden;background:linear-gradient(180deg,#fff 60%,#EEF2FA 100%)}
+.bh .fc .im img{width:100%;height:100%;object-fit:contain}
+.bh .fc .bd{padding:14px 16px 16px;border-top:1px solid var(--line)}
+.bh .fc .md{font:800 19px Montserrat,sans-serif;letter-spacing:-.01em;color:var(--deep)}
+.bh .fc .kg{display:flex;align-items:baseline;gap:6px;margin-top:10px}
+.bh .fc .kg b{font:800 30px/1 Montserrat,sans-serif;color:var(--action);letter-spacing:-.02em}
+.bh .fc .kg span{font-size:12px;color:var(--muted)}
+.bh .fc .ex{font-size:13px;color:var(--muted);margin-top:6px;min-height:18px}
+.bh .fc .ac{display:flex;gap:6px;margin-top:14px}
+.bh .fc .ac a{flex:1;text-align:center;font:600 13px Inter,sans-serif;padding:10px 6px;border-radius:4px;border:1px solid var(--line);color:var(--deep)}
+.bh .fc .ac a.q{background:var(--action);border-color:var(--action);color:#fff}
+.bh .fc .ac a:hover{border-color:var(--deep)}
+.bh .fc .ac a.q:hover{background:#0369C9}
+.bh .fan-f{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-bottom:24px;color:rgba(255,255,255,.6);font-size:13px}
+.bh .fan-f .arc-ctl button{border-color:var(--line-d)}
+
+@media (max-width:1000px){
+  .bh .arc-head{padding-top:92px;flex-direction:column;align-items:start;gap:10px}
+  .bh .arc-head p{font-size:14px}
+  .bh .arc-head p{display:none}
+  .bh .arc-cap h3{display:none}
+  .bh .arc-cap p{margin-top:0;font-size:14px}
+  .bh .arc-foot{flex-direction:row;align-items:end}
+  .bh .arc-ctl{flex-direction:column;gap:6px}
+  .bh .arc-ctl button{width:40px;height:40px}
+  .bh .arc-ctl output{font-size:12px;min-width:0}
+  .bh .arc-cap{min-height:0}
+  .bh .fan-track{--fw:66vw}
+  .bh .fan-h p{font-size:13px}
+  .bh .fan-f span{display:none}
+  .bh .fan-f{justify-content:center}
+  .bh .fan-f .arc-ctl{flex-direction:row;gap:14px}
+  .bh .fan-f .arc-ctl button{width:46px;height:46px}
+}
+@media (prefers-reduced-motion:reduce){.bh .cv,.bh .fc{transition:none}}
+
+</style>
+</head>
+<body style="margin:0;background:#fff">
+<div class="bh">
+
+<header class="top" id="bhTop">
+  <div class="wrap">
+    <a class="logo" href="https://bmchyundai.com.br/" aria-label="BMC Hyundai, início"><img src="https://bmchyundai.com.br/wp-content/uploads/2025/08/bmc-hyundai-novo-branco-300x43.png" alt="BMC Hyundai" width="154" height="22"></a>
+    <nav class="nav" aria-label="Principal">
+      <button type="button" id="bhMegaBtn" aria-expanded="false" aria-controls="bhMega">Máquinas</button>
+      <a href="https://pesadosonline.plataformabmc.com.br/">Usadas</a>
+      <a href="https://bmchyundai.com.br/pecas-hyundai/">Peças</a>
+      <a href="https://sabservicos.com.br">Assistência</a>
+      <a href="https://bmchyundai.com.br/nossa-historia/">Sobre</a>
+      <a href="https://bmchyundai.com.br/blog/">Blog</a>
+    </nav>
+    <a class="btn btn-p" href="#orcamento">Pedir orçamento</a>
+    <button class="burger" id="bhBurger" aria-label="Abrir menu" aria-expanded="false"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 6h16M2 14h16"/></svg></button>
+  </div>
+  <div class="mega" id="bhMega"><div class="wrap" id="bhMegaGrid"></div></div>
+</header>
+<nav class="mobile" id="bhMobile" aria-label="Menu">
+  <a href="#maquinas">Máquinas</a>
+  <a href="https://pesadosonline.plataformabmc.com.br/">Usadas</a>
+  <a href="https://bmchyundai.com.br/pecas-hyundai/">Peças</a>
+  <a href="https://sabservicos.com.br">Assistência</a>
+  <a href="https://bmchyundai.com.br/nossa-historia/">Sobre</a>
+  <a href="#filiais">Filiais</a>
+  <a class="btn btn-p" href="#orcamento">Pedir orçamento</a>
+</nav>
+
+<section class="hero">
+  <img class="poster" src="../assets/hero-poster.webp" alt="">
+  <video id="bhVideo" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture preload="auto" poster="../assets/hero-poster.webp" aria-hidden="true"></video>
+  <div class="wrap hero-in">
+    <p class="hero-k">Revenda oficial Hyundai desde 2003</p>
+    <h1><span class="ln"><span>A máquina</span></span><span class="ln"><span>certa para a</span></span><span class="ln"><span>sua operação.</span></span></h1>
+    <p class="hero-sub">Escavadeiras, pás carregadeiras e a linha completa Hyundai, com peças, assistência e 13 filiais pelo Brasil.</p>
+    <div class="hero-cta">
+      <a class="btn btn-p" href="#maquinas">Encontrar minha máquina</a>
+      <a class="btn btn-g" href="https://wa.me/5511973718835?text=Vim%20do%20site%20e%20gostaria%20de%20falar%20com%20um%20consultor" target="_blank" rel="noopener">Falar com um consultor</a>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+<section class="arc" id="aplicacoes" data-arc="works">
+  <div class="arc-pin">
+    <div class="wrap arc-head">
+      <div><div class="rule"></div><h2>Feita para o seu trabalho.</h2></div>
+      <p>Role a página ou arraste para o lado. Escolha o tipo de trabalho e veja as máquinas certas para ele.</p>
+    </div>
+    <div class="arc-stage" aria-roledescription="carrossel" aria-label="Tipos de trabalho"></div>
+    <div class="wrap arc-foot">
+      <div class="arc-cap" aria-live="polite"></div>
+      <div class="arc-ctl"><button type="button" data-dir="-1" aria-label="Anterior"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M11 3 5 9l6 6"/></svg></button><output></output><button type="button" data-dir="1" aria-label="Próximo"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m7 3 6 6-6 6"/></svg></button></div>
+    </div>
+    <div class="arc-bar"></div>
+  </div>
+</section>
+
+<section class="launch">
+  <div class="wrap launch-g">
+    <div class="launch-img"><img src="../assets/hx220-1.webp" alt="Escavadeira Hyundai HX220L em campo aberto" loading="lazy"></div>
+    <div>
+      <span class="tag">Lançamento</span>
+      <h2>HX220L.</h2>
+      <p>A nova geração de escavadeiras Hyundai: cabine mais confortável, comandos mais precisos e manutenção mais simples no dia a dia.</p>
+      <div class="thumbs">
+        <img src="../assets/hx220-4.webp" alt="Joystick e monitor da cabine" loading="lazy">
+        <img src="../assets/hx220-7.webp" alt="Assento do operador" loading="lazy">
+        <img src="../assets/hx220-2.webp" alt="Compartimento de manutenção" loading="lazy">
+      </div>
+      <a class="btn btn-p" href="https://bmchyundai.com.br/maquina/hx220l/">Conhecer a HX220L</a>
+    </div>
+  </div>
+</section>
+
+<section class="arc light" id="maquinas" data-arc="cats">
+  <div class="arc-pin">
+    <div class="wrap arc-head">
+      <div><div class="rule"></div><h2>Encontre sua máquina.</h2></div>
+      <p>Escolha a linha e abra o leque com todos os modelos, cada um com peso e capacidade.</p>
+    </div>
+    <div class="arc-stage" aria-roledescription="carrossel" aria-label="Linhas de máquinas"></div>
+    <div class="wrap arc-foot">
+      <div class="arc-cap" aria-live="polite"></div>
+      <div class="arc-ctl"><button type="button" data-dir="-1" aria-label="Anterior"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M11 3 5 9l6 6"/></svg></button><output></output><button type="button" data-dir="1" aria-label="Próximo"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m7 3 6 6-6 6"/></svg></button></div>
+    </div>
+    <div class="arc-bar"></div>
+  </div>
+</section>
+<div class="fan" id="bhFan" role="dialog" aria-modal="true" aria-labelledby="bhFanT">
+  <div class="wrap fan-h">
+    <div><h3 id="bhFanT"></h3><p id="bhFanS"></p></div>
+    <button class="fan-x" type="button" aria-label="Fechar"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m4 4 10 10M14 4 4 14"/></svg></button>
+  </div>
+  <div class="fan-track" id="bhFanTrack"></div>
+  <div class="wrap fan-f">
+    <span>Peso operacional e capacidades da ficha técnica de cada modelo.</span>
+    <div class="arc-ctl"><button type="button" data-fdir="-1" aria-label="Modelo anterior"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M11 3 5 9l6 6"/></svg></button><button type="button" data-fdir="1" aria-label="Próximo modelo"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m7 3 6 6-6 6"/></svg></button></div>
+  </div>
+</div>
+
+<section class="proof" aria-label="A BMC em números">
+  <div class="wrap">
+    <div><b>2003</b><span>revendendo Hyundai no Brasil</span></div>
+    <div><b>13 filiais</b><span>em 13 estados</span></div>
+    <div><b>40 modelos</b><span>da mini à escavadeira de 50 t</span></div>
+    <div><b>Pós-venda</b><span>peças originais e assistência técnica</span></div>
+  </div>
+</section>
+
+<section class="after">
+  <div class="wrap">
+    <div class="sec-h">
+      <div><div class="rule"></div><h2>A venda é só o começo.</h2></div>
+      <p>Máquina parada é prejuízo. Por isso a BMC cuida do que vem depois.</p>
+    </div>
+    <div class="after-g">
+      <article class="card"><img src="../assets/hl745-3.webp" alt="Motor de pá carregadeira Hyundai" loading="lazy"><div><h3>Peças originais</h3><p>Filtros, componentes e itens de desgaste Hyundai, com estoque nas filiais.</p><a class="lnk" href="https://bmchyundai.com.br/pecas-hyundai/">Comprar peças</a></div></article>
+      <article class="card"><img src="../assets/hx220-2.webp" alt="Compartimento de manutenção da HX220L" loading="lazy"><div><h3>Assistência técnica</h3><p>Revisões, diagnóstico e reparo por técnicos treinados na linha Hyundai.</p><a class="lnk" href="https://sabservicos.com.br">Agendar atendimento</a></div></article>
+      <article class="card"><img src="../assets/hl757-3.webp" alt="Monitor da cabine de pá carregadeira" loading="lazy"><div><h3>Seminovas</h3><p>Máquinas revisadas, com procedência, para quem precisa começar já.</p><a class="lnk" href="https://pesadosonline.plataformabmc.com.br/">Ver usadas</a></div></article>
+    </div>
+  </div>
+</section>
+
+<section class="branches" id="filiais">
+  <div class="wrap">
+    <div class="sec-h">
+      <div><div class="rule"></div><h2>Uma filial perto da sua obra.</h2></div>
+      <p>Escolha o estado para ver o endereço e falar com a equipe.</p>
+    </div>
+    <div class="br-g">
+      <div class="states" id="bhStates"></div>
+      <div class="br-card" aria-live="polite">
+        <h3 id="bhBrCity"></h3>
+        <p id="bhBrAddr"></p>
+        <div class="acts">
+          <a class="btn btn-p" id="bhBrWa" target="_blank" rel="noopener" href="#">Falar com esta filial</a>
+          <a class="btn btn-g" id="bhBrMap" target="_blank" rel="noopener" href="#">Ver no mapa</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="quote" id="orcamento">
+  <div class="wrap q-g">
+    <div>
+      <div class="rule"></div>
+      <h2>Peça seu orçamento.</h2>
+      <p class="lead">Conte qual máquina você procura. Um consultor da filial mais próxima responde com preço, prazo e condições de pagamento.</p>
+    </div>
+    <form class="form" id="bhForm" novalidate>
+      <label class="full">Máquina de interesse<select name="maquina" id="bhSel"></select></label>
+      <label>Nome<input name="nome" autocomplete="name" required></label>
+      <label>WhatsApp<input name="tel" type="tel" autocomplete="tel" inputmode="tel" required></label>
+      <label>Empresa<input name="empresa" autocomplete="organization"></label>
+      <label>Estado<select name="uf" id="bhUf"></select></label>
+      <button class="btn btn-p full" type="submit">Pedir orçamento</button>
+      <p class="ok" id="bhOk">Protótipo: no site, este formulário será o do HubSpot, ligado ao funil de máquinas.</p>
+      <p class="note">Resposta em horário comercial.</p>
+    </form>
+  </div>
+</section>
+
+<p class="proto">Versão B do protótipo da home da BMC Hyundai. <a href="../" style="text-decoration:underline">Ver a versão A</a>. Cabeçalho e rodapé finais vêm do tema do site.</p>
+</div>
+
+<script>
+(function(){
+  var W='https://wa.me/5511973718835?text=';
+  var FIL=[
+    ['ES','Serra','Avenida Carapebus, 115 – São Geraldo, Serra/ES'],
+    ['GO','Goiânia','Avenida São Francisco, 1447 – Santa Genoveva, Goiânia/GO'],
+    ['MT','Cuiabá','Avenida Ayrton Senna da Silva, 200 – Distrito Industrial, Cuiabá/MT'],
+    ['MS','Campo Grande','Avenida Gury Marques, 5532 – Jardim Monumento, Campo Grande/MS'],
+    ['MG','Contagem','Rodovia BR-381, 1000 – Inconfidentes, Contagem/MG'],
+    ['PA','Redenção','Avenida Brasil, S/N, Quadra 114, Lotes 13 e 14 – Alto Paraná, Redenção/PA'],
+    ['PB','Bayeux','Av. Francisco Marques da Fonseca, 340, Sala M – Rio do Meio, Bayeux/PB'],
+    ['PE','Petrolina','Rua Arcoverde, 128 – Atrás da Banca, Petrolina/PE'],
+    ['PR','Curitiba','Rua Mandaguaçu, 28 – Sítio Cercado, Curitiba/PR'],
+    ['PI','Teresina','Av. Prefeito Wall Ferraz, 11133, Sala 03 – Santo Antônio, Teresina/PI'],
+    ['SP','São Paulo','Rua Botocudos, 47 – Vila Anastácio, São Paulo/SP'],
+    ['SC','Chapecó','Av. Pedro Giordano Cella, 224-D, Chapecó/SC'],
+    ['TO','Palmas','Quadra ASR-SE 95 (912 Sul), Alameda 7, Lote 05A – Plano Diretor Sul, Palmas/TO']
+  ];
+  var $=function(id){return document.getElementById(id)};
+
+  var U='https://bmchyundai.com.br/', M=U+'maquina/', A='../assets/m/';
+  // [modelo, slug, imagem, kg, extra]
+  var CATS=[
+    {id:'esc',name:'Escavadeiras',all:U+'escavadeiras-hyundai/',cover:'hx220l',unit:'peso operacional',
+     models:[['R150LC-9','../r150lc-9',  'r150lc-9',14210,'Caçamba 0,71 m³'],['HX150L','hx150l','hx150l',14890,'Caçamba 0,65 a 0,76 m³'],['R180LC-9','escavadeira-r180lc-9','r180lc-9',18050,'Caçamba 0,91 m³'],['HX180L','hx180l','hx180l',18460,'Caçamba 0,91 a 1,0 m³'],['R200-9','r200-9','r200-9',19100,'Caçamba 1,0 m³'],['R220LC-9','r220lc-9','r220lc-9',22250,'Caçamba 1,2 m³'],['HX220L','hx220l','hx220l',22796,'Caçamba 0,92 a 1,46 m³'],['HX220L LR','hx220l-lr','hx220l',24700,'Longo alcance, caçamba 0,52 m³'],['R260LC-9','r260lc-9','r260lc-9',25200,'Caçamba 1,46 m³'],['HX260L','hx260l','hx260l',26480,'Caçamba 1,16 a 1,74 m³'],['HX350L','hx350l','hx350l',34985,'Caçamba 2,1 m³'],['HX400L','hx400l','hx400l',38420,'Caçamba 2,5 m³'],['HX500L','hx500l','hx500l',49900,'Caçamba 3,2 m³']]},
+    {id:'pa',name:'Pás carregadeiras',all:U+'pas-carregadeiras/',cover:'hl757-9-prime',unit:'peso operacional',
+     models:[['HL635AL','hl635al','hl635al',10500,'Caçamba 1,7 m³'],['HL745-9','hl745-9','hl745-9',12100,'Caçamba 2,1 m³'],['HL757-9 Prime','hl757-9-prime','hl757-9-prime',14200,'Caçamba 2,6 m³'],['HL757-9SBS','hl757-9sbs','hl757-9sbs',14200,'Caçamba 2,6 m³'],['SBS Fertilizer','hl757-9sbs-fertilizer','hl757-9-prime',14700,'Caçamba 3,6 m³ para fertilizante'],['SBS SugarCane','hl757-9sbs-sugarcane','hl757-9-prime',14700,'Caçamba 5,0 m³ para cana'],['HL760-9 Prime','hl760-9','hl760-9',18500,'Caçamba 3,1 m³'],['HL770-9','hl770-9s','hl770-9',23100,'Caçamba 4,0 m³'],['HL780-9','hl780-9','hl780-9',30000,'Caçamba 5,4 m³']]},
+    {id:'mini',name:'Mini escavadeiras',all:U+'mini-escavadeiras/',cover:'hx17az',unit:'peso operacional',
+     models:[['HX17AZ','hx17az','hx17az',1850,'Caçamba 0,04 m³'],['HX35AZ','hx35az','hx35az',3880,'Caçamba 0,11 m³'],['HX60S','hx60s','hx60s',5720,'Caçamba 0,21 m³'],['HX75S','hx75s','hx75s',7420,'Caçamba 0,32 m³']]},
+    {id:'retro',name:'Retroescavadeira',all:M+'retroescavadeira-hb640c-2/',cover:'hb640c',unit:'peso operacional',
+     models:[['HB640C','retroescavadeira-hb640c-2','hb640c',8450,'100 HP, caçamba de escavação 0,26 m³']]},
+    {id:'moto',name:'Motoniveladora',all:M+'motoniveladora-hg170-3/',cover:'hg170-3',unit:'peso operacional',
+     models:[['HG170-3','motoniveladora-hg170-3','hg170-3',15200,'180 HP, lâmina de 3,66 m']]},
+    {id:'emp',name:'Empilhadeiras',all:M+'empilhadeiras-hyundai/',cover:'e70',unit:'capacidade de carga',
+     models:[['25DE-7','25de-7','e25',2500,'Diesel'],['25LE-7','25le-7','e25',2500,'GLP'],['30DE-7','30de-7','e30',3000,'Diesel'],['30LE-7','30le-7','e30',3000,'GLP'],['35DE-7','35de-7','e35',3500,'Diesel'],['35LE-7','35le-7','e35',3500,'GLP'],['70D-7E ACE','70d-7e-ace','e70',7000,'Diesel'],['80D-7E ACE','80d-7e-ace','e70',8000,'Diesel'],['110D-7E','110d-7e','e110',11000,'Diesel'],['130D-7E','130d-7e','e110',13000,'Diesel'],['160D-7E','160d-7e','e110',16000,'Diesel'],['250D-7E','250d-7e','e250',25000,'Diesel']]}
+  ];
+  function t(kg){var v=kg/1000, s=v<10?v.toFixed(2).replace(/0$/,''):v.toFixed(1); s=s.replace(/\.0$/,'').replace('.',','); return s+' t'}
+  function range(c){var a=c.models.map(function(m){return m[3]}); var lo=Math.min.apply(0,a),hi=Math.max.apply(0,a); return lo===hi?t(lo):t(lo).replace(' t','')+' a '+t(hi)}
+  function href(slug){return slug.indexOf('../')===0?U+slug.slice(3)+'/':M+slug+'/'}
+  var byId={}; CATS.forEach(function(c){byId[c.id]=c});
+
+  var WORKS=[
+    {img:'../assets/hx220-1.webp',pos:'38% 50%',title:'Terraplenagem e obras pesadas',sub:'Escavadeiras de 14 a 50 t',desc:'Corte, aterro e carregamento de caminhão com escavadeiras de 14 a 50 toneladas.',cat:'esc'},
+    {img:'../assets/hl757-1.webp',pos:'30% 50%',title:'Agro e usinas',sub:'Pás com caçamba de até 5 m³',desc:'Pás carregadeiras com versões para cana-de-açúcar e fertilizante, com caçamba de até 5 m³.',cat:'pa'},
+    {img:'../assets/hl635-4.webp',pos:'60% 50%',title:'Pátios, agregados e mineração',sub:'Pás de 10 a 30 t',desc:'Pás carregadeiras de 10,5 a 30 toneladas para carregar o dia inteiro.',cat:'pa'},
+    {img:'../assets/hx75-1.webp',pos:'42% 50%',title:'Obras urbanas e saneamento',sub:'Minis de 1,85 a 7,42 t',desc:'Minis e retroescavadeira para trabalhar onde o espaço é curto.',cat:'mini'},
+    {img:A+'e70.webp',cut:1,title:'Indústria e logística',sub:'Empilhadeiras de 2,5 a 25 t',desc:'Empilhadeiras diesel e GLP de 2,5 a 25 toneladas para armazéns, indústria e portos.',cat:'emp'}
+  ];
+
+  // megamenu
+  $('bhMegaGrid').innerHTML=CATS.map(function(c){return '<div><h4>'+c.name+'</h4>'+c.models.slice(0,6).map(function(m){return '<a href="'+href(m[1])+'">'+m[0]+' <span style="opacity:.5">'+t(m[3])+'</span></a>'}).join('')+'<a href="#maquinas" data-open="'+c.id+'" style="color:#3198F7">Ver todos</a></div>'}).join('');
+
+  var RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function arc(sec,items,render,caption,onPick){
+    var stage=sec.querySelector('.arc-stage'), cap=sec.querySelector('.arc-cap'), out=sec.querySelector('output'), bar=sec.querySelector('.arc-bar');
+    var N=items.length, cur=0, shown=0, active=-1, cw, ch, sp;
+    var STEP=function(){return innerHeight*(innerWidth<=1000?.6:.75)};
+    function size(){
+      sec.style.height=(innerHeight+STEP()*(N-1))+'px';
+      var mob=innerWidth<=1000, h=Math.min(stage.clientHeight*(mob?.84:.94),620);
+      if(mob) h=Math.min(h,innerWidth*1.1);
+      cw=Math.round(h*.7); ch=Math.round(h); sp=cw*(mob?.94:1.08);
+      stage.style.setProperty('--cw',cw+'px'); stage.style.setProperty('--ch',ch+'px');
+    }
+    stage.innerHTML=items.map(function(it,i){return render(it,i,N)}).join('');
+    var cards=[].slice.call(stage.children);
+    function target(){var r=sec.getBoundingClientRect(); var p=Math.min(Math.max(-r.top/(sec.offsetHeight-innerHeight),0),1); return p*(N-1)}
+    function draw(){
+      cards.forEach(function(el,i){
+        var d=i-shown, ad=Math.abs(d);
+        var x=d*sp, y=d*d*ch*.05, r=d*6, s=1-Math.min(ad,3)*.09;
+        el.style.transform='translate3d('+x+'px,'+y+'px,0) rotate('+r+'deg) scale('+s+')';
+        el.style.opacity=ad>2.7?0:1-Math.max(ad-1.6,0)*.6;
+        el.style.zIndex=100-Math.round(ad*10);
+        el.tabIndex=Math.round(shown)===i?0:-1;
+      });
+      bar.style.width=(N>1?shown/(N-1)*100:100)+'%';
+      var a=Math.round(shown);
+      if(a!==active){active=a; out.textContent=String(a+1).padStart(2,'0')+' / '+String(N).padStart(2,'0');
+        cap.classList.add('swap'); clearTimeout(cap._t); cap._t=setTimeout(function(){cap.innerHTML=caption(items[a]);cap.classList.remove('swap')},active===-1?0:180);}
+    }
+    var drag=null, raf=0;
+    function loop(){
+      var tg=drag?drag.idx:target();
+      shown+= (tg-shown)*(RM?1:.14);
+      if(Math.abs(tg-shown)<.001) shown=tg;
+      draw(); raf=requestAnimationFrame(loop);
+    }
+    function goIdx(i,smooth){
+      i=Math.max(0,Math.min(N-1,i));
+      var y=sec.offsetTop+(sec.offsetHeight-innerHeight)*(N>1?i/(N-1):0);
+      window.scrollTo({top:y,behavior:smooth&&!RM?'smooth':'auto'});
+    }
+    // arrastar para o lado
+    stage.addEventListener('pointerdown',function(e){
+      drag={x:e.clientX,y:e.clientY,start:shown,idx:shown,moved:false,id:e.pointerId,lock:null};
+    });
+    window.addEventListener('pointermove',function(e){
+      if(!drag||e.pointerId!==drag.id) return;
+      var dx=e.clientX-drag.x, dy=e.clientY-drag.y;
+      if(drag.lock===null&&(Math.abs(dx)>8||Math.abs(dy)>8)) drag.lock=Math.abs(dx)>Math.abs(dy)?'x':'y';
+      if(drag.lock==='y'){drag=null;return}
+      if(drag.lock==='x'){drag.moved=true;stage.classList.add('drag');drag.idx=Math.max(-.3,Math.min(N-.7,drag.start-dx/sp))}
+    });
+    function end(){
+      if(!drag) return; var d=drag; drag=null; stage.classList.remove('drag');
+      if(d.moved){stage._justDragged=true;setTimeout(function(){stage._justDragged=false},50);
+        var i=Math.round(d.idx+(d.idx-d.start>0?.25:-.25)); shown=d.idx; goIdx(i,false); }
+    }
+    window.addEventListener('pointerup',end); window.addEventListener('pointercancel',end);
+    stage.addEventListener('click',function(e){
+      if(stage._justDragged) return;
+      var el=e.target.closest('.cv'); if(!el) return; var i=cards.indexOf(el);
+      if(i!==Math.round(shown)) goIdx(i,true); else onPick(items[i]);
+    });
+    stage.addEventListener('keydown',function(e){
+      if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();goIdx(Math.round(shown)+(e.key==='ArrowRight'?1:-1),true);setTimeout(function(){cards[Math.round(target())]&&cards[Math.round(target())].focus({preventScroll:true})},450)}
+      if(e.key==='Enter'){var el=e.target.closest('.cv'); if(el){e.preventDefault();onPick(items[cards.indexOf(el)])}}
+    });
+    sec.querySelectorAll('[data-dir]').forEach(function(b){b.addEventListener('click',function(){goIdx(Math.round(shown)+(+b.dataset.dir),true)})});
+    // encaixe suave quando a rolagem para dentro da seção
+    var st; window.addEventListener('scroll',function(){clearTimeout(st); st=setTimeout(function(){
+      if(drag) return; var r=sec.getBoundingClientRect(); if(r.top>1||r.bottom<innerHeight-1) return;
+      var tg=target(), i=Math.round(tg); if(Math.abs(tg-i)>.02) goIdx(i,true);
+    },160)},{passive:true});
+    size(); shown=target(); draw(); loop();
+    addEventListener('resize',function(){size()});
+    return {go:goIdx};
+  }
+
+  var works=arc(document.querySelector('[data-arc="works"]'),WORKS,
+    function(it,i,N){return '<button type="button" class="cv'+(it.cut?' cut':'')+'" aria-label="'+it.title+'"><img class="ph" src="'+it.img+'" alt="" style="object-position:'+(it.pos||'50% 50%')+'" draggable="false"><span class="cv-n">'+String(i+1).padStart(2,'0')+'</span><span class="cv-t"><b>'+it.title+'</b><small>'+it.sub+'</small></span></button>'},
+    function(it){return '<h3>'+it.title+'</h3><p>'+it.desc+'</p><a class="btn btn-p" href="#maquinas" data-open="'+it.cat+'">Ver as máquinas</a>'},
+    function(it){openFan(it.cat)});
+
+  var cats=arc(document.querySelector('[data-arc="cats"]'),CATS,
+    function(c,i,N){return '<button type="button" class="cv cut" aria-label="'+c.name+'"><img class="ph" src="'+A+c.cover+'.webp" alt="" draggable="false"><span class="cv-n">'+c.models.length+(c.models.length>1?' modelos':' modelo')+'</span><span class="cv-t"><b>'+c.name+'</b><small>'+(c.unit==='capacidade de carga'?'Carga de ':'De ')+range(c)+'</small></span></button>'},
+    function(c){return '<h3>'+c.name+'</h3><p>'+c.models.length+(c.models.length>1?' modelos, de ':' modelo, ')+range(c)+' de '+c.unit+'.</p><button class="btn btn-p" type="button" data-open="'+c.id+'">Abrir os '+(c.models.length>1?c.models.length+' modelos':'detalhes')+'</button>'},
+    function(c){openFan(c.id)});
+
+  // leque
+  var fan=$('bhFan'), track=$('bhFanTrack'), lastFocus=null, fanRaf=0;
+  function openFan(id){
+    var c=byId[id]; if(!c) return; lastFocus=document.activeElement;
+    $('bhFanT').textContent=c.name;
+    $('bhFanS').textContent=c.models.length+(c.models.length>1?' modelos, de ':' modelo, ')+range(c)+' de '+c.unit;
+    track.innerHTML=c.models.map(function(m){return '<div class="fw"><article class="fc"><div class="im"><img src="'+A+m[2]+'.webp" alt="'+m[0]+'" loading="lazy"></div><div class="bd"><div class="md">'+m[0]+'</div><div class="kg"><b>'+t(m[3])+'</b><span>'+c.unit+'</span></div><div class="ex">'+m[4]+'</div><div class="ac"><a href="'+href(m[1])+'">Ficha</a><a class="q" href="#orcamento" data-quote="'+c.name+'">Orçamento</a></div></div></article></div>'}).join('');
+    fan.classList.add('open'); document.body.style.overflow='hidden';
+    var ws=[].slice.call(track.children), mid=(ws.length-1)/2;
+    var mw=ws[Math.floor(mid)]; track.scrollLeft=mw?mw.offsetLeft+mw.offsetWidth/2-track.clientWidth/2:0;
+    ws.forEach(function(w,i){
+      var r=w.getBoundingClientRect(), dx=innerWidth/2-(r.left+r.width/2);
+      if(!RM&&w.animate) w.animate([{transform:'translateX('+dx+'px) rotate('+((i-mid)*-5)+'deg) scale(.85)',opacity:0},{transform:'none',opacity:1}],{duration:700,delay:60+i*40,easing:'cubic-bezier(.2,.8,.2,1)',fill:'backwards'});
+    });
+    cancelAnimationFrame(fanRaf); (function f(){fanArc(); fanRaf=requestAnimationFrame(f)})();
+    setTimeout(function(){fan.querySelector('.fan-x').focus()},50);
+  }
+  function fanArc(){
+    var cx=innerWidth/2;
+    [].forEach.call(track.querySelectorAll('.fc'),function(el){
+      var r=el.parentNode.getBoundingClientRect(), d=(r.left+r.width/2-cx)/(r.width+12);
+      var ad=Math.min(Math.abs(d),4);
+      el.style.transform='translateY('+(ad*ad*10)+'px) rotate('+(d*3.5)+'deg) scale('+(1-ad*.035)+')';
+    });
+  }
+  function closeFan(){fan.classList.remove('open');document.body.style.overflow='';cancelAnimationFrame(fanRaf);if(lastFocus)lastFocus.focus({preventScroll:true})}
+  fan.querySelector('.fan-x').addEventListener('click',closeFan);
+  fan.addEventListener('click',function(e){if(e.target===fan||e.target===track)closeFan()});
+  track.addEventListener('wheel',function(e){if(Math.abs(e.deltaY)>Math.abs(e.deltaX)){e.preventDefault();track.scrollBy({left:e.deltaY,behavior:'auto'})}},{passive:false});
+  fan.querySelectorAll('[data-fdir]').forEach(function(b){b.addEventListener('click',function(){var w=track.firstElementChild; track.scrollBy({left:(+b.dataset.fdir)*(w?w.offsetWidth+16:240),behavior:'smooth'})})});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&fan.classList.contains('open'))closeFan()});
+  document.addEventListener('click',function(e){
+    var o=e.target.closest('[data-open]'); if(o){e.preventDefault();e.stopPropagation(); if(typeof setMega==='function')setMega(false); openFan(o.dataset.open); return}
+    var q=e.target.closest('[data-quote]'); if(q){closeFan(); $('bhSel').value=q.dataset.quote}
+  },true);
+
+  // filiais
+  $('bhStates').innerHTML=FIL.map(function(f,i){return '<button class="state" aria-pressed="'+(i===10)+'" data-i="'+i+'">'+f[0]+'<small>'+f[1]+'</small></button>'}).join('');
+  function filial(i){
+    var f=FIL[i];
+    [].forEach.call(document.querySelectorAll('.bh .state'),function(b){b.setAttribute('aria-pressed',b.dataset.i==i)});
+    $('bhBrCity').textContent=f[1]+', '+f[0];
+    $('bhBrAddr').textContent=f[2];
+    $('bhBrWa').href=W+encodeURIComponent('Vim do site e quero falar com a filial de '+f[1]+'/'+f[0]);
+    $('bhBrMap').href='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent('BMC Hyundai '+f[2]);
+  }
+  $('bhStates').addEventListener('click',function(e){var b=e.target.closest('.state'); if(!b) return; filial(+b.dataset.i);
+    if(innerWidth<=1000) document.querySelector('.bh .br-card').scrollIntoView({behavior:'smooth',block:'center'})});
+  filial(10);
+
+  // formulário
+  $('bhSel').innerHTML='<option value="">Escolha a linha</option>'+CATS.map(function(c){return '<option>'+c.name+'</option>'}).join('')+'<option>Ainda não sei</option>';
+  $('bhUf').innerHTML='<option value="">UF</option>'+FIL.map(function(f){return '<option>'+f[0]+'</option>'}).join('')+'<option>Outro</option>';
+  $('bhForm').addEventListener('submit',function(e){e.preventDefault();$('bhOk').style.display='block'});
+
+  // cabeçalho e menus
+  var top=$('bhTop');
+  function onScroll(){top.classList.toggle('solid',window.scrollY>40)}
+  window.addEventListener('scroll',onScroll,{passive:true}); onScroll();
+  var mb=$('bhMegaBtn'), mega=$('bhMega');
+  function setMega(o){mega.classList.toggle('open',o);mb.setAttribute('aria-expanded',o);if(o)top.classList.add('solid');else onScroll()}
+  mb.addEventListener('click',function(){setMega(!mega.classList.contains('open'))});
+  top.addEventListener('mouseleave',function(){setMega(false)});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'){setMega(false);setMob(false)}});
+  var bg=$('bhBurger'), mob=$('bhMobile');
+  function setMob(o){mob.classList.toggle('open',o);bg.setAttribute('aria-expanded',o);top.classList.toggle('menu-open',o);document.body.style.overflow=o?'hidden':''}
+  bg.addEventListener('click',function(){setMob(!mob.classList.contains('open'))});
+  mob.addEventListener('click',function(e){if(e.target.closest('a'))setMob(false)});
+
+  // rolagem suave nas âncoras
+  document.addEventListener('click',function(e){
+    var a=e.target.closest('a[href^="#"]'); if(!a||a.getAttribute('href').length<2) return;
+    var t=document.querySelector(a.getAttribute('href')); if(!t) return;
+    e.preventDefault(); setMega(false);
+    window.scrollTo({top:t.getBoundingClientRect().top+window.scrollY-76,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+  });
+
+  // vídeo: versão leve vertical no celular; tenta tocar de novo no primeiro toque/rolagem (modo pouca energia do iPhone)
+  var v=$('bhVideo');
+  v.muted=true; v.defaultMuted=true; v.setAttribute('muted','');
+  v.src=matchMedia('(max-width: 760px)').matches?'../assets/hero-hx220-m.mp4':'../assets/hero-hx220.mp4';
+  function tryPlay(){var pr=v.play(); if(pr&&pr.catch) pr.catch(function(){});}
+  v.addEventListener('loadeddata',tryPlay); tryPlay();
+  ['touchstart','scroll','click'].forEach(function(ev){window.addEventListener(ev,function once(){if(v.paused)tryPlay();window.removeEventListener(ev,once)},{passive:true})});
+  if('IntersectionObserver' in window){new IntersectionObserver(function(es){es[0].isIntersecting?tryPlay():v.pause()}).observe(v)}
+})();
+</script>
+</body>
+</html>
