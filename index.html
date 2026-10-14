@@ -1,0 +1,497 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>BMC Hyundai — protótipo da home</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+.bh{
+  --navy:#14298D;--deep:#0B1640;--deeper:#070E2B;--action:#057EEC;--accent:#3198F7;
+  --paper:#F4F6FB;--ink:#1B2134;--muted:#5A6275;--line:rgba(11,22,64,.12);--line-d:rgba(255,255,255,.14);
+  --r:6px;--max:1240px;--gut:clamp(16px,4vw,40px);
+  font-family:Inter,system-ui,sans-serif;color:var(--ink);background:#fff;-webkit-font-smoothing:antialiased;
+}
+.bh *,.bh *::before,.bh *::after{box-sizing:border-box}
+.bh img{display:block;max-width:100%}
+.bh a{color:inherit;text-decoration:none}
+.bh h1,.bh h2,.bh h3{font-family:Montserrat,sans-serif;font-weight:800;letter-spacing:-.02em;margin:0;line-height:1.02}
+.bh p{margin:0}
+.bh .wrap{max-width:var(--max);margin:0 auto;padding:0 var(--gut)}
+.bh .btn{display:inline-flex;align-items:center;gap:10px;height:52px;padding:0 24px;border-radius:var(--r);font:600 15px/1 Inter,sans-serif;border:1px solid transparent;cursor:pointer;transition:background .2s,border-color .2s,color .2s}
+.bh .btn-p{background:var(--action);color:#fff}
+.bh .btn-p:hover{background:#0369C9}
+.bh .btn-g{border-color:rgba(255,255,255,.4);color:#fff;background:rgba(255,255,255,.04)}
+.bh .btn-g:hover{border-color:#fff;background:rgba(255,255,255,.1)}
+.bh .btn-l{border-color:var(--line);color:var(--deep);background:#fff}
+.bh .btn-l:hover{border-color:var(--deep)}
+.bh :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.bh .sec-h{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:clamp(28px,4vw,48px)}
+.bh .sec-h h2{font-size:clamp(32px,4.6vw,56px)}
+.bh .sec-h p{max-width:420px;color:var(--muted);font-size:16px;line-height:1.55}
+.bh .rule{border-top:2px solid var(--action);width:48px;margin-bottom:20px}
+
+/* header */
+.bh .top{position:fixed;inset:0 0 auto 0;z-index:50;transition:background .3s,backdrop-filter .3s,border-color .3s;border-bottom:1px solid transparent}
+.bh .top.solid{background:rgba(7,14,43,.78);backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%);border-color:var(--line-d)}
+.bh .top .wrap{display:flex;align-items:center;height:76px;gap:32px}
+.bh .logo img{height:22px;width:auto}
+.bh .nav{display:flex;gap:4px;margin-left:auto}
+.bh .nav>a,.bh .nav>button{color:rgba(255,255,255,.86);font:500 14px Inter,sans-serif;padding:10px 14px;border-radius:var(--r);background:none;border:0;cursor:pointer}
+.bh .nav>a:hover,.bh .nav>button:hover,.bh .nav>button[aria-expanded=true]{color:#fff;background:rgba(255,255,255,.08)}
+.bh .top .btn{height:42px;padding:0 18px;font-size:14px}
+.bh .burger{display:none;margin-left:auto;width:44px;height:44px;border:1px solid var(--line-d);border-radius:var(--r);background:none;color:#fff;cursor:pointer}
+.bh .mega{position:absolute;left:0;right:0;top:76px;background:rgba(7,14,43,.94);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid var(--line-d);opacity:0;visibility:hidden;transform:translateY(-8px);transition:opacity .2s,transform .2s,visibility .2s}
+.bh .mega.open{opacity:1;visibility:visible;transform:none}
+.bh .mega .wrap{display:grid;grid-template-columns:repeat(6,1fr);gap:24px;height:auto;padding-top:28px;padding-bottom:32px;align-items:start}
+.bh .mega h4{font:700 14px Montserrat,sans-serif;color:#fff;margin:0 0 12px;padding-bottom:10px;border-bottom:1px solid var(--line-d)}
+.bh .mega a{display:block;color:rgba(255,255,255,.7);font-size:14px;padding:5px 0}
+.bh .mega a:hover{color:#fff}
+
+/* hero */
+.bh .hero{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;color:#fff;background:var(--deeper);overflow:hidden}
+.bh .hero video,.bh .hero .poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.bh .hero::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 70% 65% at 10% 85%,rgba(7,14,43,.9) 0%,rgba(7,14,43,.55) 45%,rgba(7,14,43,0) 75%),linear-gradient(180deg,rgba(7,14,43,.45) 0%,rgba(7,14,43,0) 18%,rgba(7,14,43,0) 75%,rgba(7,14,43,.6) 100%)}
+.bh .hero-in{position:relative;z-index:2;width:100%;padding-top:140px;padding-bottom:clamp(28px,5vw,56px)}
+.bh .hero-k{font:500 15px Inter,sans-serif;color:rgba(255,255,255,.78);margin-bottom:22px;display:flex;align-items:center;gap:12px}
+.bh .hero-k::before{content:"";width:28px;border-top:2px solid var(--accent)}
+.bh .hero h1{font-size:clamp(36px,4vw,66px);line-height:1;max-width:12ch}
+.bh .hero h1 .ln{display:block;overflow:hidden;padding-bottom:.04em}
+.bh .hero h1 .ln span{display:block;transform:translateY(105%);animation:bhUp .9s cubic-bezier(.2,.8,.2,1) 1s forwards}
+.bh .hero h1 .ln:nth-child(2) span{animation-delay:1.12s}
+.bh .hero h1 .ln:nth-child(3) span{animation-delay:1.24s}
+.bh .hero-k,.bh .hero-sub,.bh .hero-cta{opacity:0;animation:bhIn .6s ease 1.5s forwards}
+@keyframes bhIn{to{opacity:1}}
+@keyframes bhUp{to{transform:none}}
+.bh .hero-sub{max-width:460px;margin-top:20px;font-size:clamp(15px,1.3vw,18px);line-height:1.55;color:rgba(255,255,255,.84)}
+.bh .hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
+.bh .quick{position:relative;z-index:2;border-top:1px solid var(--line-d);background:rgba(7,14,43,.5);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.bh .quick .wrap{display:grid;grid-template-columns:repeat(6,1fr)}
+.bh .quick a{display:flex;flex-direction:column;gap:4px;padding:18px 18px 20px;border-left:1px solid var(--line-d);transition:background .2s}
+.bh .quick a:last-child{border-right:1px solid var(--line-d)}
+.bh .quick a:hover{background:rgba(255,255,255,.07)}
+.bh .quick b{font:700 15px Montserrat,sans-serif}
+.bh .quick small{color:rgba(255,255,255,.6);font-size:13px}
+
+/* prova */
+.bh .proof{background:var(--deep);color:#fff}
+.bh .proof .wrap{display:grid;grid-template-columns:repeat(4,1fr)}
+.bh .proof div{padding:30px 24px;border-left:1px solid var(--line-d)}
+.bh .proof div:last-child{border-right:1px solid var(--line-d)}
+.bh .proof b{display:block;white-space:nowrap;font:800 clamp(22px,2.6vw,34px) Montserrat,sans-serif;letter-spacing:-.02em}
+.bh .proof span{color:rgba(255,255,255,.66);font-size:14px}
+
+/* buscador */
+.bh .finder{padding:clamp(72px,10vw,128px) 0;background:var(--paper)}
+.bh .tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--line);margin-bottom:0}
+.bh .tabs::-webkit-scrollbar{display:none}
+.bh .tab{flex:none;background:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;padding:14px 18px;font:600 15px Inter,sans-serif;color:var(--muted);cursor:pointer;white-space:nowrap}
+.bh .tab:hover{color:var(--deep)}
+.bh .tab[aria-selected=true]{color:var(--deep);border-color:var(--action)}
+.bh .tab sup{font-size:11px;color:var(--accent);margin-left:3px}
+.bh .panel{display:grid;grid-template-columns:1.25fr 1fr;background:#fff;border:1px solid var(--line);border-top:0;border-radius:0 0 var(--r) var(--r);min-height:480px}
+.bh .stage{position:relative;display:flex;align-items:center;justify-content:center;padding:40px;border-right:1px solid var(--line);overflow:hidden;background:radial-gradient(ellipse at 50% 70%,#E7ECF7 0%,#fff 70%)}
+.bh .stage img{max-height:380px;width:auto;transition:opacity .35s,transform .5s cubic-bezier(.2,.8,.2,1)}
+.bh .stage img.out{opacity:0;transform:translateX(-24px)}
+.bh .stage .ghost{position:absolute;left:28px;bottom:18px;font:800 clamp(56px,8vw,112px) Montserrat,sans-serif;color:rgba(11,22,64,.05);letter-spacing:-.04em;pointer-events:none;line-height:1}
+.bh .info{padding:clamp(28px,4vw,48px);display:flex;flex-direction:column}
+.bh .info h3{font-size:clamp(28px,3vw,40px)}
+.bh .info p{color:var(--muted);line-height:1.6;margin-top:14px;max-width:44ch}
+.bh .models{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px}
+.bh .models a{padding:9px 14px;border:1px solid var(--line);border-radius:var(--r);font:600 14px Inter,sans-serif;color:var(--deep);transition:border-color .2s,background .2s}
+.bh .models a:hover{border-color:var(--action);background:#F0F6FE}
+.bh .info .acts{margin-top:auto;padding-top:32px;display:flex;flex-wrap:wrap;gap:10px}
+
+/* lançamento */
+.bh .launch{background:var(--deeper);color:#fff;padding:clamp(72px,10vw,128px) 0}
+.bh .launch-g{display:grid;grid-template-columns:1.5fr 1fr;gap:clamp(24px,4vw,56px);align-items:end}
+.bh .launch-img{position:relative;border-radius:var(--r);overflow:hidden;aspect-ratio:16/10}
+.bh .launch-img img{width:100%;height:100%;object-fit:cover}
+.bh .launch .tag{display:inline-block;font:600 13px Inter,sans-serif;color:var(--accent);border:1px solid rgba(49,152,247,.45);border-radius:var(--r);padding:6px 10px;margin-bottom:22px}
+.bh .launch h2{font-size:clamp(44px,6vw,84px)}
+.bh .launch p{color:rgba(255,255,255,.76);line-height:1.6;margin-top:18px;max-width:40ch}
+.bh .launch .thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:28px}
+.bh .launch .thumbs img{aspect-ratio:1;object-fit:cover;border-radius:4px}
+.bh .launch .btn{margin-top:32px}
+
+/* aplicações */
+.bh .apps{padding:clamp(72px,10vw,128px) 0}
+.bh .rail{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.bh .app{position:relative;border-radius:var(--r);overflow:hidden;aspect-ratio:3/4;color:#fff;display:flex;flex-direction:column;justify-content:flex-end;padding:22px}
+.bh .app img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.bh .app::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,14,43,0) 40%,rgba(7,14,43,.88) 100%)}
+.bh .app>*:not(img){position:relative;z-index:1}
+.bh .app h3{font-size:22px;line-height:1.1}
+.bh .app span{font-size:14px;color:rgba(255,255,255,.75);margin-top:8px}
+.bh .app:hover img{transform:scale(1.04)}
+
+/* pós-venda */
+.bh .after{background:var(--paper);padding:clamp(72px,10vw,128px) 0}
+.bh .after-g{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.bh .card{background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column}
+.bh .card img{aspect-ratio:16/10;object-fit:cover;width:100%}
+.bh .card div{padding:24px;display:flex;flex-direction:column;gap:10px;flex:1}
+.bh .card h3{font-size:22px}
+.bh .card p{color:var(--muted);line-height:1.55;font-size:15px}
+.bh .card a.lnk{margin-top:auto;padding-top:10px;color:var(--action);font-weight:600;font-size:15px}
+.bh .card a.lnk:hover{text-decoration:underline}
+
+/* filiais */
+.bh .branches{padding:clamp(72px,10vw,128px) 0}
+.bh .br-g{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,56px);align-items:start}
+.bh .states{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.bh .state{text-align:left;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;font:600 15px Inter,sans-serif;color:var(--deep);cursor:pointer;transition:border-color .2s,background .2s,color .2s}
+.bh .state small{display:block;font-weight:400;color:var(--muted);font-size:13px;margin-top:2px}
+.bh .state:hover{border-color:var(--deep)}
+.bh .state[aria-pressed=true]{background:var(--deep);border-color:var(--deep);color:#fff}
+.bh .state[aria-pressed=true] small{color:rgba(255,255,255,.7)}
+.bh .br-card{position:sticky;top:100px;background:var(--deep);color:#fff;border-radius:var(--r);padding:clamp(28px,4vw,44px);min-height:300px;display:flex;flex-direction:column}
+.bh .br-card h3{font-size:clamp(30px,3.4vw,44px)}
+.bh .br-card p{color:rgba(255,255,255,.78);line-height:1.6;margin-top:14px}
+.bh .br-card .acts{margin-top:auto;padding-top:28px;display:flex;flex-wrap:wrap;gap:10px}
+
+/* orçamento */
+.bh .quote{background:var(--deep);color:#fff;padding:clamp(72px,10vw,128px) 0;position:relative;overflow:hidden}
+.bh .quote::before{content:"";position:absolute;inset:0;background:url(assets/hl757-1.webp) center/cover;opacity:.16}
+.bh .q-g{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,5vw,72px);align-items:center}
+.bh .quote h2{font-size:clamp(36px,5vw,64px)}
+.bh .quote .lead{color:rgba(255,255,255,.8);margin-top:18px;line-height:1.6;max-width:40ch}
+.bh .form{background:rgba(255,255,255,.96);color:var(--ink);border-radius:var(--r);padding:clamp(24px,3vw,36px);display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.bh .form label{display:flex;flex-direction:column;gap:6px;font:600 13px Inter,sans-serif;color:var(--deep)}
+.bh .form .full{grid-column:1/-1}
+.bh .form input,.bh .form select{height:48px;border:1px solid var(--line);border-radius:4px;padding:0 14px;font:400 15px Inter,sans-serif;color:var(--ink);background:#fff}
+.bh .form input:focus,.bh .form select:focus{outline:2px solid var(--action);outline-offset:0;border-color:transparent}
+.bh .form .btn{width:100%;justify-content:center}
+.bh .form .note{grid-column:1/-1;font-size:13px;color:var(--muted);text-align:center}
+.bh .form .ok{grid-column:1/-1;display:none;background:#EAF4FE;border:1px solid #BFDDFB;border-radius:4px;padding:14px;color:var(--deep);font-size:14px}
+
+.bh .proto{background:#FFF7D6;color:#5C4A00;font-size:13px;text-align:center;padding:8px 16px}
+
+@media (max-width:1000px){
+  .bh .nav,.bh .top .btn{display:none}
+  .bh .burger{display:inline-flex;align-items:center;justify-content:center}
+  .bh .top.menu-open{background:var(--deeper)}
+  .bh .mobile{display:none;position:fixed;inset:76px 0 0 0;background:var(--deeper);overflow:auto;padding:20px var(--gut) 40px;z-index:49}
+  .bh .mobile.open{display:block}
+  .bh .mobile a{display:block;color:#fff;font:700 22px Montserrat,sans-serif;padding:14px 0;border-bottom:1px solid var(--line-d)}
+  .bh .mobile .btn{margin-top:24px;width:100%;justify-content:center;font-size:16px}
+  .bh .hero::after{background:linear-gradient(180deg,rgba(7,14,43,.4) 0%,rgba(7,14,43,0) 14%,rgba(7,14,43,.15) 24%,rgba(7,14,43,.82) 42%,rgba(7,14,43,.95) 100%)}
+  .bh .quick .wrap{grid-template-columns:repeat(3,1fr);padding:0}
+  .bh .quick a{border-top:1px solid var(--line-d);padding:14px 16px}
+  .bh .quick a:last-child{border-right:0}
+  .bh .proof .wrap{grid-template-columns:repeat(2,1fr);padding:0}
+  .bh .proof div{border-top:1px solid var(--line-d);padding:22px var(--gut)}
+  .bh .panel{grid-template-columns:1fr}
+  .bh .stage{border-right:0;border-bottom:1px solid var(--line);min-height:260px;padding:24px}
+  .bh .stage img{max-height:220px}
+  .bh .launch-g,.bh .br-g,.bh .q-g{grid-template-columns:1fr}
+  .bh .rail{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 calc(var(--gut)*-1);padding:0 var(--gut);scrollbar-width:none}
+  .bh .rail::-webkit-scrollbar{display:none}
+  .bh .app{flex:0 0 72%;scroll-snap-align:start}
+  .bh .after-g{grid-template-columns:1fr}
+  .bh .sec-h{flex-direction:column;align-items:start}
+  .bh .br-card{position:static}
+}
+@media (min-width:1001px){.bh .mobile{display:none!important}}
+@media (max-width:560px){
+  .bh .quick .wrap{grid-template-columns:repeat(2,1fr)}
+  .bh .form{grid-template-columns:1fr}
+  .bh .hero-cta .btn{width:100%;justify-content:center}
+}
+@media (prefers-reduced-motion:reduce){
+  .bh *{animation:none!important;transition:none!important}
+  .bh .hero h1 .ln span{transform:none}
+  .bh .hero-k,.bh .hero-sub,.bh .hero-cta{opacity:1}
+}
+</style>
+</head>
+<body style="margin:0;background:#fff">
+<div class="bh">
+
+<header class="top" id="bhTop">
+  <div class="wrap">
+    <a class="logo" href="https://bmchyundai.com.br/" aria-label="BMC Hyundai, início"><img src="https://bmchyundai.com.br/wp-content/uploads/2025/08/bmc-hyundai-novo-branco-300x43.png" alt="BMC Hyundai" width="154" height="22"></a>
+    <nav class="nav" aria-label="Principal">
+      <button type="button" id="bhMegaBtn" aria-expanded="false" aria-controls="bhMega">Máquinas</button>
+      <a href="https://pesadosonline.plataformabmc.com.br/">Usadas</a>
+      <a href="https://bmchyundai.com.br/pecas-hyundai/">Peças</a>
+      <a href="https://sabservicos.com.br">Assistência</a>
+      <a href="https://bmchyundai.com.br/nossa-historia/">Sobre</a>
+      <a href="https://bmchyundai.com.br/blog/">Blog</a>
+    </nav>
+    <a class="btn btn-p" href="#orcamento">Pedir orçamento</a>
+    <button class="burger" id="bhBurger" aria-label="Abrir menu" aria-expanded="false"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 6h16M2 14h16"/></svg></button>
+  </div>
+  <div class="mega" id="bhMega"><div class="wrap" id="bhMegaGrid"></div></div>
+</header>
+<nav class="mobile" id="bhMobile" aria-label="Menu">
+  <a href="#maquinas">Máquinas</a>
+  <a href="https://pesadosonline.plataformabmc.com.br/">Usadas</a>
+  <a href="https://bmchyundai.com.br/pecas-hyundai/">Peças</a>
+  <a href="https://sabservicos.com.br">Assistência</a>
+  <a href="https://bmchyundai.com.br/nossa-historia/">Sobre</a>
+  <a href="#filiais">Filiais</a>
+  <a class="btn btn-p" href="#orcamento">Pedir orçamento</a>
+</nav>
+
+<section class="hero">
+  <img class="poster" src="assets/hero-poster.webp" alt="">
+  <video id="bhVideo" autoplay muted loop playsinline preload="metadata" poster="assets/hero-poster.webp" aria-hidden="true">
+    <source src="assets/hero-hx220.mp4" type="video/mp4">
+  </video>
+  <div class="wrap hero-in">
+    <p class="hero-k">Revenda oficial Hyundai desde 2003</p>
+    <h1><span class="ln"><span>A máquina</span></span><span class="ln"><span>certa para a</span></span><span class="ln"><span>sua operação.</span></span></h1>
+    <p class="hero-sub">Escavadeiras, pás carregadeiras e a linha completa Hyundai, com peças, assistência e 13 filiais pelo Brasil.</p>
+    <div class="hero-cta">
+      <a class="btn btn-p" href="#maquinas">Encontrar minha máquina</a>
+      <a class="btn btn-g" href="https://wa.me/5511973718835?text=Vim%20do%20site%20e%20gostaria%20de%20falar%20com%20um%20consultor" target="_blank" rel="noopener">Falar com um consultor</a>
+    </div>
+  </div>
+  <nav class="quick" aria-label="Linhas de máquinas"><div class="wrap" id="bhQuick"></div></nav>
+</section>
+
+<section class="proof" aria-label="A BMC em números">
+  <div class="wrap">
+    <div><b>2003</b><span>revendendo Hyundai no Brasil</span></div>
+    <div><b>13 filiais</b><span>em 13 estados</span></div>
+    <div><b>40 modelos</b><span>da mini à escavadeira de 50 t</span></div>
+    <div><b>Pós-venda</b><span>peças originais e assistência técnica</span></div>
+  </div>
+</section>
+
+<section class="finder" id="maquinas">
+  <div class="wrap">
+    <div class="sec-h">
+      <div><div class="rule"></div><h2>Encontre sua máquina.</h2></div>
+      <p>Escolha a linha, veja os modelos e peça o orçamento sem sair da página.</p>
+    </div>
+    <div class="tabs" role="tablist" id="bhTabs"></div>
+    <div class="panel" role="tabpanel" id="bhPanel" aria-live="polite">
+      <div class="stage"><img id="bhImg" src="" alt=""></div>
+      <div class="info">
+        <h3 id="bhTitle"></h3>
+        <p id="bhDesc"></p>
+        <div class="models" id="bhModels"></div>
+        <div class="acts">
+          <a class="btn btn-p" id="bhQuote" href="#orcamento">Pedir orçamento</a>
+          <a class="btn btn-l" id="bhAll" href="#">Ver a linha completa</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="launch">
+  <div class="wrap launch-g">
+    <div class="launch-img"><img src="assets/hx220-1.webp" alt="Escavadeira Hyundai HX220L em campo aberto" loading="lazy"></div>
+    <div>
+      <span class="tag">Lançamento</span>
+      <h2>HX220L.</h2>
+      <p>A nova geração de escavadeiras Hyundai: cabine mais confortável, comandos mais precisos e manutenção mais simples no dia a dia.</p>
+      <div class="thumbs">
+        <img src="assets/hx220-4.webp" alt="Joystick e monitor da cabine" loading="lazy">
+        <img src="assets/hx220-7.webp" alt="Assento do operador" loading="lazy">
+        <img src="assets/hx220-2.webp" alt="Compartimento de manutenção" loading="lazy">
+      </div>
+      <a class="btn btn-p" href="https://bmchyundai.com.br/maquina/hx220l/">Conhecer a HX220L</a>
+    </div>
+  </div>
+</section>
+
+<section class="apps">
+  <div class="wrap">
+    <div class="sec-h">
+      <div><div class="rule"></div><h2>Feita para o seu trabalho.</h2></div>
+      <p>Comece pelo que você precisa fazer. A gente indica a máquina.</p>
+    </div>
+    <div class="rail">
+      <a class="app" href="https://bmchyundai.com.br/escavadeiras-hyundai/"><img src="assets/hx75-1.webp" alt="" loading="lazy"><h3>Terraplenagem e obras</h3><span>Escavadeiras de 15 a 50 t</span></a>
+      <a class="app" href="https://bmchyundai.com.br/maquina/hl757-9sbs-sugarcane/"><img src="assets/hl757-1.webp" alt="" loading="lazy"><h3>Agro e usinas</h3><span>Pás para cana e fertilizante</span></a>
+      <a class="app" href="https://bmchyundai.com.br/pas-carregadeiras/"><img src="assets/hl635-4.webp" alt="" loading="lazy"><h3>Pátios e carregamento</h3><span>Pás carregadeiras HL</span></a>
+      <a class="app" href="https://bmchyundai.com.br/mini-escavadeiras/"><img src="assets/hx220-8.webp" alt="" loading="lazy"><h3>Obras urbanas</h3><span>Minis e retroescavadeira</span></a>
+    </div>
+  </div>
+</section>
+
+<section class="after">
+  <div class="wrap">
+    <div class="sec-h">
+      <div><div class="rule"></div><h2>A venda é só o começo.</h2></div>
+      <p>Máquina parada é prejuízo. Por isso a BMC cuida do que vem depois.</p>
+    </div>
+    <div class="after-g">
+      <article class="card"><img src="assets/hl745-3.webp" alt="Motor de pá carregadeira Hyundai" loading="lazy"><div><h3>Peças originais</h3><p>Filtros, componentes e itens de desgaste Hyundai, com estoque nas filiais.</p><a class="lnk" href="https://bmchyundai.com.br/pecas-hyundai/">Comprar peças</a></div></article>
+      <article class="card"><img src="assets/hx220-2.webp" alt="Compartimento de manutenção da HX220L" loading="lazy"><div><h3>Assistência técnica</h3><p>Revisões, diagnóstico e reparo por técnicos treinados na linha Hyundai.</p><a class="lnk" href="https://sabservicos.com.br">Agendar atendimento</a></div></article>
+      <article class="card"><img src="assets/hl757-3.webp" alt="Monitor da cabine de pá carregadeira" loading="lazy"><div><h3>Seminovas</h3><p>Máquinas revisadas, com procedência, para quem precisa começar já.</p><a class="lnk" href="https://pesadosonline.plataformabmc.com.br/">Ver usadas</a></div></article>
+    </div>
+  </div>
+</section>
+
+<section class="branches" id="filiais">
+  <div class="wrap">
+    <div class="sec-h">
+      <div><div class="rule"></div><h2>Uma filial perto da sua obra.</h2></div>
+      <p>Escolha o estado para ver o endereço e falar com a equipe.</p>
+    </div>
+    <div class="br-g">
+      <div class="states" id="bhStates"></div>
+      <div class="br-card" aria-live="polite">
+        <h3 id="bhBrCity"></h3>
+        <p id="bhBrAddr"></p>
+        <div class="acts">
+          <a class="btn btn-p" id="bhBrWa" target="_blank" rel="noopener" href="#">Falar com esta filial</a>
+          <a class="btn btn-g" id="bhBrMap" target="_blank" rel="noopener" href="#">Ver no mapa</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="quote" id="orcamento">
+  <div class="wrap q-g">
+    <div>
+      <div class="rule"></div>
+      <h2>Peça seu orçamento.</h2>
+      <p class="lead">Conte qual máquina você procura. Um consultor da filial mais próxima responde com preço, prazo e condições de pagamento.</p>
+    </div>
+    <form class="form" id="bhForm" novalidate>
+      <label class="full">Máquina de interesse<select name="maquina" id="bhSel"></select></label>
+      <label>Nome<input name="nome" autocomplete="name" required></label>
+      <label>WhatsApp<input name="tel" type="tel" autocomplete="tel" inputmode="tel" required></label>
+      <label>Empresa<input name="empresa" autocomplete="organization"></label>
+      <label>Estado<select name="uf" id="bhUf"></select></label>
+      <button class="btn btn-p full" type="submit">Pedir orçamento</button>
+      <p class="ok" id="bhOk">Protótipo: no site, este formulário será o do HubSpot, ligado ao funil de máquinas.</p>
+      <p class="note">Resposta em horário comercial.</p>
+    </form>
+  </div>
+</section>
+
+<p class="proto">Protótipo da nova home da BMC Hyundai. Cabeçalho e rodapé finais vêm do tema do site.</p>
+</div>
+
+<script>
+(function(){
+  var U='https://bmchyundai.com.br/', M=U+'maquina/', W='https://wa.me/5511973718835?text=';
+  var CATS=[
+    {id:'esc',name:'Escavadeiras',short:'De 15 a 50 t',img:U+'wp-content/uploads/2025/07/escavadeiras-hyundai.webp',all:U+'escavadeiras-hyundai/',
+     desc:'Da HX150L à HX500L, para terraplenagem, mineração e obras pesadas. A nova série HX traz mais conforto na cabine e menor consumo.',
+     models:[['HX150L','hx150l'],['HX180L','hx180l'],['HX220L','hx220l'],['HX220L LR','hx220l-lr'],['HX260L','hx260l'],['HX350L','hx350l'],['HX400L','hx400l'],['HX500L','hx500l'],['R220LC-9','r220lc-9'],['R260LC-9','r260lc-9']]},
+    {id:'pa',name:'Pás carregadeiras',short:'Linha HL',img:U+'wp-content/uploads/2024/08/Pa-Carregadeira.webp',all:U+'pas-carregadeiras/',
+     desc:'Robustez e agilidade para pátios, agregados e usinas. Versões dedicadas para cana-de-açúcar e fertilizante.',
+     models:[['HL635AL','hl635al'],['HL745-9','hl745-9'],['HL757-9 Prime','hl757-9-prime'],['HL757-9SBS','hl757-9sbs'],['SBS SugarCane','hl757-9sbs-sugarcane'],['SBS Fertilizer','hl757-9sbs-fertilizer'],['HL760-9 Prime','hl760-9'],['HL770-9','hl770-9s'],['HL780-9','hl780-9']]},
+    {id:'mini',name:'Mini escavadeiras',short:'Para espaços apertados',img:U+'wp-content/uploads/2025/07/minisd.webp',all:U+'mini-escavadeiras/',
+     desc:'Desempenho de máquina grande em obras urbanas, saneamento e paisagismo, onde o espaço é curto.',
+     models:[['HX17AZ','hx17az'],['HX35AZ','hx35az'],['HX60S','hx60s'],['HX75S','hx75s']]},
+    {id:'retro',name:'Retroescavadeira',short:'HB640C',img:U+'wp-content/uploads/2025/07/retroescavadeira-hyundai-pn.webp',all:M+'retroescavadeira-hb640c-2/',
+     desc:'A capacidade de carga de uma pá carregadeira com a precisão de uma escavadeira, numa máquina só.',
+     models:[['HB640C','retroescavadeira-hb640c-2']]},
+    {id:'moto',name:'Motoniveladora',short:'HG170-3',img:U+'wp-content/uploads/2025/07/moto.webp',all:M+'motoniveladora-hg170-3/',
+     desc:'Precisão e potência para nivelamento de estradas, loteamentos e grandes áreas.',
+     models:[['HG170-3','motoniveladora-hg170-3']]},
+    {id:'emp',name:'Empilhadeiras',short:'De 2,5 a 25 t',img:U+'wp-content/uploads/2025/07/emps-1.webp',all:M+'empilhadeiras-hyundai/',
+     desc:'Diesel e GLP, de 2,5 a 25 toneladas, para indústria, armazéns e portos.',
+     models:[['25DE-7','25de-7'],['30DE-7','30de-7'],['35DE-7','35de-7'],['70D-7E ACE','70d-7e-ace'],['110D-7E','110d-7e'],['160D-7E','160d-7e'],['250D-7E','250d-7e']]}
+  ];
+  var FIL=[
+    ['ES','Serra','Avenida Carapebus, 115 – São Geraldo, Serra/ES'],
+    ['GO','Goiânia','Avenida São Francisco, 1447 – Santa Genoveva, Goiânia/GO'],
+    ['MT','Cuiabá','Avenida Ayrton Senna da Silva, 200 – Distrito Industrial, Cuiabá/MT'],
+    ['MS','Campo Grande','Avenida Gury Marques, 5532 – Jardim Monumento, Campo Grande/MS'],
+    ['MG','Contagem','Rodovia BR-381, 1000 – Inconfidentes, Contagem/MG'],
+    ['PA','Redenção','Avenida Brasil, S/N, Quadra 114, Lotes 13 e 14 – Alto Paraná, Redenção/PA'],
+    ['PB','Bayeux','Av. Francisco Marques da Fonseca, 340, Sala M – Rio do Meio, Bayeux/PB'],
+    ['PE','Petrolina','Rua Arcoverde, 128 – Atrás da Banca, Petrolina/PE'],
+    ['PR','Curitiba','Rua Mandaguaçu, 28 – Sítio Cercado, Curitiba/PR'],
+    ['PI','Teresina','Av. Prefeito Wall Ferraz, 11133, Sala 03 – Santo Antônio, Teresina/PI'],
+    ['SP','São Paulo','Rua Botocudos, 47 – Vila Anastácio, São Paulo/SP'],
+    ['SC','Chapecó','Av. Pedro Giordano Cella, 224-D, Chapecó/SC'],
+    ['TO','Palmas','Quadra ASR-SE 95 (912 Sul), Alameda 7, Lote 05A – Plano Diretor Sul, Palmas/TO']
+  ];
+  var $=function(id){return document.getElementById(id)};
+
+  // atalhos da hero e megamenu
+  $('bhQuick').innerHTML=CATS.map(function(c){return '<a href="#maquinas" data-cat="'+c.id+'"><b>'+c.name+'</b><small>'+c.short+'</small></a>'}).join('');
+  $('bhMegaGrid').innerHTML=CATS.map(function(c){return '<div><h4>'+c.name+'</h4>'+c.models.slice(0,6).map(function(m){return '<a href="'+M+m[1]+'/">'+m[0]+'</a>'}).join('')+'<a href="'+c.all+'" style="color:#3198F7">Ver todos</a></div>'}).join('');
+
+  // buscador
+  $('bhTabs').innerHTML=CATS.map(function(c,i){return '<button class="tab" role="tab" id="t-'+c.id+'" aria-selected="'+(i===0)+'" data-cat="'+c.id+'">'+c.name+'<sup>'+c.models.length+'</sup></button>'}).join('');
+  var img=$('bhImg'), cur=null;
+  function show(id){
+    var c=CATS.filter(function(x){return x.id===id})[0]; if(!c||cur===id) return; cur=id;
+    [].forEach.call(document.querySelectorAll('.bh .tab'),function(t){t.setAttribute('aria-selected',t.dataset.cat===id)});
+    $('bhPanel').setAttribute('aria-labelledby','t-'+id);
+    img.classList.add('out');
+    setTimeout(function(){img.src=c.img;img.alt=c.name+' Hyundai';img.onload=function(){img.classList.remove('out')};if(img.complete)img.classList.remove('out')},180);
+    $('bhTitle').textContent=c.name;
+    $('bhDesc').textContent=c.desc;
+    $('bhModels').innerHTML=c.models.map(function(m){return '<a href="'+M+m[1]+'/">'+m[0]+'</a>'}).join('');
+    $('bhAll').href=c.all;
+    $('bhQuote').dataset.cat=c.name;
+  }
+  document.addEventListener('click',function(e){
+    var t=e.target.closest('[data-cat]');
+    if(t&&(t.classList.contains('tab')||t.closest('#bhQuick'))) show(t.dataset.cat);
+    if(e.target.closest('#bhQuote')) $('bhSel').value=$('bhQuote').dataset.cat;
+  });
+  $('bhTabs').addEventListener('keydown',function(e){
+    if(e.key!=='ArrowRight'&&e.key!=='ArrowLeft') return;
+    var i=CATS.findIndex(function(c){return c.id===cur}); i=(i+(e.key==='ArrowRight'?1:-1)+CATS.length)%CATS.length;
+    show(CATS[i].id); $('t-'+CATS[i].id).focus();
+  });
+  CATS.forEach(function(c){var p=new Image();p.src=c.img});
+  show('esc');
+
+  // filiais
+  $('bhStates').innerHTML=FIL.map(function(f,i){return '<button class="state" aria-pressed="'+(i===10)+'" data-i="'+i+'">'+f[0]+'<small>'+f[1]+'</small></button>'}).join('');
+  function filial(i){
+    var f=FIL[i];
+    [].forEach.call(document.querySelectorAll('.bh .state'),function(b){b.setAttribute('aria-pressed',b.dataset.i==i)});
+    $('bhBrCity').textContent=f[1]+', '+f[0];
+    $('bhBrAddr').textContent=f[2];
+    $('bhBrWa').href=W+encodeURIComponent('Vim do site e quero falar com a filial de '+f[1]+'/'+f[0]);
+    $('bhBrMap').href='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent('BMC Hyundai '+f[2]);
+  }
+  $('bhStates').addEventListener('click',function(e){var b=e.target.closest('.state'); if(!b) return; filial(+b.dataset.i);
+    if(innerWidth<=1000) document.querySelector('.bh .br-card').scrollIntoView({behavior:'smooth',block:'center'})});
+  filial(10);
+
+  // formulário
+  $('bhSel').innerHTML='<option value="">Escolha a linha</option>'+CATS.map(function(c){return '<option>'+c.name+'</option>'}).join('')+'<option>Ainda não sei</option>';
+  $('bhUf').innerHTML='<option value="">UF</option>'+FIL.map(function(f){return '<option>'+f[0]+'</option>'}).join('')+'<option>Outro</option>';
+  $('bhForm').addEventListener('submit',function(e){e.preventDefault();$('bhOk').style.display='block'});
+
+  // cabeçalho e menus
+  var top=$('bhTop');
+  function onScroll(){top.classList.toggle('solid',window.scrollY>40)}
+  window.addEventListener('scroll',onScroll,{passive:true}); onScroll();
+  var mb=$('bhMegaBtn'), mega=$('bhMega');
+  function setMega(o){mega.classList.toggle('open',o);mb.setAttribute('aria-expanded',o);if(o)top.classList.add('solid');else onScroll()}
+  mb.addEventListener('click',function(){setMega(!mega.classList.contains('open'))});
+  top.addEventListener('mouseleave',function(){setMega(false)});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'){setMega(false);setMob(false)}});
+  var bg=$('bhBurger'), mob=$('bhMobile');
+  function setMob(o){mob.classList.toggle('open',o);bg.setAttribute('aria-expanded',o);top.classList.toggle('menu-open',o);document.body.style.overflow=o?'hidden':''}
+  bg.addEventListener('click',function(){setMob(!mob.classList.contains('open'))});
+  mob.addEventListener('click',function(e){if(e.target.closest('a'))setMob(false)});
+
+  // rolagem suave nas âncoras
+  document.addEventListener('click',function(e){
+    var a=e.target.closest('a[href^="#"]'); if(!a||a.getAttribute('href').length<2) return;
+    var t=document.querySelector(a.getAttribute('href')); if(!t) return;
+    e.preventDefault(); setMega(false);
+    window.scrollTo({top:t.getBoundingClientRect().top+window.scrollY-76,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+  });
+
+  // vídeo: respeita movimento reduzido e pausa fora da tela
+  var v=$('bhVideo');
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){v.removeAttribute('autoplay');v.pause()}
+  else if('IntersectionObserver' in window){new IntersectionObserver(function(es){es[0].isIntersecting?v.play().catch(function(){}):v.pause()}).observe(v)}
+})();
+</script>
+</body>
+</html>
