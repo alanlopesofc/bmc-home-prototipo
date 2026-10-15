@@ -220,7 +220,9 @@
 .bh .arc-head h2{font-size:clamp(30px,4vw,52px)}
 .bh .arc-head p{max-width:380px;color:rgba(255,255,255,.66);font-size:15px;line-height:1.55}
 .bh .arc.light .arc-head p{color:var(--muted)}
-.bh .arc-stage{position:relative;flex:1;touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none}
+.bh .arc-stage{position:relative;flex:1;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.bh .ring{position:absolute;inset:0;transform-style:preserve-3d;will-change:transform}
+.bh .ring .cv{backface-visibility:hidden;-webkit-backface-visibility:hidden;transition:opacity .25s linear;will-change:auto}
 .bh .arc-stage.drag{cursor:grabbing}
 .bh .cv{position:absolute;left:50%;top:50%;transform-origin:50% 50%;width:var(--cw);height:var(--ch);margin:calc(var(--ch)/-2) 0 0 calc(var(--cw)/-2);border-radius:8px;overflow:hidden;will-change:transform,opacity;background:var(--deep);box-shadow:0 30px 60px -30px rgba(0,0,0,.6);border:0;padding:0;color:#fff;text-align:left;cursor:pointer;font:inherit}
 .bh .cv img.ph{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
@@ -466,6 +468,9 @@
 <p class="proto">Versão B do protótipo da home da BMC Hyundai. <a href="../" style="text-decoration:underline">Ver a versão A</a>. Cabeçalho e rodapé finais vêm do tema do site.</p>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
 <script>
 (function(){
   var W='https://wa.me/5511973718835?text=';
@@ -545,95 +550,87 @@
     return {geo:geo,tick:tick,set:set,cur:function(){return cur}};
   }
 
+  // anel 3D (galeria circular) girado pela rolagem com GSAP ScrollTrigger;
+  // setas, clique nas capas laterais e deslize para o lado avançam ou voltam uma capa
+  if(window.gsap&&window.ScrollTrigger){gsap.registerPlugin(ScrollTrigger,ScrollToPlugin);ScrollTrigger.config({ignoreMobileResize:true})}
   function arc(sec,items,render,caption,onPick,bgOf,scale){
     scale=scale||1;
     var pin=sec.querySelector('.arc-pin'), stage=sec.querySelector('.arc-stage'), cap=sec.querySelector('.arc-cap'), out=sec.querySelector('output'), bar=sec.querySelector('.arc-bar');
-    var N=items.length, active=-1, vw=0, vh=0, step=0, near=true, dirty=true, last=0;
-    stage.innerHTML=items.map(function(it,i){return render(it,i,N)}).join('');
-    var cards=[].slice.call(stage.children), F=flow(cards,'');
+    var N=items.length, K=Math.max(2,Math.ceil(10/N)), M=N*K, A=360/M, active=-1, vw=0, vh=0, step=0, R=500;
+    // o anel repete as capas para ficar cheio (5 capas viram 10)
+    var ring=document.createElement('div'); ring.className='ring';
+    var html=''; for(var k=0;k<K;k++) items.forEach(function(it,i){html+=render(it,i,N)});
+    ring.innerHTML=html; stage.innerHTML=''; stage.appendChild(ring);
+    var cards=[].slice.call(ring.children);
     var bgs=[];
     if(bgOf){var bg=document.createElement('div');bg.className='arc-bg';
       bgs=items.map(function(it){var im=new Image();im.alt='';im.decoding='async';im.dataset.src=bgOf(it);bg.appendChild(im);return im});
       pin.insertBefore(bg,pin.firstChild)}
-    // altura fixa: só recalcula quando a largura muda (a barra do navegador no celular muda a altura)
+    var st={rot:0}, setRot=window.gsap?gsap.quickTo(st,'rot',{duration:RM?0:.9,ease:'power3.out',onUpdate:draw}):function(v){st.rot=v;draw()};
     function size(force){
       if(!force&&innerWidth===vw) return;
       vw=innerWidth; vh=pin.offsetHeight; var mob=vw<=1000;
-      step=vh*(mob?.55:.85);   // rolagem necessária para passar uma capa
+      step=vh*(mob?.55:.8);
       sec.style.height=(vh+step*(N-1))+'px';
-      var h=Math.min(stage.clientHeight*(mob?.84:.84)*scale,580*scale);
-      if(mob) h=Math.min(h,vw*1.1*scale);
-      var cw=Math.round(h*.7);
+      var h=Math.min(stage.clientHeight*(mob?.8:.88)*scale,580*scale);
+      if(mob) h=Math.min(h,vw*.95*scale);
+      var cw=Math.round(h*.72);
       stage.style.setProperty('--cw',cw+'px'); stage.style.setProperty('--ch',Math.round(h)+'px');
-      F.geo.sp=cw*(mob?.96:1.06); F.geo.R=Math.max(vw*1.6,cw*6);
-      dirty=true;
+      R=Math.round(cw*1.12*M/(2*Math.PI));
+      cards.forEach(function(el,i){el.style.transform='rotateY('+(i*A)+'deg) translateZ('+R+'px)'});
+      stage.style.perspective=Math.round(R*2.4)+'px';
+      draw();
+      if(window.ScrollTrigger) ScrollTrigger.refresh();
     }
-    // a rolagem da página define o alvo, de forma contínua
-    // parada a rolagem, as capas se acomodam na mais próxima (só no visual, a página fica onde está)
-    var lastScroll=0; addEventListener('scroll',function(){lastScroll=performance.now()},{passive:true});
-    function target(){
-      var r=step?Math.min(Math.max(-sec.getBoundingClientRect().top/step,0),N-1):0;
-      return performance.now()-lastScroll>220?Math.round(r):r;
-    }
-    function ui(){
-      var s=F.cur(), a=Math.max(0,Math.min(N-1,Math.round(s)));
-      bar.style.width=(N>1?s/(N-1)*100:100)+'%';
+    function draw(){
+      ring.style.transform='translateZ('+(-R)+'px) rotateY('+(-st.rot)+'deg)';
+      cards.forEach(function(el,i){
+        var rel=((i*A-st.rot)%360+540)%360-180, n=Math.abs(rel);
+        el.style.opacity=Math.max(.18,1-n/110).toFixed(3);
+        el.style.pointerEvents=n<90?'auto':'none';
+      });
+      var f=st.rot/A, a=((Math.round(f)%N)+N)%N;
+      bar.style.width=(N>1?Math.max(0,Math.min(1,f/(N-1)))*100:100)+'%';
       if(a!==active){var first=active===-1; active=a;
-        cards.forEach(function(el,i){el.tabIndex=i===a?0:-1});
+        cards.forEach(function(el,i){el.tabIndex=(i%N===a&&i<N)?0:-1});
         out.textContent=String(a+1).padStart(2,'0')+' / '+String(N).padStart(2,'0');
         bgs.forEach(function(im,i){
           if(Math.abs(i-a)<=1&&!im.src) im.src=im.dataset.src;
           im.classList.toggle('on',i===a)});
         cap.classList.add('swap'); clearTimeout(cap._t); cap._t=setTimeout(function(){cap.innerHTML=caption(items[a]);cap.classList.remove('swap')},first?0:180);}
     }
-    var drag=null, idle=false;
-    function loop(t){
-      requestAnimationFrame(loop);
-      var dt=Math.min((t-last)||16,50)/1000; last=t;
-      if(!near&&!drag) return;
-      var tg=drag?drag.idx:target();
-      if(idle&&!dirty&&tg===F.cur()) return;
-      idle=F.tick(tg,dt,drag?DRAG_SMOOTH:RM?60:SMOOTH); dirty=false; ui();
+    function idx(){return Math.max(0,Math.min(N-1,Math.round(st.rot/A)))}
+    // leva a página até a capa i; a rolagem continua mandando no anel
+    function goIdx(i){
+      i=Math.max(0,Math.min(N-1,i)); var y=sec.offsetTop+step*i;
+      if(window.gsap&&!RM) gsap.to(window,{scrollTo:{y:y,autoKill:true},duration:.9,ease:'power2.inOut'}); else window.scrollTo(0,y);
     }
-    function goIdx(i,smooth){
-      i=Math.max(0,Math.min(N-1,i));
-      window.scrollTo({top:sec.offsetTop+step*i,behavior:smooth&&!RM?'smooth':'auto'});
+    var trig=null;
+    if(window.ScrollTrigger){
+      trig=ScrollTrigger.create({trigger:sec,start:'top top',end:'bottom bottom',
+        onUpdate:function(s){setRot(s.progress*(N-1)*A)}});
+      // parada a rolagem, o anel se acomoda na capa mais próxima (a página não se mexe)
+      ScrollTrigger.addEventListener('scrollEnd',function(){if(trig.isActive) setRot(Math.round(trig.progress*(N-1))*A)});
     }
-    // arrastar para o lado
-    stage.addEventListener('pointerdown',function(e){
-      drag={x:e.clientX,y:e.clientY,lx:e.clientX,start:F.cur(),idx:F.cur(),moved:false,id:e.pointerId,lock:null,s:[{t:performance.now(),v:F.cur()}]};
+    // deslizar para o lado: uma capa por gesto
+    var sx=null;
+    stage.addEventListener('pointerdown',function(e){sx={x:e.clientX,y:e.clientY}});
+    window.addEventListener('pointerup',function(e){
+      if(!sx) return; var dx=e.clientX-sx.x, dy=e.clientY-sx.y; sx=null;
+      if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy)*1.3){stage._justDragged=true;setTimeout(function(){stage._justDragged=false},50);goIdx(idx()+(dx<0?1:-1))}
     });
-    window.addEventListener('pointermove',function(e){
-      if(!drag||e.pointerId!==drag.id) return;
-      var dx=e.clientX-drag.x, dy=e.clientY-drag.y;
-      if(drag.lock===null&&(Math.abs(dx)>8||Math.abs(dy)>8)) drag.lock=Math.abs(dx)>Math.abs(dy)?'x':'y';
-      if(drag.lock==='y'){drag=null;return}
-      if(drag.lock==='x'){drag.moved=true;stage.classList.add('drag');
-        drag.idx=Math.max(-.3,Math.min(N-.7,drag.start-dx/F.geo.sp));
-        var now=performance.now(); drag.s.push({t:now,v:drag.idx}); while(drag.s.length>2&&now-drag.s[0].t>90) drag.s.shift();}
-    });
-    function end(){
-      if(!drag) return; var d=drag; drag=null; stage.classList.remove('drag');
-      if(d.moved){stage._justDragged=true;setTimeout(function(){stage._justDragged=false},50);
-        var f=d.s[0], l=d.s[d.s.length-1], ds=(l.t-f.t)/1000, v=ds>.008?(l.v-f.v)/ds:0;
-        var i=Math.round(d.idx+Math.max(-2,Math.min(2,v/SMOOTH)));
-        // leva a página até a capa escolhida; a rolagem passa a mandar de novo
-        goIdx(i,true); }
-    }
-    window.addEventListener('pointerup',end); window.addEventListener('pointercancel',end);
     stage.addEventListener('click',function(e){
       if(stage._justDragged) return;
-      var el=e.target.closest('.cv'); if(!el) return; var i=cards.indexOf(el);
-      if(i!==Math.round(F.cur())) goIdx(i,true); else onPick(items[i]);
+      var el=e.target.closest('.cv'); if(!el) return;
+      var rel=((cards.indexOf(el)*A-st.rot)%360+540)%360-180;
+      if(Math.abs(rel)<A/2) onPick(items[cards.indexOf(el)%N]); else goIdx(idx()+(rel>0?1:-1));
     });
     stage.addEventListener('keydown',function(e){
-      if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();var i=Math.round(F.cur())+(e.key==='ArrowRight'?1:-1);goIdx(i,true);setTimeout(function(){cards[Math.round(target())]&&cards[Math.round(target())].focus({preventScroll:true})},450)}
-      if(e.key==='Enter'){var el=e.target.closest('.cv'); if(el){e.preventDefault();onPick(items[cards.indexOf(el)])}}
+      if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();goIdx(idx()+(e.key==='ArrowRight'?1:-1))}
+      if(e.key==='Enter'){var el=e.target.closest('.cv'); if(el){e.preventDefault();onPick(items[cards.indexOf(el)%N])}}
     });
-    sec.querySelectorAll('[data-dir]').forEach(function(b){b.addEventListener('click',function(){goIdx(Math.round(F.cur())+(+b.dataset.dir),true)})});
-    // só anima quando a seção está perto da tela
-    if('IntersectionObserver' in window) new IntersectionObserver(function(es){near=es[0].isIntersecting;dirty=true},{rootMargin:'200px 0px'}).observe(sec);
-    size(true); F.set(target()); F.tick(F.cur(),1,SMOOTH); ui(); requestAnimationFrame(loop);
+    sec.querySelectorAll('[data-dir]').forEach(function(b){b.addEventListener('click',function(){goIdx(idx()+(+b.dataset.dir))})});
+    size(true); if(trig) {st.rot=trig.progress*(N-1)*A} draw();
     addEventListener('resize',function(){size(false)});
     return {go:goIdx};
   }
