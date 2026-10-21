@@ -796,6 +796,15 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
   // leque: o mesmo motor de arco, controlado pela roda, pelo arrasto e pelas setas
   var fan=$('bhFan'), track=$('bhFanTrack'), lastFocus=null, fanRaf=0, FF=null, fT=0, fN=0, fDrag=null, fRev=0, fT0=0, fLast=0, fSettle=0;
   function fanClamp(v){return Math.max(0,Math.min(fN-1,v))}
+  // celular: troca com duração fixa e curva suave (a amortecida começava rápida demais)
+  var fAnim=null;
+  function easeIO(p){return -(Math.cos(Math.PI*p)-1)/2}
+  function easeOut(p){return 1-Math.pow(1-p,3)}
+  function fanGo(to,dur,ease){
+    fT=fanClamp(to);
+    if(!TOUCH||RM||!FF){fAnim=null;return}
+    fAnim={from:FF.cur(),to:fT,t0:performance.now(),dur:dur,ease:ease};
+  }
   function fanSize(){
     if(!FF) return; var w=track.firstElementChild; var cw=w?w.offsetWidth:240;
     FF.geo.sp=cw*(TOUCH?1.04:1.08); FF.geo.R=Math.max(innerWidth*1.3,cw*6);
@@ -815,7 +824,10 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
   function fanLoop(t){
     fanRaf=requestAnimationFrame(fanLoop);
     var dt=Math.min((t-fLast)||16,50)/1000; fLast=t;
-    FF.tick(fDrag?fDrag.idx:fT,dt,fDrag?DRAG_SMOOTH:RM?60:(TOUCH?6.5:SMOOTH));
+    if(fDrag){fAnim=null; FF.tick(fDrag.idx,dt,DRAG_SMOOTH)}
+    else if(fAnim){var pa=Math.min(1,(t-fAnim.t0)/fAnim.dur), v=fAnim.from+(fAnim.to-fAnim.from)*fAnim.ease(pa);
+      FF.tick(v,dt,80); if(pa>=1) fAnim=null}
+    else FF.tick(fT,dt,RM?60:SMOOTH);
     if(fRev<1){ // entrada em cascata, do centro para fora
       if(!fT0) fT0=t; fRev=Math.min(1,(t-fT0)/900);
       [].forEach.call(track.children,function(w,i){
@@ -851,11 +863,15 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
     if(!d.moved) return;
     track._justDragged=true; setTimeout(function(){track._justDragged=false},50);
     var f=d.s[0], l=d.s[d.s.length-1], ds=(l.t-f.t)/1000, v=ds>.008?(l.v-f.v)/ds:0;
-    fT=TOUCH?fanClamp(Math.round(d.idx+Math.max(-1,Math.min(1,v*.12)))):fanClamp(Math.round(d.idx+Math.max(-2,Math.min(2,v/SMOOTH*.6))));
+    if(TOUCH){
+      // ao soltar: desliza até o modelo e desacelera devagar, na direção do gesto
+      var to=Math.round(d.idx+Math.max(-1,Math.min(1,v*.12)));
+      fanGo(to,Math.round(380+Math.min(1,Math.abs(fanClamp(to)-FF.cur()))*220),easeOut);
+    } else fT=fanClamp(Math.round(d.idx+Math.max(-2,Math.min(2,v/SMOOTH*.6))));
   }
   window.addEventListener('pointerup',fanEnd); window.addEventListener('pointercancel',fanEnd);
   track.addEventListener('click',function(e){if(track._justDragged){e.preventDefault();e.stopPropagation()}},true);
-  fan.querySelectorAll('[data-fdir]').forEach(function(b){b.addEventListener('click',function(){fT=fanClamp(Math.round(fT)+(+b.dataset.fdir))})});
+  fan.querySelectorAll('[data-fdir]').forEach(function(b){b.addEventListener('click',function(){fanGo(Math.round(fT)+(+b.dataset.fdir),620,easeIO)})});
   addEventListener('resize',fanSize);
   document.addEventListener('keydown',function(e){
     if(!fan.classList.contains('open')) return;
@@ -918,6 +934,6 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
   if('IntersectionObserver' in window){new IntersectionObserver(function(es){es[0].isIntersecting?tryPlay():v.pause()}).observe(v)}
 })();
 </script>
-<span class="bh build">versão B · 21/10 · i</span>
+<span class="bh build">versão B · 21/10 · j</span>
 </body>
 </html>
