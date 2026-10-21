@@ -223,7 +223,7 @@
 .bh .arc-stage{position:relative;flex:1;touch-action:pan-y;user-select:none;-webkit-user-select:none;cursor:grab}
 .bh .arc-stage.drag{cursor:grabbing}
 .bh .arc-stage.drag .cv{transition:none}
-.bh .ring{position:absolute;inset:0;transform-style:preserve-3d;will-change:transform}
+.bh .ring{position:absolute;inset:0}
 .bh .ring .cv{backface-visibility:hidden;-webkit-backface-visibility:hidden;transition:opacity .25s linear;will-change:auto}
 .bh .arc-stage.drag{cursor:grabbing}
 .bh .cv{position:absolute;left:50%;top:50%;transform-origin:50% 50%;width:var(--cw);height:var(--ch);margin:calc(var(--ch)/-2) 0 0 calc(var(--cw)/-2);border-radius:8px;overflow:hidden;will-change:transform,opacity;background:var(--deep);box-shadow:0 30px 60px -30px rgba(0,0,0,.6);border:0;padding:0;color:#fff;text-align:left;cursor:pointer;font:inherit}
@@ -558,7 +558,7 @@
   function arc(sec,items,render,caption,onPick,bgOf,scale){
     scale=scale||1;
     var pin=sec.querySelector('.arc-pin'), stage=sec.querySelector('.arc-stage'), cap=sec.querySelector('.arc-cap'), out=sec.querySelector('output'), bar=sec.querySelector('.arc-bar');
-    var N=items.length, K=Math.max(2,Math.ceil(10/N)), M=N*K, A=360/M, active=-1, vw=0, vh=0, step=0, R=500;
+    var N=items.length, K=Math.max(2,Math.ceil(10/N)), M=N*K, A=360/M, active=-1, vw=0, vh=0, step=0, R=500, P=1200;
     // o anel repete as capas para ficar cheio (5 capas viram 10)
     var ring=document.createElement('div'); ring.className='ring';
     var html=''; for(var k=0;k<K;k++) items.forEach(function(it,i){html+=render(it,i,N)});
@@ -579,16 +579,20 @@
       var cw=Math.round(h*.72);
       stage.style.setProperty('--cw',cw+'px'); stage.style.setProperty('--ch',Math.round(h)+'px');
       R=Math.round(cw*1.12*M/(2*Math.PI));
-      cards.forEach(function(el,i){el.style.transform='rotateY('+(i*A)+'deg) translateZ('+R+'px)'});
-      stage.style.perspective=Math.round(R*2.4)+'px';
+      P=Math.round(R*2.4);
       draw();
       if(window.ScrollTrigger) ScrollTrigger.refresh();
     }
     function draw(){
-      ring.style.transform='translateZ('+(-R)+'px) rotateY('+(-st.rot)+'deg)';
+      // cada capa recebe a própria posição no círculo (sem girar o anel inteiro:
+      // o Safari do iPhone nem sempre redesenha os filhos de um bloco 3D que gira)
       cards.forEach(function(el,i){
         var rel=((i*A-st.rot)%360+540)%360-180, n=Math.abs(rel);
+        if(n>95){if(el.style.visibility!=='hidden') el.style.visibility='hidden'; return}
+        el.style.visibility='visible';
+        el.style.transform='perspective('+P+'px) translateZ('+(-R)+'px) rotateY('+rel.toFixed(2)+'deg) translateZ('+R+'px)';
         el.style.opacity=Math.max(.18,1-n/110).toFixed(3);
+        el.style.zIndex=Math.round(100*Math.cos(rel*Math.PI/180))+100;
         el.style.pointerEvents=n<90?'auto':'none';
       });
       var f=st.rot/A, a=((Math.round(f)%N)+N)%N;
@@ -605,7 +609,7 @@
     // leva a página até a capa i; a rolagem continua mandando no anel
     function goIdx(i){
       i=Math.max(0,Math.min(N-1,i)); var y=sec.offsetTop+step*i;
-      if(window.gsap&&!RM) gsap.to(window,{scrollTo:{y:y,autoKill:true},duration:.9,ease:'power2.inOut'}); else window.scrollTo(0,y);
+      if(window.gsap&&!RM) gsap.to(window,{scrollTo:{y:y,autoKill:false},duration:.9,ease:'power2.inOut',overwrite:true}); else window.scrollTo(0,y);
     }
     var trig=null;
     if(window.ScrollTrigger){
@@ -643,6 +647,16 @@
       setRot(i*A); goIdx(i);
     }
     window.addEventListener('pointerup',dragEnd); window.addEventListener('pointercancel',dragEnd);
+    // trackpad: dois dedos para o lado giram o anel; quando o gesto para, encaixa na capa
+    var wx=0, wT=0, wR=null;
+    stage.addEventListener('wheel',function(e){
+      if(Math.abs(e.deltaX)<=Math.abs(e.deltaY)) return;
+      e.preventDefault();
+      var cw=parseFloat(stage.style.getPropertyValue('--cw'))||300;
+      if(wR===null) wR=st.rot;
+      wR=Math.max(-A*.4,Math.min((N-1)*A+A*.4,wR+e.deltaX/cw*A*.8)); setRot(wR);
+      clearTimeout(wT); wT=setTimeout(function(){var i=Math.max(0,Math.min(N-1,Math.round(wR/A))); wR=null; setRot(i*A); goIdx(i)},160);
+    },{passive:false});
     stage.addEventListener('click',function(e){
       if(stage._justDragged) return;
       var el=e.target.closest('.cv'); if(!el) return;
