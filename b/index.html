@@ -304,6 +304,10 @@ html,body{touch-action:manipulation}
   .bh .arc-cap .btn{margin-top:10px;width:100%;justify-content:center;height:48px}
   .bh .arc-stage{min-height:0}
   .bh .fan-track{--fw:80vw}
+  /* no iPhone, cartões andando sobre fundo desfocado redesenham aos trancos: fundo sólido */
+  .bh .fan{-webkit-backdrop-filter:none;backdrop-filter:none;background:#070E2B}
+  .bh .fw,.bh .fc{-webkit-backface-visibility:hidden;backface-visibility:hidden}
+  .bh .fc{box-shadow:0 18px 30px -20px rgba(0,0,0,.7)}
   .bh .fw{top:47%}
   .bh .fc .bd{padding:16px 18px 18px}
   .bh .fc .ac a{padding:14px 6px;font-size:15px}
@@ -800,7 +804,7 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
     var c=byId[id]; if(!c) return; lastFocus=document.activeElement;
     $('bhFanT').textContent=c.name;
     $('bhFanS').textContent=c.models.length+(c.models.length>1?' modelos, de ':' modelo, ')+range(c)+' de '+c.unit;
-    track.innerHTML=c.models.map(function(m){return '<div class="fw"><article class="fc"><div class="im"><img src="'+A+m[2]+'.webp" alt="'+m[0]+'" loading="lazy" draggable="false"></div><div class="bd"><div class="md">'+m[0]+'</div><div class="kg"><b>'+t(m[3])+'</b><span>'+c.unit+'</span></div><div class="ex">'+m[4]+'</div><div class="ac"><a href="'+href(m[1])+'">Ficha</a><a class="q" href="#orcamento" data-quote="'+c.name+'">Orçamento</a></div></div></article></div>'}).join('');
+    track.innerHTML=c.models.map(function(m){return '<div class="fw"><article class="fc"><div class="im"><img src="'+A+m[2]+'.webp" alt="'+m[0]+'" decoding="async" draggable="false"></div><div class="bd"><div class="md">'+m[0]+'</div><div class="kg"><b>'+t(m[3])+'</b><span>'+c.unit+'</span></div><div class="ex">'+m[4]+'</div><div class="ac"><a href="'+href(m[1])+'">Ficha</a><a class="q" href="#orcamento" data-quote="'+c.name+'">Orçamento</a></div></div></article></div>'}).join('');
     fan.classList.add('open'); document.body.style.overflow='hidden';
     var ws=[].slice.call(track.children); fN=ws.length;
     FF=flow(ws,'translate(-50%,-50%) ',TOUCH?0:LAG); fanSize();
@@ -811,7 +815,7 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
   function fanLoop(t){
     fanRaf=requestAnimationFrame(fanLoop);
     var dt=Math.min((t-fLast)||16,50)/1000; fLast=t;
-    FF.tick(fDrag?fDrag.idx:fT,dt,fDrag?DRAG_SMOOTH:RM?60:(TOUCH?4.2:SMOOTH));
+    FF.tick(fDrag?fDrag.idx:fT,dt,fDrag?DRAG_SMOOTH:RM?60:(TOUCH?6.5:SMOOTH));
     if(fRev<1){ // entrada em cascata, do centro para fora
       if(!fT0) fT0=t; fRev=Math.min(1,(t-fT0)/900);
       [].forEach.call(track.children,function(w,i){
@@ -914,6 +918,6 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
   if('IntersectionObserver' in window){new IntersectionObserver(function(es){es[0].isIntersecting?tryPlay():v.pause()}).observe(v)}
 })();
 </script>
-<span class="bh build">versão B · 21/10 · h</span>
+<span class="bh build">versão B · 21/10 · i</span>
 </body>
 </html>
