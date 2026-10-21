@@ -222,6 +222,10 @@
 .bh .arc.light .arc-head p{color:var(--muted)}
 .bh .arc-stage{position:relative;flex:1;touch-action:pan-y;user-select:none;-webkit-user-select:none;cursor:grab}
 .bh .arc-stage.drag{cursor:grabbing}
+.bh .arc.free{height:auto!important}
+.bh .arc.free .arc-pin{position:relative;height:100vh;height:100svh;min-height:600px}
+.bh .arc.free .arc-stage{cursor:auto}
+.build{display:block;text-align:center;font:500 11px Inter,sans-serif;color:#8892B0;padding:10px 0 18px;background:#070E2B}
 .bh .arc-stage.drag .cv{transition:none}
 .bh .ring{position:absolute;inset:0}
 .bh .ring .cv{backface-visibility:hidden;-webkit-backface-visibility:hidden;transition:opacity .25s linear;will-change:auto}
@@ -555,8 +559,11 @@
   // anel 3D (galeria circular) girado pela rolagem com GSAP ScrollTrigger;
   // setas, clique nas capas laterais e deslize para o lado avançam ou voltam uma capa
   if(window.gsap&&window.ScrollTrigger){gsap.registerPlugin(ScrollTrigger,ScrollToPlugin);ScrollTrigger.config({ignoreMobileResize:true})}
+  // celular/tablet: sem prender a seção nem ligar à rolagem (isso travava no iPhone);
+  // o anel gira pelo deslize do dedo, pelas setas e pelo toque nas capas laterais
+  var FREE=matchMedia('(hover:none) and (pointer:coarse)').matches;
   function arc(sec,items,render,caption,onPick,bgOf,scale){
-    scale=scale||1;
+    scale=scale||1; if(FREE) sec.classList.add('free');
     var pin=sec.querySelector('.arc-pin'), stage=sec.querySelector('.arc-stage'), cap=sec.querySelector('.arc-cap'), out=sec.querySelector('output'), bar=sec.querySelector('.arc-bar');
     var N=items.length, K=Math.max(2,Math.ceil(10/N)), M=N*K, A=360/M, active=-1, vw=0, vh=0, step=0, R=500, P=1200;
     // o anel repete as capas para ficar cheio (5 capas viram 10)
@@ -573,7 +580,7 @@
       if(!force&&innerWidth===vw) return;
       vw=innerWidth; vh=pin.offsetHeight; var mob=vw<=1000;
       step=vh*(mob?.55:.8);
-      sec.style.height=(vh+step*(N-1))+'px';
+      sec.style.height=FREE?'':(vh+step*(N-1))+'px';
       var h=Math.min(stage.clientHeight*(mob?.8:.88)*scale,580*scale);
       if(mob) h=Math.min(h,vw*.95*scale);
       var cw=Math.round(h*.72);
@@ -608,11 +615,13 @@
     function idx(){return Math.max(0,Math.min(N-1,Math.round(st.rot/A)))}
     // leva a página até a capa i; a rolagem continua mandando no anel
     function goIdx(i){
-      i=Math.max(0,Math.min(N-1,i)); var y=sec.offsetTop+step*i;
+      i=Math.max(0,Math.min(N-1,i));
+      if(FREE){setRot(i*A);return}
+      var y=sec.offsetTop+step*i;
       if(window.gsap&&!RM) gsap.to(window,{scrollTo:{y:y,autoKill:false},duration:.9,ease:'power2.inOut',overwrite:true}); else window.scrollTo(0,y);
     }
     var trig=null;
-    if(window.ScrollTrigger){
+    if(window.ScrollTrigger&&!FREE){
       trig=ScrollTrigger.create({trigger:sec,start:'top top',end:'bottom bottom',
         onUpdate:function(s){setRot(s.progress*(N-1)*A)}});
       // parada a rolagem, o anel se acomoda na capa mais próxima (a página não se mexe)
@@ -623,6 +632,7 @@
     var drag=null;
     stage.addEventListener('pointerdown',function(e){
       if(e.pointerType==='mouse'&&e.button!==0) return;
+      if(FREE&&e.pointerType!=='mouse') return; // no toque, usa os eventos de toque abaixo
       drag={x:e.clientX,y:e.clientY,r0:st.rot,id:e.pointerId,lock:null,s:[{t:performance.now(),r:st.rot}]};
     });
     window.addEventListener('pointermove',function(e){
@@ -647,6 +657,31 @@
       setRot(i*A); goIdx(i);
     }
     window.addEventListener('pointerup',dragEnd); window.addEventListener('pointercancel',dragEnd);
+    // toque (iPhone/Android): eventos de toque nativos, mais confiáveis que pointer events
+    if(FREE){
+      var tc=null;
+      stage.addEventListener('touchstart',function(e){
+        if(e.touches.length!==1){tc=null;return}
+        var t=e.touches[0]; tc={x:t.clientX,y:t.clientY,r0:st.rot,lock:null,s:[{t:performance.now(),r:st.rot}],r:st.rot};
+      },{passive:true});
+      stage.addEventListener('touchmove',function(e){
+        if(!tc) return; var t=e.touches[0], dx=t.clientX-tc.x, dy=t.clientY-tc.y;
+        if(tc.lock===null&&(Math.abs(dx)>8||Math.abs(dy)>8)) tc.lock=Math.abs(dx)>Math.abs(dy)?'x':'y';
+        if(tc.lock==='y'){tc=null;return}
+        if(tc.lock!=='x') return;
+        e.preventDefault();
+        var cw=parseFloat(stage.style.getPropertyValue('--cw'))||260;
+        tc.r=Math.max(-A*.4,Math.min((N-1)*A+A*.4,tc.r0-dx/cw*A)); setRot(tc.r);
+        var now=performance.now(); tc.s.push({t:now,r:tc.r}); while(tc.s.length>2&&now-tc.s[0].t>100) tc.s.shift();
+      },{passive:false});
+      var tEnd=function(){
+        if(!tc) return; var d=tc; tc=null; if(d.lock!=='x') return;
+        stage._justDragged=true; setTimeout(function(){stage._justDragged=false},350);
+        var f=d.s[0], l=d.s[d.s.length-1], dt=(l.t-f.t)/1000, v=dt>.01?(l.r-f.r)/dt/A:0;
+        goIdx(Math.round(l.r/A+Math.max(-1,Math.min(1,v*.12))));
+      };
+      stage.addEventListener('touchend',tEnd); stage.addEventListener('touchcancel',tEnd);
+    }
     // trackpad: dois dedos para o lado giram o anel; quando o gesto para, encaixa na capa
     var wx=0, wT=0, wR=null;
     stage.addEventListener('wheel',function(e){
@@ -809,5 +844,6 @@
   if('IntersectionObserver' in window){new IntersectionObserver(function(es){es[0].isIntersecting?tryPlay():v.pause()}).observe(v)}
 })();
 </script>
+<span class="bh build">versão B · 21/10 · c</span>
 </body>
 </html>
