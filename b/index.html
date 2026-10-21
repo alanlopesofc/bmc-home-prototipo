@@ -220,7 +220,9 @@
 .bh .arc-head h2{font-size:clamp(30px,4vw,52px)}
 .bh .arc-head p{max-width:380px;color:rgba(255,255,255,.66);font-size:15px;line-height:1.55}
 .bh .arc.light .arc-head p{color:var(--muted)}
-.bh .arc-stage{position:relative;flex:1;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.bh .arc-stage{position:relative;flex:1;touch-action:pan-y;user-select:none;-webkit-user-select:none;cursor:grab}
+.bh .arc-stage.drag{cursor:grabbing}
+.bh .arc-stage.drag .cv{transition:none}
 .bh .ring{position:absolute;inset:0;transform-style:preserve-3d;will-change:transform}
 .bh .ring .cv{backface-visibility:hidden;-webkit-backface-visibility:hidden;transition:opacity .25s linear;will-change:auto}
 .bh .arc-stage.drag{cursor:grabbing}
@@ -612,13 +614,35 @@
       // parada a rolagem, o anel se acomoda na capa mais próxima (a página não se mexe)
       ScrollTrigger.addEventListener('scrollEnd',function(){if(trig.isActive) setRot(Math.round(trig.progress*(N-1))*A)});
     }
-    // deslizar para o lado: uma capa por gesto
-    var sx=null;
-    stage.addEventListener('pointerdown',function(e){sx={x:e.clientX,y:e.clientY}});
-    window.addEventListener('pointerup',function(e){
-      if(!sx) return; var dx=e.clientX-sx.x, dy=e.clientY-sx.y; sx=null;
-      if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy)*1.3){stage._justDragged=true;setTimeout(function(){stage._justDragged=false},50);goIdx(idx()+(dx<0?1:-1))}
+    // arrastar com o dedo ou o mouse: o anel segue o gesto; ao soltar, para na capa mais
+    // próxima (com impulso) e a página rola até ela, para a rolagem continuar mandando
+    var drag=null;
+    stage.addEventListener('pointerdown',function(e){
+      if(e.pointerType==='mouse'&&e.button!==0) return;
+      drag={x:e.clientX,y:e.clientY,r0:st.rot,id:e.pointerId,lock:null,s:[{t:performance.now(),r:st.rot}]};
     });
+    window.addEventListener('pointermove',function(e){
+      if(!drag||e.pointerId!==drag.id) return;
+      var dx=e.clientX-drag.x, dy=e.clientY-drag.y;
+      if(drag.lock===null&&(Math.abs(dx)>8||Math.abs(dy)>8)) drag.lock=Math.abs(dx)>Math.abs(dy)?'x':'y';
+      if(drag.lock==='y'){drag=null;return}
+      if(drag.lock!=='x') return;
+      e.preventDefault(); stage.classList.add('drag');
+      // um gesto da largura de uma capa avança uma capa
+      var cw=parseFloat(stage.style.getPropertyValue('--cw'))||300;
+      var r=Math.max(-A*.4,Math.min((N-1)*A+A*.4,drag.r0-dx/cw*A));
+      setRot(r);
+      var now=performance.now(); drag.s.push({t:now,r:r}); while(drag.s.length>2&&now-drag.s[0].t>100) drag.s.shift();
+    },{passive:false});
+    function dragEnd(){
+      if(!drag) return; var d=drag; drag=null; stage.classList.remove('drag');
+      if(d.lock!=='x') return;
+      stage._justDragged=true; setTimeout(function(){stage._justDragged=false},60);
+      var f=d.s[0], l=d.s[d.s.length-1], dt=(l.t-f.t)/1000, v=dt>.01?(l.r-f.r)/dt/A:0;
+      var i=Math.max(0,Math.min(N-1,Math.round(l.r/A+Math.max(-1,Math.min(1,v*.12)))));
+      setRot(i*A); goIdx(i);
+    }
+    window.addEventListener('pointerup',dragEnd); window.addEventListener('pointercancel',dragEnd);
     stage.addEventListener('click',function(e){
       if(stage._justDragged) return;
       var el=e.target.closest('.cv'); if(!el) return;
