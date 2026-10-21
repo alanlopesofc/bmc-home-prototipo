@@ -474,9 +474,14 @@
 <p class="proto">Versão B do protótipo da home da BMC Hyundai. <a href="../" style="text-decoration:underline">Ver a versão A</a>. Cabeçalho e rodapé finais vêm do tema do site.</p>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+<script>
+/* mostra no rodapé qualquer erro de script (diagnóstico em aparelho real) */
+window.__errs=[];window.addEventListener('error',function(e){window.__errs.push(e.message?(e.message+(e.lineno?' @'+e.lineno:'')):('não carregou '+((e.target&&(e.target.src||e.target.href))||'recurso').split('/').pop()));var b=document.querySelector('.build');if(b)b.textContent+=' · ERRO: '+window.__errs[window.__errs.length-1]},true);
+document.addEventListener('DOMContentLoaded',function(){var b=document.querySelector('.build');if(b&&window.__errs.length&&b.textContent.indexOf('ERRO')<0)b.textContent+=' · ERRO: '+window.__errs.join(' | ')});
+</script>
+<script src="../assets/js/gsap.min.js"></script>
+<script src="../assets/js/ScrollTrigger.min.js"></script>
+<script src="../assets/js/ScrollToPlugin.min.js"></script>
 <script>
 (function(){
   var W='https://wa.me/5511973718835?text=';
@@ -558,10 +563,11 @@
 
   // anel 3D (galeria circular) girado pela rolagem com GSAP ScrollTrigger;
   // setas, clique nas capas laterais e deslize para o lado avançam ou voltam uma capa
-  if(window.gsap&&window.ScrollTrigger){gsap.registerPlugin(ScrollTrigger,ScrollToPlugin);ScrollTrigger.config({ignoreMobileResize:true})}
+  var HAS_GSAP=!!(window.gsap&&window.ScrollTrigger&&window.ScrollToPlugin&&gsap.quickTo);
+  if(HAS_GSAP){gsap.registerPlugin(ScrollTrigger,ScrollToPlugin);ScrollTrigger.config({ignoreMobileResize:true})}
   // celular/tablet: sem prender a seção nem ligar à rolagem (isso travava no iPhone);
   // o anel gira pelo deslize do dedo, pelas setas e pelo toque nas capas laterais
-  var FREE=matchMedia('(hover:none) and (pointer:coarse)').matches;
+  var FREE=matchMedia('(hover:none) and (pointer:coarse)').matches||!HAS_GSAP;
   function arc(sec,items,render,caption,onPick,bgOf,scale){
     scale=scale||1; if(FREE) sec.classList.add('free');
     var pin=sec.querySelector('.arc-pin'), stage=sec.querySelector('.arc-stage'), cap=sec.querySelector('.arc-cap'), out=sec.querySelector('output'), bar=sec.querySelector('.arc-bar');
@@ -575,7 +581,15 @@
     if(bgOf){var bg=document.createElement('div');bg.className='arc-bg';
       bgs=items.map(function(it){var im=new Image();im.alt='';im.decoding='async';im.dataset.src=bgOf(it);bg.appendChild(im);return im});
       pin.insertBefore(bg,pin.firstChild)}
-    var st={rot:0}, setRot=window.gsap?gsap.quickTo(st,'rot',{duration:RM?0:.9,ease:'power3.out',onUpdate:draw}):function(v){st.rot=v;draw()};
+    var st={rot:0}, setRot;
+    if(HAS_GSAP&&!FREE) setRot=gsap.quickTo(st,'rot',{duration:RM?0:.9,ease:'power3.out',onUpdate:draw});
+    else { // celular (ou sem GSAP): animação própria, sem depender de biblioteca
+      var tgt=0, raf=0, tl=0;
+      var tick=function(t){var dt=Math.min((t-tl)||16,50)/1000; tl=t; var d=tgt-st.rot;
+        if(Math.abs(d)<.02){st.rot=tgt;draw();raf=0;return}
+        st.rot+=d*(1-Math.exp(-9*dt)); draw(); raf=requestAnimationFrame(tick)};
+      setRot=function(v){tgt=v; if(RM){st.rot=v;draw();return} if(!raf){tl=0;raf=requestAnimationFrame(tick)}};
+    }
     function size(force){
       if(!force&&innerWidth===vw) return;
       vw=innerWidth; vh=pin.offsetHeight; var mob=vw<=1000;
@@ -588,7 +602,7 @@
       R=Math.round(cw*1.12*M/(2*Math.PI));
       P=Math.round(R*2.4);
       draw();
-      if(window.ScrollTrigger) ScrollTrigger.refresh();
+      if(HAS_GSAP&&!FREE) ScrollTrigger.refresh();
     }
     function draw(){
       // cada capa recebe a própria posição no círculo (sem girar o anel inteiro:
@@ -618,10 +632,10 @@
       i=Math.max(0,Math.min(N-1,i));
       if(FREE){setRot(i*A);return}
       var y=sec.offsetTop+step*i;
-      if(window.gsap&&!RM) gsap.to(window,{scrollTo:{y:y,autoKill:false},duration:.9,ease:'power2.inOut',overwrite:true}); else window.scrollTo(0,y);
+      if(HAS_GSAP&&!RM) gsap.to(window,{scrollTo:{y:y,autoKill:false},duration:.9,ease:'power2.inOut',overwrite:true}); else window.scrollTo(0,y);
     }
     var trig=null;
-    if(window.ScrollTrigger&&!FREE){
+    if(HAS_GSAP&&!FREE){
       trig=ScrollTrigger.create({trigger:sec,start:'top top',end:'bottom bottom',
         onUpdate:function(s){setRot(s.progress*(N-1)*A)}});
       // parada a rolagem, o anel se acomoda na capa mais próxima (a página não se mexe)
@@ -708,16 +722,16 @@
     return {go:goIdx};
   }
 
-  var works=arc(document.querySelector('[data-arc="works"]'),WORKS,
+  var works,cats; try{ works=arc(document.querySelector('[data-arc="works"]'),WORKS,
     function(it,i,N){return '<button type="button" class="cv'+(it.cut?' cut':'')+'" aria-label="'+it.title+'"><img class="ph" src="'+it.img+'" alt="" style="object-position:'+(it.pos||'50% 50%')+'" draggable="false"><span class="cv-n">'+String(i+1).padStart(2,'0')+'</span><span class="cv-t"><b>'+it.title+'</b><small>'+it.sub+'</small></span></button>'},
     function(it){return '<h3>'+it.title+'</h3><p>'+it.desc+'</p><a class="btn btn-p" href="#maquinas" data-open="'+it.cat+'">Ver as máquinas</a>'},
-    function(it){openFan(it.cat)});
+    function(it){openFan(it.cat)}); }catch(err){window.__errs.push('works: '+err.message);var b0=document.querySelector('.build');if(b0)b0.textContent+=' · ERRO works: '+err.message}
 
-  var cats=arc(document.querySelector('[data-arc="cats"]'),CATS,
+  try{ cats=arc(document.querySelector('[data-arc="cats"]'),CATS,
     function(c,i,N){return '<button type="button" class="cv cut" aria-label="'+c.name+'"><img class="ph" src="'+A+c.cover+'.webp" alt="" draggable="false"><span class="cv-n">'+c.models.length+(c.models.length>1?' modelos':' modelo')+'</span><span class="cv-t"><b>'+c.name+'</b><small>'+(c.unit==='capacidade de carga'?'Carga de ':'De ')+range(c)+'</small></span></button>'},
     function(c){return '<h3>'+c.name+'</h3><p>'+c.models.length+(c.models.length>1?' modelos, de ':' modelo, ')+range(c)+' de '+c.unit+'.</p><button class="btn btn-p" type="button" data-open="'+c.id+'">Abrir os '+(c.models.length>1?c.models.length+' modelos':'detalhes')+'</button>'},
     function(c){openFan(c.id)},
-    function(c){return '../assets/bg/'+c.id+'.webp'},.8);
+    function(c){return '../assets/bg/'+c.id+'.webp'},.8); }catch(err){window.__errs.push('cats: '+err.message);var b1=document.querySelector('.build');if(b1)b1.textContent+=' · ERRO cats: '+err.message}
 
   // leque: o mesmo motor de arco, controlado pela roda, pelo arrasto e pelas setas
   var fan=$('bhFan'), track=$('bhFanTrack'), lastFocus=null, fanRaf=0, FF=null, fT=0, fN=0, fDrag=null, fRev=0, fT0=0, fLast=0, fSettle=0;
@@ -844,6 +858,6 @@
   if('IntersectionObserver' in window){new IntersectionObserver(function(es){es[0].isIntersecting?tryPlay():v.pause()}).observe(v)}
 })();
 </script>
-<span class="bh build">versão B · 21/10 · c</span>
+<span class="bh build">versão B · 21/10 · d</span>
 </body>
 </html>
