@@ -282,17 +282,27 @@
 .bh .fan-f .arc-ctl button{border-color:var(--line-d)}
 
 @media (max-width:1000px){
-  .bh .arc-head{padding-top:92px;flex-direction:column;align-items:start;gap:10px}
+  .bh .arc-head{padding-top:86px;flex-direction:column;align-items:start;gap:10px}
+  .bh .arc-head h2{font-size:clamp(26px,7.4vw,32px)}
   .bh .arc-head p{font-size:14px}
   .bh .arc-head p{display:none}
   .bh .arc-cap h3{display:none}
   .bh .arc-cap p{margin-top:0;font-size:14px}
-  .bh .arc-foot{flex-direction:row;align-items:end}
-  .bh .arc-ctl{flex-direction:column;gap:6px}
-  .bh .arc-ctl button{width:40px;height:40px}
-  .bh .arc-ctl output{font-size:12px;min-width:0}
-  .bh .arc-cap{min-height:0}
-  .bh .fan-track{--fw:66vw}
+  .bh .arc-foot{flex-direction:column;align-items:stretch;gap:12px;padding-bottom:18px}
+  .bh .arc-ctl{order:-1;flex-direction:row;justify-content:center;gap:22px}
+  .bh .arc-ctl button{width:46px;height:46px}
+  .bh .arc-ctl output{font-size:14px;min-width:56px}
+  .bh .arc-ctl button{background:rgba(7,14,43,.55);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+  .bh .cv .cv-t b{font-size:clamp(17px,5.6vw,24px);overflow-wrap:anywhere}
+  .bh .cv .cv-t{left:16px;right:16px;bottom:16px}
+  .bh .arc-cap{min-height:108px}
+  .bh .arc-cap p{min-height:40px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.4}
+  .bh .arc-cap .btn{margin-top:10px;width:100%;justify-content:center;height:48px}
+  .bh .arc-stage{min-height:0}
+  .bh .fan-track{--fw:80vw}
+  .bh .fw{top:47%}
+  .bh .fc .bd{padding:16px 18px 18px}
+  .bh .fc .ac a{padding:14px 6px;font-size:15px}
   .bh .fan-h p{font-size:13px}
   .bh .fan-f span{display:none}
   .bh .fan-f{justify-content:center}
@@ -539,7 +549,8 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
   // a posição persegue o alvo com amortecimento exponencial por tempo e as capas
   // mais distantes seguem com atraso, como uma onda saindo da capa ativa
   var SMOOTH=5.5, DRAG_SMOOTH=14, LAG=.85, MIN_FOLLOW=.6;
-  function flow(els,pre){
+  function flow(els,pre,lag){
+    lag=lag==null?LAG:lag;
     var slot=els.map(function(){return 0}), cur=0, geo={R:1000,sp:300};
     function set(v){cur=v; for(var i=0;i<slot.length;i++) slot[i]=v}
     function tick(target,dt,rate){
@@ -548,7 +559,7 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
       var a=geo.sp/geo.R;
       els.forEach(function(el,i){
         if(RM) slot[i]=cur; else {
-          var df=Math.min(Math.abs(i-slot[i])/3,1), fr=Math.max(rate*(1-df*LAG),rate*MIN_FOLLOW);
+          var df=Math.min(Math.abs(i-slot[i])/3,1), fr=Math.max(rate*(1-df*lag),rate*MIN_FOLLOW);
           slot[i]+=(cur-slot[i])*(1-Math.exp(-fr*dt)); if(Math.abs(cur-slot[i])<1e-4) slot[i]=cur; else settled=false;
         }
         var d=i-slot[i], ad=Math.abs(d), th=d*a;
@@ -586,11 +597,12 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
     var st={rot:0}, setRot;
     if(HAS_GSAP&&!FREE) setRot=gsap.quickTo(st,'rot',{duration:RM?0:.9,ease:'power3.out',onUpdate:draw});
     else { // celular (ou sem GSAP): animação própria, sem depender de biblioteca
-      var tgt=0, raf=0, tl=0;
+      var tgt=0, raf=0, tl=0, k=9;
       var tick=function(t){var dt=Math.min((t-tl)||16,50)/1000; tl=t; var d=tgt-st.rot;
         if(Math.abs(d)<.02){st.rot=tgt;draw();raf=0;return}
-        st.rot+=d*(1-Math.exp(-9*dt)); draw(); raf=requestAnimationFrame(tick)};
-      setRot=function(v){tgt=v; if(RM){st.rot=v;draw();return} if(!raf){tl=0;raf=requestAnimationFrame(tick)}};
+        st.rot+=d*(1-Math.exp(-k*dt)); draw(); raf=requestAnimationFrame(tick)};
+      // k: 20 segue o dedo; 9 acompanha a rolagem; 4 desliza e para (setas e fim do arrasto)
+      setRot=function(v,kk){tgt=v; k=kk||9; if(RM){st.rot=v;draw();return} if(!raf){tl=0;raf=requestAnimationFrame(tick)}};
     }
     function size(force){
       if(!force&&innerWidth===vw) return;
@@ -600,6 +612,7 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
       var h=Math.min(stage.clientHeight*(mob?.8:.88)*scale,580*scale);
       if(mob) h=Math.min(h,vw*.95*scale);
       var cw=Math.round(h*.72);
+      if(TOUCH){ h=Math.round(stage.clientHeight*.94); cw=Math.round(Math.min(h*.7,vw*.74)); h=Math.round(Math.min(h,cw/.62)); }
       stage.style.setProperty('--cw',cw+'px'); stage.style.setProperty('--ch',Math.round(h)+'px');
       R=Math.round(cw*1.12*M/(2*Math.PI));
       P=Math.round(R*2.4);
@@ -633,10 +646,12 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
     function goIdx(i){
       i=Math.max(0,Math.min(N-1,i));
       var y=sec.offsetTop+step*i;
-      if(FREE){setRot(i*A); try{window.scrollTo({top:y,behavior:RM?'auto':'smooth'})}catch(_){window.scrollTo(0,y)} return}
+      // no celular: o anel desliza sozinho até a capa e a página é reposicionada na hora,
+      // por baixo (a seção está presa, então isso não se vê e não dá a "quicadinha")
+      if(FREE){navUntil=performance.now()+1100; setRot(i*A,4); window.scrollTo(0,y); return}
       if(HAS_GSAP&&!RM) gsap.to(window,{scrollTo:{y:y,autoKill:false},duration:.9,ease:'power2.inOut',overwrite:true}); else window.scrollTo(0,y);
     }
-    var trig=null;
+    var trig=null, navUntil=0;
     if(HAS_GSAP&&!FREE){
       trig=ScrollTrigger.create({trigger:sec,start:'top top',end:'bottom bottom',
         onUpdate:function(s){setRot(s.progress*(N-1)*A)}});
@@ -647,6 +662,7 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
       var sIdle=0;
       var onScroll=function(){
         if(tc&&tc.lock==='x') return;
+        if(performance.now()<navUntil) return;
         var r=sec.getBoundingClientRect(), p=step?Math.max(0,Math.min(N-1,-r.top/step)):0;
         setRot(p*A);
         clearTimeout(sIdle); sIdle=setTimeout(function(){var r2=sec.getBoundingClientRect(); if(r2.top<=0&&r2.bottom>=vh) setRot(Math.round(Math.max(0,Math.min(N-1,-r2.top/step)))*A)},200);
@@ -697,7 +713,7 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
         if(tc.lock!=='x') return;
         e.preventDefault();
         var cw=parseFloat(stage.style.getPropertyValue('--cw'))||260;
-        tc.r=Math.max(-A*.4,Math.min((N-1)*A+A*.4,tc.r0-dx/cw*A)); setRot(tc.r);
+        tc.r=Math.max(-A*.4,Math.min((N-1)*A+A*.4,tc.r0-dx/cw*A)); setRot(tc.r,20);
         var now=performance.now(); tc.s.push({t:now,r:tc.r}); while(tc.s.length>2&&now-tc.s[0].t>100) tc.s.shift();
       },{passive:false});
       var tEnd=function(){
@@ -750,7 +766,7 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
   function fanClamp(v){return Math.max(0,Math.min(fN-1,v))}
   function fanSize(){
     if(!FF) return; var w=track.firstElementChild; var cw=w?w.offsetWidth:240;
-    FF.geo.sp=cw*1.08; FF.geo.R=Math.max(innerWidth*1.3,cw*6);
+    FF.geo.sp=cw*(TOUCH?1.04:1.08); FF.geo.R=Math.max(innerWidth*1.3,cw*6);
   }
   function openFan(id){
     var c=byId[id]; if(!c) return; lastFocus=document.activeElement;
@@ -759,7 +775,7 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
     track.innerHTML=c.models.map(function(m){return '<div class="fw"><article class="fc"><div class="im"><img src="'+A+m[2]+'.webp" alt="'+m[0]+'" loading="lazy" draggable="false"></div><div class="bd"><div class="md">'+m[0]+'</div><div class="kg"><b>'+t(m[3])+'</b><span>'+c.unit+'</span></div><div class="ex">'+m[4]+'</div><div class="ac"><a href="'+href(m[1])+'">Ficha</a><a class="q" href="#orcamento" data-quote="'+c.name+'">Orçamento</a></div></div></article></div>'}).join('');
     fan.classList.add('open'); document.body.style.overflow='hidden';
     var ws=[].slice.call(track.children); fN=ws.length;
-    FF=flow(ws,'translate(-50%,-50%) '); fanSize();
+    FF=flow(ws,'translate(-50%,-50%) ',TOUCH?0:LAG); fanSize();
     fT=Math.floor((fN-1)/2); FF.set(fT); fRev=RM?1:0; fT0=0;
     cancelAnimationFrame(fanRaf); fLast=0; fanRaf=requestAnimationFrame(fanLoop);
     setTimeout(function(){fan.querySelector('.fan-x').focus()},50);
@@ -767,7 +783,7 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
   function fanLoop(t){
     fanRaf=requestAnimationFrame(fanLoop);
     var dt=Math.min((t-fLast)||16,50)/1000; fLast=t;
-    FF.tick(fDrag?fDrag.idx:fT,dt,fDrag?DRAG_SMOOTH:RM?60:SMOOTH);
+    FF.tick(fDrag?fDrag.idx:fT,dt,fDrag?DRAG_SMOOTH:RM?60:(TOUCH?4.2:SMOOTH));
     if(fRev<1){ // entrada em cascata, do centro para fora
       if(!fT0) fT0=t; fRev=Math.min(1,(t-fT0)/900);
       [].forEach.call(track.children,function(w,i){
@@ -803,7 +819,7 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
     if(!d.moved) return;
     track._justDragged=true; setTimeout(function(){track._justDragged=false},50);
     var f=d.s[0], l=d.s[d.s.length-1], ds=(l.t-f.t)/1000, v=ds>.008?(l.v-f.v)/ds:0;
-    fT=fanClamp(Math.round(d.idx+Math.max(-2,Math.min(2,v/SMOOTH*.6))));
+    fT=TOUCH?fanClamp(Math.round(d.idx+Math.max(-1,Math.min(1,v*.12)))):fanClamp(Math.round(d.idx+Math.max(-2,Math.min(2,v/SMOOTH*.6))));
   }
   window.addEventListener('pointerup',fanEnd); window.addEventListener('pointercancel',fanEnd);
   track.addEventListener('click',function(e){if(track._justDragged){e.preventDefault();e.stopPropagation()}},true);
@@ -870,6 +886,6 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
   if('IntersectionObserver' in window){new IntersectionObserver(function(es){es[0].isIntersecting?tryPlay():v.pause()}).observe(v)}
 })();
 </script>
-<span class="bh build">versão B · 21/10 · e</span>
+<span class="bh build">versão B · 21/10 · f</span>
 </body>
 </html>
