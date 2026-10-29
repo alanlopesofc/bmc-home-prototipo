@@ -526,6 +526,12 @@ html,body{touch-action:manipulation}
 </div>
 
 <script>
+/* ao abrir ou recarregar, a página sempre começa do topo (o navegador costuma voltar à posição anterior) */
+if('scrollRestoration' in history) history.scrollRestoration='manual';
+window.scrollTo(0,0);
+addEventListener('pageshow',function(e){if(e.persisted) window.scrollTo(0,0)});
+</script>
+<script>
 /* mostra no rodapé qualquer erro de script (diagnóstico em aparelho real) */
 window.__errs=[];window.addEventListener('error',function(e){window.__errs.push(e.message?(e.message+(e.lineno?' @'+e.lineno:'')):('não carregou '+((e.target&&(e.target.src||e.target.href))||'recurso').split('/').pop()));var b=document.querySelector('.build');if(b)b.textContent+=' · ERRO: '+window.__errs[window.__errs.length-1]},true);
 document.addEventListener('DOMContentLoaded',function(){var b=document.querySelector('.build');if(b&&window.__errs.length&&b.textContent.indexOf('ERRO')<0)b.textContent+=' · ERRO: '+window.__errs.join(' | ')});
@@ -672,6 +678,7 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
     function draw(){
       // cada capa recebe a própria posição no círculo (sem girar o anel inteiro:
       // o Safari do iPhone nem sempre redesenha os filhos de um bloco 3D que gira)
+      var vis=[];
       cards.forEach(function(el,i){
         // fila reta, sem repetir: começa na capa 01 (nada à esquerda) e termina na última
         var rel=i*A-st.rot, n=Math.abs(rel);
@@ -679,14 +686,23 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
         css(el,'visibility','visible');
         el.style.transform='perspective('+P+'px) translateZ('+(-R)+'px) rotateY('+rel.toFixed(2)+'deg) translateZ('+R+'px)';
         css(el,'opacity',Math.max(.18,1-n/110).toFixed(2));
-        css(el,'zIndex',String(200-Math.round(n/(A/2))));
+        vis.push([n,el]);
         css(el,'pointerEvents',n<90?'auto':'none');
       });
+      // a capa mais perto fica na frente; o z-index só muda quando a ordem muda de verdade
+      vis.sort(function(x,y){return x[0]-y[0]}).forEach(function(v,k){css(v[1],'zIndex',String(100-k))});
       var f=st.rot/A, a=((Math.round(f)%N)+N)%N;
       bar.style.width=(N>1?Math.max(0,Math.min(1,f/(N-1)))*100:100)+'%';
       if(a!==active){var first=active===-1; active=a;
         cards.forEach(function(el,i){el.tabIndex=(i%N===a&&i<N)?0:-1});
         out.textContent=String(a+1).padStart(2,'0')+' / '+String(N).padStart(2,'0');
+        // legenda e fundo só trocam quando o gesto assenta (no meio do arrasto a tela "piscava")
+        clearTimeout(capT); if(first) applyCap(a); else capT=setTimeout(function(){applyCap(active)},170);
+      }
+    }
+    var capT=0, capA=-1;
+    function applyCap(a){
+        if(a===capA) return; var first=capA===-1; capA=a;
         bgs.forEach(function(im,i){
           if(Math.abs(i-a)<=1&&!im.src) im.src=im.dataset.src;
           im.classList.toggle('on',i===a)});
@@ -704,7 +720,7 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
             [].slice.call(nx.children).forEach(function(el){cap.insertBefore(el,ref)});
             cap.classList.remove('swap');
           },180);
-        }}
+        }
     }
     function idx(){return Math.max(0,Math.min(N-1,Math.round(st.rot/A)))}
     // leva a página até a capa i; a rolagem continua mandando no anel
@@ -778,14 +794,16 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
         if(tc.lock!=='x') return;
         e.preventDefault();
         var cw=parseFloat(stage.style.getPropertyValue('--cw'))||260;
-        tc.r=Math.max(-A*.4,Math.min((N-1)*A+A*.4,tc.r0-dx/cw*A)); setRot(tc.r,20);
+        tc.dx=dx; tc.r=Math.max(-A*.4,Math.min((N-1)*A+A*.4,tc.r0-dx/cw*A));
+        tc.r=Math.max(tc.r0-A,Math.min(tc.r0+A,tc.r)); setRot(tc.r,20);
         var now=performance.now(); tc.s.push({t:now,r:tc.r}); while(tc.s.length>2&&now-tc.s[0].t>100) tc.s.shift();
       },{passive:false});
       var tEnd=function(){
         if(!tc) return; var d=tc; tc=null; if(d.lock!=='x') return;
         stage._justDragged=true; setTimeout(function(){stage._justDragged=false},350);
         var f=d.s[0], l=d.s[d.s.length-1], dt=(l.t-f.t)/1000, v=dt>.01?(l.r-f.r)/dt/A:0;
-        goIdx(Math.round(l.r/A+Math.max(-1,Math.min(1,v*.12))));
+        // um deslize = uma capa, na direção do gesto
+        var i0=Math.round(d.r0/A); goIdx(Math.abs(d.dx||0)>40?i0-Math.sign(d.dx):i0);
       };
       stage.addEventListener('touchend',tEnd); stage.addEventListener('touchcancel',tEnd);
     }
@@ -896,7 +914,9 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
     if(!fDrag||e.pointerId!==fDrag.id) return;
     var dx=e.clientX-fDrag.x; if(Math.abs(dx)>6) fDrag.moved=true;
     if(!fDrag.moved) return;
-    fDrag.idx=Math.max(-.35,Math.min(fN-.65,fDrag.start-dx/FF.geo.sp));
+    fDrag.dx=dx; fDrag.idx=Math.max(-.35,Math.min(fN-.65,fDrag.start-dx/FF.geo.sp));
+    // no toque, um deslize anda no máximo um modelo (antes um gesto forte pulava dois)
+    if(TOUCH) fDrag.idx=Math.max(Math.round(fDrag.start)-1,Math.min(Math.round(fDrag.start)+1,fDrag.idx));
     var now=performance.now(); fDrag.s.push({t:now,v:fDrag.idx}); while(fDrag.s.length>2&&now-fDrag.s[0].t>90) fDrag.s.shift();
   });
   function fanEnd(){
@@ -906,8 +926,8 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
     var f=d.s[0], l=d.s[d.s.length-1], ds=(l.t-f.t)/1000, v=ds>.008?(l.v-f.v)/ds:0;
     if(TOUCH){
       // ao soltar: desliza até o modelo e desacelera devagar, na direção do gesto
-      var to=Math.round(d.idx+Math.max(-1,Math.min(1,v*.12)));
-      fanGo(to,Math.round(380+Math.min(1,Math.abs(fanClamp(to)-FF.cur()))*220),easeOut);
+      var s0=Math.round(d.start), to=Math.abs(d.dx||0)>40?s0-Math.sign(d.dx):s0;
+      fanGo(to,Math.round(480+Math.min(1,Math.abs(fanClamp(to)-FF.cur()))*320),easeOut);
     } else fT=fanClamp(Math.round(d.idx+Math.max(-2,Math.min(2,v/SMOOTH*.6))));
   }
   window.addEventListener('pointerup',fanEnd); window.addEventListener('pointercancel',fanEnd);
@@ -975,6 +995,6 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
   if('IntersectionObserver' in window){new IntersectionObserver(function(es){es[0].isIntersecting?tryPlay():v.pause()}).observe(v)}
 })();
 </script>
-<span class="bh build">versão B · 29/10 · o</span>
+<span class="bh build">versão B · 29/10 · p</span>
 </body>
 </html>
