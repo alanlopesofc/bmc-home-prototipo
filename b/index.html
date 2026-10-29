@@ -248,7 +248,7 @@ html,body{touch-action:manipulation}
 .bh .cv img.ph{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
 .bh .cv::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,14,43,0) 45%,rgba(7,14,43,.9) 100%);pointer-events:none}
 .bh .cv.cut{background:radial-gradient(ellipse 90% 60% at 50% 42%,#1D3AB0 0%,#0B1640 70%)}
-.bh .cv.cut img.ph{object-fit:contain;inset:auto;left:6%;top:16%;width:88%;height:52%}
+.bh .cv.cut img.ph{object-fit:contain;inset:auto;left:4%;top:13%;width:92%;height:58%}
 .bh .cv .cv-t{position:absolute;left:20px;right:20px;bottom:20px;z-index:1;pointer-events:none}
 .bh .cv .cv-t b{display:block;font:800 clamp(20px,2vw,26px)/1.08 Montserrat,sans-serif;letter-spacing:-.01em}
 .bh .cv .cv-t small{display:block;margin-top:6px;font-size:13px;color:rgba(255,255,255,.72)}
@@ -281,20 +281,21 @@ html,body{touch-action:manipulation}
 .bh .fan-h p{color:rgba(255,255,255,.66);margin-top:6px;font-size:15px}
 .bh .fan-x{flex:none;width:48px;height:48px;border-radius:50%;border:1px solid var(--line-d);background:none;color:#fff;cursor:pointer;display:grid;place-items:center}
 .bh .fan-x:hover{border-color:#fff}
-.bh .fan-track{flex:1;position:relative;overflow:hidden;touch-action:pinch-zoom;cursor:grab;user-select:none;-webkit-user-select:none;--fw:clamp(200px,17vw,250px)}
+.bh .fan-track{flex:1;position:relative;overflow:hidden;touch-action:pinch-zoom;cursor:grab;user-select:none;-webkit-user-select:none;--fw:clamp(240px,min(25vw,48vh),420px)}
+/* cartões do leque crescem com a tela: no computador a máquina e os números ganham imponência */
 .bh .fan-track::-webkit-scrollbar{display:none}
-.bh .fw{position:absolute;left:50%;top:46%;width:var(--fw);will-change:transform,opacity}
+.bh .fw{position:absolute;left:50%;top:44%;width:var(--fw);will-change:transform,opacity}
 .bh .fc{display:flex;flex-direction:column;background:#fff;color:var(--ink);border-radius:8px;overflow:hidden;box-shadow:0 30px 50px -28px rgba(0,0,0,.7)}
 .bh .fc .im{aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;padding:12px;overflow:hidden;background:linear-gradient(180deg,#fff 60%,#EEF2FA 100%)}
 .bh .fc .im img{width:100%;height:100%;object-fit:contain}
-.bh .fc .bd{padding:14px 16px 16px;border-top:1px solid var(--line)}
-.bh .fc .md{font:800 19px Montserrat,sans-serif;letter-spacing:-.01em;color:var(--deep)}
+.bh .fc .bd{padding:calc(var(--fw)*.055) calc(var(--fw)*.06);border-top:1px solid var(--line)}
+.bh .fc .md{font:800 clamp(19px,calc(var(--fw)*.065),28px) Montserrat,sans-serif;letter-spacing:-.01em;color:var(--deep)}
 .bh .fc .kg{display:flex;align-items:baseline;gap:6px;margin-top:10px}
-.bh .fc .kg b{font:800 30px/1 Montserrat,sans-serif;color:var(--action);letter-spacing:-.02em}
-.bh .fc .kg span{font-size:12px;color:var(--muted)}
-.bh .fc .ex{font-size:13px;color:var(--muted);margin-top:6px;min-height:18px}
+.bh .fc .kg b{font:800 clamp(30px,calc(var(--fw)*.115),48px)/1 Montserrat,sans-serif;color:var(--action);letter-spacing:-.02em}
+.bh .fc .kg span{font-size:clamp(12px,calc(var(--fw)*.038),15px);color:var(--muted)}
+.bh .fc .ex{font-size:clamp(13px,calc(var(--fw)*.042),16px);color:var(--muted);margin-top:6px;min-height:18px}
 .bh .fc .ac{display:flex;gap:6px;margin-top:14px}
-.bh .fc .ac a{flex:1;display:flex;align-items:center;justify-content:center;min-height:44px;text-align:center;font:600 13px Inter,sans-serif;padding:10px 6px;border-radius:4px;border:1px solid var(--line);color:var(--deep)}
+.bh .fc .ac a{flex:1;display:flex;align-items:center;justify-content:center;min-height:clamp(44px,calc(var(--fw)*.14),56px);text-align:center;font:600 clamp(13px,calc(var(--fw)*.042),16px) Inter,sans-serif;padding:10px 6px;border-radius:4px;border:1px solid var(--line);color:var(--deep)}
 .bh .fc .ac a.q{background:var(--action);border-color:var(--action);color:#fff}
 .bh .fc .ac a:hover{border-color:var(--deep)}
 .bh .fc .ac a.q:hover{background:#0369C9}
@@ -319,13 +320,12 @@ html,body{touch-action:manipulation}
   .bh .arc-cap p{min-height:40px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.4}
   .bh .arc-cap .btn{margin-top:10px;width:100%;justify-content:center;height:48px}
   .bh .arc-stage{min-height:0}
-  .bh .fan-track{--fw:80vw}
+  .bh .fan-track{--fw:min(86vw,440px,calc((100svh - 400px)*1.16))}
   /* no iPhone, cartões andando sobre fundo desfocado redesenham aos trancos: fundo sólido */
   .bh .fan{-webkit-backdrop-filter:none;backdrop-filter:none;background:#070E2B}
   .bh .fw,.bh .fc{-webkit-backface-visibility:hidden;backface-visibility:hidden}
   .bh .fc{box-shadow:0 18px 30px -20px rgba(0,0,0,.7)}
   .bh .fw{top:47%}
-  .bh .fc .bd{padding:16px 18px 18px}
   .bh .fc .ac a{padding:14px 6px;font-size:15px}
   .bh .fan-h p{font-size:13px}
   .bh .fan-f span{display:none}
@@ -333,7 +333,7 @@ html,body{touch-action:manipulation}
   .bh .fan-f .arc-ctl{flex-direction:row;gap:14px}
   .bh .fan-f .arc-ctl button{width:46px;height:46px}
   /* setas logo abaixo do cartão, sem o vazio grande no meio */
-  .bh .fan-track{flex:none;height:min(calc(60vw + 260px),calc(100svh - 230px))}
+  .bh .fan-track{flex:none;height:min(calc(64vw + 270px),calc(100svh - 220px))}
   .bh .fw{top:50%}
   .bh .fan-f{flex:1;align-items:flex-start;padding-top:12px}
 }
@@ -583,8 +583,9 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
   $('bhMegaGrid').innerHTML=CATS.map(function(c){return '<div><h4>'+c.name+'</h4>'+c.models.slice(0,6).map(function(m){return '<a href="'+href(m[1])+'">'+m[0]+' <span style="opacity:.5">'+t(m[3])+'</span></a>'}).join('')+'<a href="#maquinas" data-open="'+c.id+'" style="color:#3198F7">Ver todos</a></div>'}).join('');
 
   var RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  // computador: no primeiro item, a capa ativa fica alinhada à margem esquerda do texto
-  // (antes ficava no centro, com meia tela vazia); vai para o centro e, no último, encosta à direita
+  // leque no computador: no primeiro modelo, o cartão fica alinhado à margem esquerda do texto
+  // (antes ficava no centro, com meia tela vazia); vai para o centro e, no último, encosta à direita.
+  // Os anéis das seções não usam isso: ficam centralizados, girando no próprio eixo (pedido do Alan)
   function edgeOff(cw){var g=parseFloat(getComputedStyle(document.querySelector('.bh .wrap')).paddingLeft)||40;
     return Math.max(0,innerWidth/2-((innerWidth-Math.min(innerWidth,1240))/2+g)-cw/2)}
   function panX(off,f,n){if(n<2) return 0; var p=Math.max(0,Math.min(1,f/(n-1))); return -off*(1-2*p)}
@@ -627,7 +628,7 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
   function arc(sec,items,render,caption,onPick,bgOf,scale){
     scale=scale||1;
     var pin=sec.querySelector('.arc-pin'), stage=sec.querySelector('.arc-stage'), cap=sec.querySelector('.arc-cap'), out=sec.querySelector('output'), bar=sec.querySelector('.arc-bar');
-    var N=items.length, K=Math.max(2,Math.ceil(10/N)), M=N*K, A=360/M, active=-1, vw=0, vh=0, step=0, R=500, P=1200, OFF=0;
+    var N=items.length, K=Math.max(2,Math.ceil(10/N)), M=N*K, A=360/M, active=-1, vw=0, vh=0, step=0, R=500, P=1200;
     // o anel repete as capas para ficar cheio (5 capas viram 10)
     var ring=document.createElement('div'); ring.className='ring';
     var html=''; for(var k=0;k<K;k++) items.forEach(function(it,i){html+=render(it,i,N)});
@@ -652,13 +653,12 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
       vw=innerWidth; vh=pin.offsetHeight; var mob=vw<=1000;
       step=vh*(mob?.55:.8);
       sec.style.height=(vh+step*(N-1))+'px';
-      var h=Math.min(stage.clientHeight*(mob?.8:.88)*scale,580*scale);
+      var h=Math.min(stage.clientHeight*(mob?.8:.92)*scale,760*scale);
       if(mob) h=Math.min(h,vw*.95*scale);
       var cw=Math.round(h*.72);
-      if(TOUCH){ h=Math.round(stage.clientHeight*.94); cw=Math.round(Math.min(h*.7,vw*.74)); h=Math.round(Math.min(h,cw/.62)); }
+      if(TOUCH){ h=Math.round(stage.clientHeight*.94); cw=Math.round(Math.min(h*.7,vw*.8)); h=Math.round(Math.min(h,cw/.62)); }
       stage.style.setProperty('--cw',cw+'px'); stage.style.setProperty('--ch',Math.round(h)+'px');
       R=Math.round(cw*1.12*M/(2*Math.PI));
-      OFF=(mob||TOUCH)?0:edgeOff(cw);
       P=Math.round(R*2.4);
       draw();
       if(HAS_GSAP&&!FREE) ScrollTrigger.refresh();
@@ -677,7 +677,6 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
         el.style.pointerEvents=n<90?'auto':'none';
       });
       var f=st.rot/A, a=((Math.round(f)%N)+N)%N;
-      ring.style.transform=OFF?'translate3d('+panX(OFF,f,N).toFixed(1)+'px,0,0)':'';
       bar.style.width=(N>1?Math.max(0,Math.min(1,f/(N-1)))*100:100)+'%';
       if(a!==active){var first=active===-1; active=a;
         cards.forEach(function(el,i){el.tabIndex=(i%N===a&&i<N)?0:-1});
@@ -836,7 +835,7 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
   var fanOff=0, fanPx=0;
   function fanSize(){
     if(!FF) return; var w=track.firstElementChild; var cw=w?w.offsetWidth:240;
-    FF.geo.sp=cw*(TOUCH?1.04:1.08); FF.geo.R=Math.max(innerWidth*1.3,cw*6);
+    FF.geo.sp=cw*(TOUCH?1.04:1.08); FF.geo.R=TOUCH?Math.max(innerWidth*1.3,cw*6):Math.max(innerWidth*1.7,cw*8.5);
     fanOff=(TOUCH||innerWidth<=1000)?0:edgeOff(cw);
   }
   function openFan(id){
@@ -970,6 +969,6 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
   if('IntersectionObserver' in window){new IntersectionObserver(function(es){es[0].isIntersecting?tryPlay():v.pause()}).observe(v)}
 })();
 </script>
-<span class="bh build">versão B · 29/10 · l</span>
+<span class="bh build">versão B · 29/10 · n</span>
 </body>
 </html>
