@@ -36,7 +36,7 @@
 
 /* header */
 .bh .top{position:fixed;inset:0 0 auto 0;z-index:50;transition:background .3s,backdrop-filter .3s,border-color .3s;border-bottom:1px solid transparent}
-.bh .top.solid{background:rgba(7,14,43,.78);backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%);border-color:var(--line-d)}
+.bh .top.solid{background:rgba(7,14,43,.94);backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%);border-color:var(--line-d)}
 .bh .top .wrap{display:flex;align-items:center;height:76px;gap:32px}
 .bh .logo img{height:22px;width:auto}
 .bh .nav{display:flex;gap:4px;margin-left:auto}
@@ -114,7 +114,9 @@
 .bh .launch h2{font-size:clamp(44px,6vw,84px)}
 .bh .launch p{color:rgba(255,255,255,.76);line-height:1.6;margin-top:18px;max-width:40ch}
 .bh .launch .thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:28px}
+.bh .launch .thumbs figure{margin:0}
 .bh .launch .thumbs img{aspect-ratio:1;object-fit:cover;border-radius:4px}
+.bh .launch .thumbs figcaption{margin-top:8px;font-size:13px;color:rgba(255,255,255,.7)}
 .bh .launch .btn{margin-top:32px}
 
 /* aplicações */
@@ -131,7 +133,10 @@
 /* pós-venda */
 .bh .after{background:var(--paper);padding:clamp(72px,10vw,128px) 0}
 .bh .after-g{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.bh .card{background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column}
+.bh .card{position:relative;background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column;transition:border-color .2s,box-shadow .2s}
+.bh .card:hover{border-color:var(--action);box-shadow:0 18px 40px -28px rgba(11,22,64,.5)}
+/* o card inteiro é clicável (o link sozinho tinha só 28px de altura) */
+.bh .card a.lnk::after{content:"";position:absolute;inset:0}
 .bh .card img{aspect-ratio:16/10;object-fit:cover;width:100%}
 .bh .card div{padding:24px;display:flex;flex-direction:column;gap:10px;flex:1}
 .bh .card h3{font-size:22px}
@@ -163,6 +168,8 @@
 .bh .form label{display:flex;flex-direction:column;gap:6px;font:600 13px Inter,sans-serif;color:var(--deep)}
 .bh .form .full{grid-column:1/-1}
 .bh .form input,.bh .form select{height:48px;border:1px solid var(--line);border-radius:4px;padding:0 14px;font:400 15px Inter,sans-serif;color:var(--ink);background:#fff}
+/* sem o visual nativo do iPhone (cinza com degradê): mesmo estilo dos campos de texto */
+.bh .form select{-webkit-appearance:none;appearance:none;padding-right:40px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%230B1640' stroke-width='1.8'%3E%3Cpath d='m1 1.5 5 5 5-5'/%3E%3C/svg%3E") no-repeat right 16px center}
 .bh .form input:focus,.bh .form select:focus{outline:2px solid var(--action);outline-offset:0;border-color:transparent}
 .bh .form .btn{width:100%;justify-content:center}
 .bh .form .note{grid-column:1/-1;font-size:13px;color:var(--muted);text-align:center}
@@ -194,6 +201,10 @@
   .bh .after-g{grid-template-columns:1fr}
   .bh .sec-h{flex-direction:column;align-items:start}
   .bh .br-card{position:static}
+  /* celular: só a sigla, 5 por linha (13 botões ocupavam uma tela e meia); a cidade aparece no cartão */
+  .bh .states{grid-template-columns:repeat(5,1fr);gap:6px}
+  .bh .state{text-align:center;padding:0;height:48px}
+  .bh .state small{display:none}
 }
 @media (min-width:1001px){.bh .mobile{display:none!important}}
 @media (max-width:560px){
@@ -214,7 +225,7 @@
 .bh .arc-bg{position:absolute;inset:0;z-index:0;pointer-events:none}
 .bh .arc-bg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.06);transition:opacity .8s ease,transform 1.6s cubic-bezier(.2,.8,.2,1)}
 .bh .arc-bg img.on{opacity:1;transform:none}
-.bh .arc-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,14,43,.88) 0%,rgba(7,14,43,.45) 24%,rgba(11,22,64,.12) 48%,rgba(11,22,64,.18) 66%,rgba(7,14,43,.82) 100%)}
+.bh .arc-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,14,43,.88) 0%,rgba(7,14,43,.45) 24%,rgba(11,22,64,.12) 48%,rgba(11,22,64,.2) 62%,rgba(7,14,43,.72) 80%,rgba(7,14,43,.92) 100%)}
 .bh .arc-pin>.wrap,.bh .fan>.wrap{width:100%}
 .bh .arc-head{padding-top:104px;display:flex;justify-content:space-between;align-items:end;gap:24px}
 .bh .arc-head h2{font-size:clamp(30px,4vw,52px)}
@@ -241,18 +252,23 @@ html,body{touch-action:manipulation}
 .bh .cv .cv-t{position:absolute;left:20px;right:20px;bottom:20px;z-index:1;pointer-events:none}
 .bh .cv .cv-t b{display:block;font:800 clamp(20px,2vw,26px)/1.08 Montserrat,sans-serif;letter-spacing:-.01em}
 .bh .cv .cv-t small{display:block;margin-top:6px;font-size:13px;color:rgba(255,255,255,.72)}
-.bh .cv .cv-n{position:absolute;top:16px;left:20px;z-index:1;text-shadow:0 1px 6px rgba(0,0,0,.6);font:600 12px Inter,sans-serif;color:rgba(255,255,255,.7)}
+.bh .cv .cv-n{position:absolute;top:16px;left:20px;z-index:1;font:600 13px/1 Inter,sans-serif;color:#fff;background:rgba(7,14,43,.6);padding:5px 8px;border-radius:4px}
 .bh .arc-foot{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-bottom:clamp(20px,4vh,40px)}
 .bh .arc-cap{min-height:96px;max-width:560px;transition:opacity .25s}
 .bh .arc-cap h3,.bh .arc-cap p{transition:opacity .22s ease}
 .bh .arc-cap.swap h3,.bh .arc-cap.swap p{opacity:0}
 .bh .arc-cap h3{font-size:clamp(22px,2.4vw,30px)}
+/* o título já está na capa da frente: não repete embaixo */
+.bh .arc-cap h3{display:none}
+/* altura fixa da legenda: se ela muda de 1 para 2 linhas, o palco encolhe e as capas pulam */
+.bh .arc-cap{min-height:118px}
+@media (min-width:1001px){.bh .arc-stage{margin-top:20px}}
 .bh .arc-cap p{margin-top:8px;color:rgba(255,255,255,.72);line-height:1.5;font-size:15px}
 .bh .arc.light .arc-cap p{color:var(--muted)}
 .bh .arc-cap .btn{margin-top:14px;height:44px;padding:0 18px;font-size:14px}
 .bh .arc-ctl{display:flex;align-items:center;gap:14px;flex:none}
 .bh .arc-ctl output{font:600 14px Inter,sans-serif;min-width:56px;text-align:center;font-variant-numeric:tabular-nums}
-.bh .arc-ctl button{width:46px;height:46px;border-radius:50%;border:1px solid var(--line-d);background:rgba(255,255,255,.04);color:inherit;cursor:pointer;display:grid;place-items:center}
+.bh .arc-ctl button{width:46px;height:46px;border-radius:50%;border:1px solid rgba(255,255,255,.34);background:rgba(255,255,255,.04);color:inherit;cursor:pointer;display:grid;place-items:center}
 .bh .arc.light .arc-ctl button{border-color:var(--line);background:#fff}
 .bh .arc-ctl button:hover{border-color:var(--accent)}
 .bh .arc-bar{position:absolute;left:0;bottom:0;height:2px;background:var(--action);width:0}
@@ -278,12 +294,12 @@ html,body{touch-action:manipulation}
 .bh .fc .kg span{font-size:12px;color:var(--muted)}
 .bh .fc .ex{font-size:13px;color:var(--muted);margin-top:6px;min-height:18px}
 .bh .fc .ac{display:flex;gap:6px;margin-top:14px}
-.bh .fc .ac a{flex:1;text-align:center;font:600 13px Inter,sans-serif;padding:10px 6px;border-radius:4px;border:1px solid var(--line);color:var(--deep)}
+.bh .fc .ac a{flex:1;display:flex;align-items:center;justify-content:center;min-height:44px;text-align:center;font:600 13px Inter,sans-serif;padding:10px 6px;border-radius:4px;border:1px solid var(--line);color:var(--deep)}
 .bh .fc .ac a.q{background:var(--action);border-color:var(--action);color:#fff}
 .bh .fc .ac a:hover{border-color:var(--deep)}
 .bh .fc .ac a.q:hover{background:#0369C9}
 .bh .fan-f{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-bottom:24px;color:rgba(255,255,255,.6);font-size:13px}
-.bh .fan-f .arc-ctl button{border-color:var(--line-d)}
+.bh .fan-f .arc-ctl button{border-color:rgba(255,255,255,.34)}
 
 @media (max-width:1000px){
   .bh .arc-head{padding-top:86px;flex-direction:column;align-items:start;gap:10px}
@@ -316,16 +332,20 @@ html,body{touch-action:manipulation}
   .bh .fan-f{justify-content:center}
   .bh .fan-f .arc-ctl{flex-direction:row;gap:14px}
   .bh .fan-f .arc-ctl button{width:46px;height:46px}
+  /* setas logo abaixo do cartão, sem o vazio grande no meio */
+  .bh .fan-track{flex:none;height:min(calc(60vw + 260px),calc(100svh - 230px))}
+  .bh .fw{top:50%}
+  .bh .fan-f{flex:1;align-items:flex-start;padding-top:12px}
 }
 @media (max-width:1000px) and (max-height:700px){
   .bh .arc-head{padding-top:80px}
   .bh .arc-head h2{font-size:24px}
   .bh .arc-foot{gap:16px;padding-top:14px;padding-bottom:12px}
-  .bh .arc-ctl button{width:42px;height:42px}
+  .bh .arc-ctl button{width:44px;height:44px}
   .bh .arc-cap{min-height:96px}
   .bh .arc-cap .btn{height:44px}
   .bh .cv .cv-t b{font-size:16px}
-  .bh .cv .cv-t small{font-size:12px}
+  .bh .cv .cv-t small{font-size:13px}
 }
 @media (prefers-reduced-motion:reduce){.bh .cv,.bh .fc{transition:none}}
 
@@ -401,9 +421,9 @@ html,body{touch-action:manipulation}
       <h2>HX220L.</h2>
       <p>A nova geração de escavadeiras Hyundai: cabine mais confortável, comandos mais precisos e manutenção mais simples no dia a dia.</p>
       <div class="thumbs">
-        <img src="../assets/hx220-4.webp" alt="Joystick e monitor da cabine" loading="lazy">
-        <img src="../assets/hx220-7.webp" alt="Assento do operador" loading="lazy">
-        <img src="../assets/hx220-2.webp" alt="Compartimento de manutenção" loading="lazy">
+        <figure><img src="../assets/hx220-4.webp" alt="Joystick e monitor da cabine" loading="lazy"><figcaption>Comandos</figcaption></figure>
+        <figure><img src="../assets/hx220-7.webp" alt="Assento do operador" loading="lazy"><figcaption>Cabine</figcaption></figure>
+        <figure><img src="../assets/hx220-2.webp" alt="Compartimento de manutenção" loading="lazy"><figcaption>Manutenção</figcaption></figure>
       </div>
       <a class="btn btn-p" href="https://bmchyundai.com.br/maquina/hx220l/">Conhecer a HX220L</a>
     </div>
@@ -432,7 +452,7 @@ html,body{touch-action:manipulation}
   <div class="fan-track" id="bhFanTrack"></div>
   <div class="wrap fan-f">
     <span>Peso operacional e capacidades da ficha técnica de cada modelo.</span>
-    <div class="arc-ctl"><button type="button" data-fdir="-1" aria-label="Modelo anterior"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M11 3 5 9l6 6"/></svg></button><button type="button" data-fdir="1" aria-label="Próximo modelo"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m7 3 6 6-6 6"/></svg></button></div>
+    <div class="arc-ctl"><button type="button" data-fdir="-1" aria-label="Modelo anterior"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M11 3 5 9l6 6"/></svg></button><output id="bhFanN" aria-live="polite"></output><button type="button" data-fdir="1" aria-label="Próximo modelo"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m7 3 6 6-6 6"/></svg></button></div>
   </div>
 </div>
 
@@ -533,17 +553,17 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
   var U='https://bmchyundai.com.br/', M=U+'maquina/', A='../assets/m/';
   // [modelo, slug, imagem, kg, extra]
   var CATS=[
-    {id:'esc',name:'Escavadeiras',all:U+'escavadeiras-hyundai/',cover:'hx220l',unit:'peso operacional',
+    {id:'esc',pitch:'Para corte, aterro e carregamento, da obra urbana à mineração.',name:'Escavadeiras',all:U+'escavadeiras-hyundai/',cover:'hx220l',unit:'peso operacional',
      models:[['R150LC-9','../r150lc-9',  'r150lc-9',14210,'Caçamba 0,71 m³'],['HX150L','hx150l','hx150l',14890,'Caçamba 0,65 a 0,76 m³'],['R180LC-9','escavadeira-r180lc-9','r180lc-9',18050,'Caçamba 0,91 m³'],['HX180L','hx180l','hx180l',18460,'Caçamba 0,91 a 1,0 m³'],['R200-9','r200-9','r200-9',19100,'Caçamba 1,0 m³'],['R220LC-9','r220lc-9','r220lc-9',22250,'Caçamba 1,2 m³'],['HX220L','hx220l','hx220l',22796,'Caçamba 0,92 a 1,46 m³'],['HX220L LR','hx220l-lr','hx220l',24700,'Longo alcance, caçamba 0,52 m³'],['R260LC-9','r260lc-9','r260lc-9',25200,'Caçamba 1,46 m³'],['HX260L','hx260l','hx260l',26480,'Caçamba 1,16 a 1,74 m³'],['HX350L','hx350l','hx350l',34985,'Caçamba 2,1 m³'],['HX400L','hx400l','hx400l',38420,'Caçamba 2,5 m³'],['HX500L','hx500l','hx500l',49900,'Caçamba 3,2 m³']]},
-    {id:'pa',name:'Pás carregadeiras',all:U+'pas-carregadeiras/',cover:'hl757-9-prime',unit:'peso operacional',
+    {id:'pa',pitch:'Para pátio, agregados e usina, com versões para cana e fertilizante.',name:'Pás carregadeiras',all:U+'pas-carregadeiras/',cover:'hl757-9-prime',unit:'peso operacional',
      models:[['HL635AL','hl635al','hl635al',10500,'Caçamba 1,7 m³'],['HL745-9','hl745-9','hl745-9',12100,'Caçamba 2,1 m³'],['HL757-9 Prime','hl757-9-prime','hl757-9-prime',14200,'Caçamba 2,6 m³'],['HL757-9SBS','hl757-9sbs','hl757-9sbs',14200,'Caçamba 2,6 m³'],['SBS Fertilizer','hl757-9sbs-fertilizer','hl757-9-prime',14700,'Caçamba 3,6 m³ para fertilizante'],['SBS SugarCane','hl757-9sbs-sugarcane','hl757-9-prime',14700,'Caçamba 5,0 m³ para cana'],['HL760-9 Prime','hl760-9','hl760-9',18500,'Caçamba 3,1 m³'],['HL770-9','hl770-9s','hl770-9',23100,'Caçamba 4,0 m³'],['HL780-9','hl780-9','hl780-9',30000,'Caçamba 5,4 m³']]},
-    {id:'mini',name:'Mini escavadeiras',all:U+'mini-escavadeiras/',cover:'hx17az',unit:'peso operacional',
+    {id:'mini',pitch:'Para espaços curtos: obras urbanas, saneamento e paisagismo.',name:'Mini escavadeiras',all:U+'mini-escavadeiras/',cover:'hx17az',unit:'peso operacional',
      models:[['HX17AZ','hx17az','hx17az',1850,'Caçamba 0,04 m³'],['HX35AZ','hx35az','hx35az',3880,'Caçamba 0,11 m³'],['HX60S','hx60s','hx60s',5720,'Caçamba 0,21 m³'],['HX75S','hx75s','hx75s',7420,'Caçamba 0,32 m³']]},
-    {id:'retro',name:'Retroescavadeira',all:M+'retroescavadeira-hb640c-2/',cover:'hb640c',unit:'peso operacional',
+    {id:'retro',pitch:'Escava e carrega com a mesma máquina, em obras de infraestrutura e prefeituras.',name:'Retroescavadeira',all:M+'retroescavadeira-hb640c-2/',cover:'hb640c',unit:'peso operacional',
      models:[['HB640C','retroescavadeira-hb640c-2','hb640c',8450,'100 HP, caçamba de escavação 0,26 m³']]},
-    {id:'moto',name:'Motoniveladora',all:M+'motoniveladora-hg170-3/',cover:'hg170-3',unit:'peso operacional',
+    {id:'moto',pitch:'Para abrir e conservar estradas e nivelar pátios e terraplenagem.',name:'Motoniveladora',all:M+'motoniveladora-hg170-3/',cover:'hg170-3',unit:'peso operacional',
      models:[['HG170-3','motoniveladora-hg170-3','hg170-3',15200,'180 HP, lâmina de 3,66 m']]},
-    {id:'emp',name:'Empilhadeiras',all:M+'empilhadeiras-hyundai/',cover:'e70',unit:'capacidade de carga',
+    {id:'emp',pitch:'Diesel e GLP, para armazéns, indústria e portos.',name:'Empilhadeiras',all:M+'empilhadeiras-hyundai/',cover:'e70',unit:'capacidade de carga',
      models:[['25DE-7','25de-7','e25',2500,'Diesel'],['25LE-7','25le-7','e25',2500,'GLP'],['30DE-7','30de-7','e30',3000,'Diesel'],['30LE-7','30le-7','e30',3000,'GLP'],['35DE-7','35de-7','e35',3500,'Diesel'],['35LE-7','35le-7','e35',3500,'GLP'],['70D-7E ACE','70d-7e-ace','e70',7000,'Diesel'],['80D-7E ACE','80d-7e-ace','e70',8000,'Diesel'],['110D-7E','110d-7e','e110',11000,'Diesel'],['130D-7E','130d-7e','e110',13000,'Diesel'],['160D-7E','160d-7e','e110',16000,'Diesel'],['250D-7E','250d-7e','e250',25000,'Diesel']]}
   ];
   function t(kg){var v=kg/1000, s=v<10?v.toFixed(2).replace(/0$/,''):v.toFixed(1); s=s.replace(/\.0$/,'').replace('.',','); return s+' t'}
@@ -563,6 +583,11 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
   $('bhMegaGrid').innerHTML=CATS.map(function(c){return '<div><h4>'+c.name+'</h4>'+c.models.slice(0,6).map(function(m){return '<a href="'+href(m[1])+'">'+m[0]+' <span style="opacity:.5">'+t(m[3])+'</span></a>'}).join('')+'<a href="#maquinas" data-open="'+c.id+'" style="color:#3198F7">Ver todos</a></div>'}).join('');
 
   var RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // computador: no primeiro item, a capa ativa fica alinhada à margem esquerda do texto
+  // (antes ficava no centro, com meia tela vazia); vai para o centro e, no último, encosta à direita
+  function edgeOff(cw){var g=parseFloat(getComputedStyle(document.querySelector('.bh .wrap')).paddingLeft)||40;
+    return Math.max(0,innerWidth/2-((innerWidth-Math.min(innerWidth,1240))/2+g)-cw/2)}
+  function panX(off,f,n){if(n<2) return 0; var p=Math.max(0,Math.min(1,f/(n-1))); return -off*(1-2*p)}
   // motor do arco (adaptado do ArcFlowCarousel): as capas andam sobre um círculo grande,
   // a posição persegue o alvo com amortecimento exponencial por tempo e as capas
   // mais distantes seguem com atraso, como uma onda saindo da capa ativa
@@ -602,7 +627,7 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
   function arc(sec,items,render,caption,onPick,bgOf,scale){
     scale=scale||1;
     var pin=sec.querySelector('.arc-pin'), stage=sec.querySelector('.arc-stage'), cap=sec.querySelector('.arc-cap'), out=sec.querySelector('output'), bar=sec.querySelector('.arc-bar');
-    var N=items.length, K=Math.max(2,Math.ceil(10/N)), M=N*K, A=360/M, active=-1, vw=0, vh=0, step=0, R=500, P=1200;
+    var N=items.length, K=Math.max(2,Math.ceil(10/N)), M=N*K, A=360/M, active=-1, vw=0, vh=0, step=0, R=500, P=1200, OFF=0;
     // o anel repete as capas para ficar cheio (5 capas viram 10)
     var ring=document.createElement('div'); ring.className='ring';
     var html=''; for(var k=0;k<K;k++) items.forEach(function(it,i){html+=render(it,i,N)});
@@ -633,6 +658,7 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
       if(TOUCH){ h=Math.round(stage.clientHeight*.94); cw=Math.round(Math.min(h*.7,vw*.74)); h=Math.round(Math.min(h,cw/.62)); }
       stage.style.setProperty('--cw',cw+'px'); stage.style.setProperty('--ch',Math.round(h)+'px');
       R=Math.round(cw*1.12*M/(2*Math.PI));
+      OFF=(mob||TOUCH)?0:edgeOff(cw);
       P=Math.round(R*2.4);
       draw();
       if(HAS_GSAP&&!FREE) ScrollTrigger.refresh();
@@ -641,8 +667,9 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
       // cada capa recebe a própria posição no círculo (sem girar o anel inteiro:
       // o Safari do iPhone nem sempre redesenha os filhos de um bloco 3D que gira)
       cards.forEach(function(el,i){
-        var rel=((i*A-st.rot)%360+540)%360-180, n=Math.abs(rel);
-        if(n>95){if(el.style.visibility!=='hidden') el.style.visibility='hidden'; return}
+        // fila reta, sem repetir: começa na capa 01 (nada à esquerda) e termina na última
+        var rel=i*A-st.rot, n=Math.abs(rel);
+        if(i>=N||n>95){if(el.style.visibility!=='hidden') el.style.visibility='hidden'; return}
         el.style.visibility='visible';
         el.style.transform='perspective('+P+'px) translateZ('+(-R)+'px) rotateY('+rel.toFixed(2)+'deg) translateZ('+R+'px)';
         el.style.opacity=Math.max(.18,1-n/110).toFixed(3);
@@ -650,6 +677,7 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
         el.style.pointerEvents=n<90?'auto':'none';
       });
       var f=st.rot/A, a=((Math.round(f)%N)+N)%N;
+      ring.style.transform=OFF?'translate3d('+panX(OFF,f,N).toFixed(1)+'px,0,0)':'';
       bar.style.width=(N>1?Math.max(0,Math.min(1,f/(N-1)))*100:100)+'%';
       if(a!==active){var first=active===-1; active=a;
         cards.forEach(function(el,i){el.tabIndex=(i%N===a&&i<N)?0:-1});
@@ -769,7 +797,7 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
     stage.addEventListener('click',function(e){
       if(stage._justDragged) return;
       var el=e.target.closest('.cv'); if(!el) return;
-      var rel=((cards.indexOf(el)*A-st.rot)%360+540)%360-180;
+      var rel=cards.indexOf(el)*A-st.rot;
       if(Math.abs(rel)<A/2) onPick(items[cards.indexOf(el)%N]); else goIdx(idx()+(rel>0?1:-1));
     });
     stage.addEventListener('keydown',function(e){
@@ -789,12 +817,12 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
 
   try{ cats=arc(document.querySelector('[data-arc="cats"]'),CATS,
     function(c,i,N){return '<button type="button" class="cv cut" aria-label="'+c.name+'"><img class="ph" src="'+A+c.cover+'.webp" alt="" draggable="false"><span class="cv-n">'+c.models.length+(c.models.length>1?' modelos':' modelo')+'</span><span class="cv-t"><b>'+c.name+'</b><small>'+(c.unit==='capacidade de carga'?'Carga de ':'De ')+range(c)+'</small></span></button>'},
-    function(c){return '<h3>'+c.name+'</h3><p>'+c.models.length+(c.models.length>1?' modelos, de ':' modelo, ')+range(c)+' de '+c.unit+'.</p><button class="btn btn-p" type="button" data-open="'+c.id+'">Abrir os '+(c.models.length>1?c.models.length+' modelos':'detalhes')+'</button>'},
+    function(c){return '<h3>'+c.name+'</h3><p>'+c.pitch+'</p><button class="btn btn-p" type="button" data-open="'+c.id+'">Abrir os '+(c.models.length>1?c.models.length+' modelos':'detalhes')+'</button>'},
     function(c){openFan(c.id)},
     function(c){return '../assets/bg/'+c.id+'.webp'},.8); }catch(err){window.__errs.push('cats: '+err.message);var b1=document.querySelector('.build');if(b1)b1.textContent+=' · ERRO cats: '+err.message}
 
   // leque: o mesmo motor de arco, controlado pela roda, pelo arrasto e pelas setas
-  var fan=$('bhFan'), track=$('bhFanTrack'), lastFocus=null, fanRaf=0, FF=null, fT=0, fN=0, fDrag=null, fRev=0, fT0=0, fLast=0, fSettle=0;
+  var fan=$('bhFan'), track=$('bhFanTrack'), fanN=$('bhFanN'), lastFocus=null, fanRaf=0, FF=null, fT=0, fN=0, fDrag=null, fRev=0, fT0=0, fLast=0, fSettle=0;
   function fanClamp(v){return Math.max(0,Math.min(fN-1,v))}
   // celular: troca com duração fixa e curva suave (a amortecida começava rápida demais)
   var fAnim=null;
@@ -805,9 +833,11 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
     if(!TOUCH||RM||!FF){fAnim=null;return}
     fAnim={from:FF.cur(),to:fT,t0:performance.now(),dur:dur,ease:ease};
   }
+  var fanOff=0, fanPx=0;
   function fanSize(){
     if(!FF) return; var w=track.firstElementChild; var cw=w?w.offsetWidth:240;
     FF.geo.sp=cw*(TOUCH?1.04:1.08); FF.geo.R=Math.max(innerWidth*1.3,cw*6);
+    fanOff=(TOUCH||innerWidth<=1000)?0:edgeOff(cw);
   }
   function openFan(id){
     var c=byId[id]; if(!c) return; lastFocus=document.activeElement;
@@ -817,8 +847,9 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
     fan.classList.add('open'); document.body.style.overflow='hidden';
     var ws=[].slice.call(track.children); fN=ws.length;
     FF=flow(ws,'translate(-50%,-50%) ',TOUCH?0:LAG); fanSize();
-    fT=Math.floor((fN-1)/2); FF.set(fT); fRev=RM?1:0; fT0=0;
-    cancelAnimationFrame(fanRaf); fLast=0; fanRaf=requestAnimationFrame(fanLoop);
+    // sempre do primeiro (menor) modelo: rolar, seta ou arrastar para a esquerda vai aumentando
+    fT=0; FF.set(fT); fRev=RM?1:0; fT0=0;
+    fanN.i=-1; fanPx=null; cancelAnimationFrame(fanRaf); fLast=0; fanRaf=requestAnimationFrame(fanLoop);
     setTimeout(function(){fan.querySelector('.fan-x').focus()},50);
   }
   function fanLoop(t){
@@ -828,7 +859,12 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
     else if(fAnim){var pa=Math.min(1,(t-fAnim.t0)/fAnim.dur), v=fAnim.from+(fAnim.to-fAnim.from)*fAnim.ease(pa);
       FF.tick(v,dt,80); if(pa>=1) fAnim=null}
     else FF.tick(fT,dt,RM?60:SMOOTH);
-    if(fRev<1){ // entrada em cascata, do centro para fora
+    // contador "7 / 13": mostra onde a pessoa está no leque
+    var px=fanOff?panX(fanOff,FF.cur(),fN):0;
+    if(px!==fanPx){fanPx=px; [].forEach.call(track.children,function(w){w.style.left='calc(50% + '+px.toFixed(1)+'px)'})}
+    var fi=Math.max(0,Math.min(fN-1,Math.round(FF.cur())));
+    if(fi!==fanN.i){fanN.i=fi; fanN.textContent=String(fi+1).padStart(2,'0')+' / '+String(fN).padStart(2,'0')}
+    if(fRev<1){ // entrada em cascata, do primeiro modelo para a direita
       if(!fT0) fT0=t; fRev=Math.min(1,(t-fT0)/900);
       [].forEach.call(track.children,function(w,i){
         var dl=Math.min(1,Math.abs(i-fT)/3)*.45, p=Math.max(0,Math.min(1,(fRev-dl)/(1-dl))), e=1-Math.pow(1-p,3);
@@ -884,7 +920,7 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
   },true);
 
   // filiais
-  $('bhStates').innerHTML=FIL.map(function(f,i){return '<button class="state" aria-pressed="'+(i===10)+'" data-i="'+i+'">'+f[0]+'<small>'+f[1]+'</small></button>'}).join('');
+  $('bhStates').innerHTML=FIL.map(function(f,i){return '<button class="state" aria-pressed="'+(i===10)+'" data-i="'+i+'" aria-label="'+f[0]+', '+f[1]+'">'+f[0]+'<small>'+f[1]+'</small></button>'}).join('');
   function filial(i){
     var f=FIL[i];
     [].forEach.call(document.querySelectorAll('.bh .state'),function(b){b.setAttribute('aria-pressed',b.dataset.i==i)});
@@ -934,6 +970,6 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
   if('IntersectionObserver' in window){new IntersectionObserver(function(es){es[0].isIntersecting?tryPlay():v.pause()}).observe(v)}
 })();
 </script>
-<span class="bh build">versão B · 21/10 · j</span>
+<span class="bh build">versão B · 29/10 · l</span>
 </body>
 </html>
