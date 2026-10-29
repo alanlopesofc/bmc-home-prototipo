@@ -58,8 +58,11 @@
 .bh .hero-in{position:relative;z-index:2;width:100%;padding-top:140px;padding-bottom:clamp(28px,5vw,56px)}
 .bh .hero-k{font:500 15px Inter,sans-serif;color:rgba(255,255,255,.78);margin-bottom:22px;display:flex;align-items:center;gap:12px}
 .bh .hero-k::before{content:"";width:28px;border-top:2px solid var(--accent)}
-.bh .hero h1{font-size:clamp(32px,3.6vw,60px);line-height:1.02;max-width:none}
-@media (min-width:1001px){.bh .hero h1 .ln{white-space:nowrap}}
+/* título: a letra acompanha a largura da tela (cada frase cabe numa linha no computador)
+   e, se faltar espaço, a linha quebra em vez de ser cortada */
+.bh .hero h1{font-size:clamp(30px,3.3vw,52px);line-height:1.05;max-width:min(100%,24ch);text-wrap:balance}
+.bh .hero h1 .ln{text-wrap:balance}
+@media (min-width:1001px){.bh .hero h1{max-width:none}}
 .bh .hero h1 .ln{display:block;overflow:hidden;padding-bottom:.04em}
 .bh .hero h1 .ln span{display:block;transform:translateY(105%);animation:bhUp .9s cubic-bezier(.2,.8,.2,1) 1s forwards}
 .bh .hero h1 .ln:nth-child(2) span{animation-delay:1.12s}
@@ -79,7 +82,7 @@
   .bh .hero-sub.open .sub-full{display:inline}
   .bh .hero-cta .btn-g{display:none}
   .bh .hero-k{margin-bottom:14px;font-size:14px}
-  .bh .hero h1{font-size:clamp(28px,8.4vw,40px)}
+  .bh .hero h1{font-size:clamp(26px,7.4vw,36px)}
   /* o botão principal divide a linha com o botão flutuante do WhatsApp */
   .bh .hero-cta .btn.btn-p{width:calc(100% - 74px)}
   .bh .hero-sub{margin-top:14px}
@@ -465,7 +468,7 @@ body.bh-lock .bh .waf{display:none}
     <a class="logo" href="https://bmchyundai.com.br/" aria-label="BMC Hyundai, início"><img src="https://bmchyundai.com.br/wp-content/uploads/2025/08/bmc-hyundai-novo-branco-300x43.png" alt="BMC Hyundai" width="154" height="22"></a>
     <nav class="nav" aria-label="Principal">
       <button type="button" id="bhMegaBtn" aria-expanded="false" aria-controls="bhMega">Máquinas</button>
-      <a href="https://pesadosonline.plataformabmc.com.br/">Usadas</a>
+      <a href="https://www.pesadosonline.com.br/">Usadas</a>
       <a href="https://bmchyundai.com.br/pecas-hyundai/">Peças</a>
       <a href="https://sabservicos.com.br">Assistência</a>
       <a href="https://bmchyundai.com.br/nossa-historia/">Sobre</a>
@@ -478,7 +481,7 @@ body.bh-lock .bh .waf{display:none}
 </header>
 <nav class="mobile" id="bhMobile" aria-label="Menu">
   <a href="#maquinas">Máquinas</a>
-  <a href="https://pesadosonline.plataformabmc.com.br/">Usadas</a>
+  <a href="https://www.pesadosonline.com.br/">Usadas</a>
   <a href="https://bmchyundai.com.br/pecas-hyundai/">Peças</a>
   <a href="https://sabservicos.com.br">Assistência</a>
   <a href="https://bmchyundai.com.br/nossa-historia/">Sobre</a>
@@ -491,8 +494,8 @@ body.bh-lock .bh .waf{display:none}
   <video id="bhVideo" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture preload="auto" poster="../assets/hero-poster.webp" aria-hidden="true"></video>
   <div class="wrap hero-in">
     <p class="hero-k">Revenda oficial Hyundai desde 2003</p>
-    <h1><span class="ln"><span>A obra não espera.</span></span><span class="ln"><span>A BMC também não.</span></span></h1>
-    <p class="hero-sub" id="bhSub"><span class="sub-short">Componentes conhecidos, peça fácil de achar e uma rede em todo o Brasil.</span><span class="sub-full">Máquinas Hyundai com componentes que o mercado conhece, peça fácil de achar e consumo pensado para o custo total da operação. E uma rede do seu lado: 13 filiais, +550 técnicos e +300 revendas de peças.</span> <button type="button" class="sub-more" aria-controls="bhSub" aria-expanded="false">Ver mais</button></p>
+    <h1><span class="ln"><span>Uma boa máquina entrega desempenho.</span></span><span class="ln"><span>Uma boa escolha entrega confiança.</span></span></h1>
+    <p class="hero-sub" id="bhSub"><span class="sub-short">Escolher a BMC é ir além da máquina.</span><span class="sub-full">Escolher a BMC é ir além da máquina. É contar com a força da Hyundai e uma estrutura de peças, assistência técnica e pós-venda para dar suporte à sua operação.</span> <button type="button" class="sub-more" aria-controls="bhSub" aria-expanded="false">Ver mais</button></p>
     <div class="hero-cta">
       <a class="btn btn-p" href="#maquinas">Encontrar minha máquina</a>
       <a class="btn btn-g" href="https://wa.me/5511973718835?text=Vim%20do%20site%20e%20gostaria%20de%20falar%20com%20um%20consultor" target="_blank" rel="noopener">Falar com um consultor no WhatsApp</a>
@@ -593,7 +596,7 @@ body.bh-lock .bh .waf{display:none}
     <div class="after-g">
       <article class="card"><img src="../assets/hl745-3.webp" alt="Motor de pá carregadeira Hyundai" loading="lazy"><div><h3>Peças originais</h3><p>Peças originais Hyundai em mais de 300 revendas homologadas no Brasil inteiro.</p><a class="lnk" href="https://bmchyundai.com.br/pecas-hyundai/">Consultar peças</a></div></article>
       <article class="card"><img src="../assets/hx220-2.webp" alt="Compartimento de manutenção da HX220L" loading="lazy"><div><h3>Assistência técnica</h3><p>Revisões, diagnóstico e reparo por técnicos treinados na linha Hyundai.</p><a class="lnk" href="https://sabservicos.com.br">Agendar assistência</a></div></article>
-      <article class="card"><img src="../assets/hl757-3.webp" alt="Monitor da cabine de pá carregadeira" loading="lazy"><div><h3>Seminovas</h3><p>Máquinas seminovas para começar com investimento menor.</p><a class="lnk" href="https://pesadosonline.plataformabmc.com.br/">Ver seminovas disponíveis</a></div></article>
+      <article class="card"><img src="../assets/hl757-3.webp" alt="Monitor da cabine de pá carregadeira" loading="lazy"><div><h3>Seminovas</h3><p>Máquinas seminovas para começar com investimento menor.</p><a class="lnk" href="https://www.pesadosonline.com.br/">Ver seminovas disponíveis</a></div></article>
     </div>
   </div>
 </section>
@@ -1306,6 +1309,6 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
   })();
 })();
 </script>
-<span class="bh build">versão B · 29/10 · z4</span>
+<span class="bh build">versão B · 29/10 · z7</span>
 </body>
 </html>
