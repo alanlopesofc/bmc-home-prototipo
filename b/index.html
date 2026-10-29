@@ -1190,7 +1190,7 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
 
   // WhatsApp: todo link wa.me e o botão flutuante abrem a janela; os dados viram a 1ª mensagem ao SDR
   (function(){
-    var CFG={wa:'5511973718835', hsPortal:'9472165', hsForm:'d141674c-20a8-4a6f-97dd-5cd11c92360c'}; // mesmo formulário do site atual (SDR Bruno no número central)
+    var CFG={wa:'5511973718835', hsPortal:'9472165', hsForm:'d141674c-20a8-4a6f-97dd-5cd11c92360c', hsExtra:false}; // hsExtra: ligar quando os campos de rastreamento estiverem como ocultos no formulário // mesmo formulário do site atual (SDR Bruno no número central)
     var MAQ={'Escavadeiras':'Escavadeira','Pás carregadeiras':'Pá Carregadeira','Mini escavadeiras':'Mini Escavadeira','Retroescavadeira':'Retroescavadeira','Motoniveladora':'Motoniveladora','Empilhadeiras':'Empilhadeiras'};
     var box=$('bhWa'), form=$('bhWaForm'), err=$('bhWaErr'), ctxEl=$('bhWaCtx'), last=null, ctx={};
     if(!box) return;
@@ -1250,6 +1250,10 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
         // só campos que existem no formulário; a origem vai pelo hutk e pela URL de entrada com as UTMs
         var f=[['firstname',v.nome],['email',v.email],['phone',v.tel],['estado',v.uf],['city',v.cidade],['qual_o_segmento_da_sua_empresa',v.op],['qual_maquinas_voce_gostaria_de_investir',MAQ[ctx.maquina]]]
           .filter(function(x){return x[1]}).map(function(x){return {name:x[0],value:String(x[1])}});
+        // campos do grupo "Rastreamento do site" (criados no HubSpot em 29/10/2026)
+        if(CFG.hsExtra) f=f.concat([['utm_source',L.utm_source],['utm_medium',L.utm_medium],['utm_campaign',L.utm_campaign],['utm_content',L.utm_content],['utm_term',L.utm_term],['utm_region',L.utm_region],['utm_placement',L.utm_placement],
+          ['gclid',L.gclid||L.gbraid||L.wbraid],['fbclid',L.fbclid],['canal_primeira_origem',F.channel],['canal_ultima_origem',L.channel],['pagina_de_entrada',A.session_landing],['origem_clique_whatsapp',ctx.origem]]
+          .filter(function(x){return x[1]}).map(function(x){return {name:x[0],value:String(x[1]).slice(0,500)}}));
         fetch('https://api.hsforms.com/submissions/v3/integration/submit/'+CFG.hsPortal+'/'+CFG.hsForm,{method:'POST',keepalive:true,headers:{'Content-Type':'application/json'},
           body:JSON.stringify({fields:f,context:{hutk:A.hutk||undefined,pageUri:(L.landing&&L.utm_source?L.landing+'?'+['utm_source','utm_medium','utm_campaign','utm_content','utm_term'].filter(function(k){return L[k]}).map(function(k){return k+'='+encodeURIComponent(L[k])}).join('&'):location.href),pageName:'Home BMC — WhatsApp ('+(ctx.origem||'link')+')'}})}).catch(function(){});
       }
@@ -1259,6 +1263,6 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
   })();
 })();
 </script>
-<span class="bh build">versão B · 29/10 · w</span>
+<span class="bh build">versão B · 29/10 · x</span>
 </body>
 </html>
