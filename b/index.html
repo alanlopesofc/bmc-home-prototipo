@@ -397,6 +397,41 @@ html,body{touch-action:manipulation}
 @keyframes bhPulse{0%{opacity:.8;transform:scale(1)}100%{opacity:0;transform:scale(3.6)}}
 @media (max-width:1000px){.bh .net-g{grid-template-columns:1fr}.bh .net-map{order:-1;margin:0 -8px}.bh .net-n{gap:18px 20px}.bh .net-n b{font-size:clamp(24px,7vw,30px);white-space:nowrap}}
 @media (prefers-reduced-motion:reduce){.bh .net .ufs path,.bh .net-n li,.bh .net .pin .drop{opacity:1;transform:none;transition:none}.bh .net .pin .pulse{animation:none}.bh .net .dots circle{opacity:1;transform:none;animation:none}}
+/* ===== WhatsApp: botão flutuante + janela com cara de conversa ===== */
+.bh .waf{position:fixed;right:max(18px,env(safe-area-inset-right));bottom:max(18px,env(safe-area-inset-bottom));z-index:70;display:flex;align-items:center;gap:10px;height:58px;padding:0 20px 0 14px;border:0;border-radius:29px;background:#25D366;color:#fff;font:600 15px Inter,sans-serif;cursor:pointer;box-shadow:0 10px 28px -8px rgba(0,0,0,.45);transition:transform .2s,box-shadow .2s}
+.bh .waf:hover{transform:translateY(-2px);box-shadow:0 14px 32px -8px rgba(0,0,0,.5)}
+.bh .waf:focus-visible{outline:3px solid #fff;outline-offset:3px}
+@media (max-width:760px){.bh .waf{width:58px;padding:0;justify-content:center}.bh .waf span{display:none}}
+body.bh-lock .bh .waf{display:none}
+.bh .wam{position:fixed;inset:0;z-index:95;display:flex;align-items:flex-end;justify-content:flex-end;padding:20px;background:rgba(7,14,43,.55);opacity:0;transition:opacity .2s}
+.bh .wam[hidden]{display:none}
+.bh .wam.open{opacity:1}
+.bh .wam-box{width:min(400px,100%);max-height:calc(100svh - 40px);display:flex;flex-direction:column;border-radius:14px;overflow:hidden;background:#EFEAE2;box-shadow:0 30px 60px -20px rgba(0,0,0,.6);transform:translateY(16px) scale(.98);transition:transform .25s cubic-bezier(.2,.8,.2,1)}
+.bh .wam.open .wam-box{transform:none}
+.bh .wam-top{display:flex;align-items:center;gap:12px;padding:12px 12px 12px 16px;background:#075E54;color:#fff}
+.bh .wam-top b{display:block;font:600 16px Inter,sans-serif}
+.bh .wam-top small{display:block;font-size:12px;opacity:.85;margin-top:2px}
+.bh .wam-av{flex:none;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:#fff;color:#14298D;font:800 18px Montserrat,sans-serif}
+.bh .wam-x{margin-left:auto;flex:none;width:44px;height:44px;border:0;border-radius:50%;background:none;color:#fff;cursor:pointer;display:grid;place-items:center}
+.bh .wam-x:hover{background:rgba(255,255,255,.12)}
+.bh .wam-chat{overflow:auto;padding:16px 14px 14px;display:flex;flex-direction:column;gap:10px}
+.bh .wam-msg{align-self:flex-start;max-width:92%;background:#fff;color:#111B21;border-radius:0 10px 10px 10px;padding:10px 12px;font-size:15px;line-height:1.45;box-shadow:0 1px 1px rgba(0,0,0,.12)}
+.bh .wam-ctx{display:block;margin-top:6px;font-size:13px;color:#667781}
+.bh .wam-ctx:empty{display:none}
+.bh .wam-card{align-self:flex-end;width:100%;background:#D9FDD3;border-radius:10px 0 10px 10px;padding:12px;display:grid;grid-template-columns:1fr 1fr;gap:10px;box-shadow:0 1px 1px rgba(0,0,0,.12)}
+.bh .wam-card label{display:flex;flex-direction:column;gap:4px;font:600 12px Inter,sans-serif;color:#1F3B2C;min-width:0}
+.bh .wam-card .full{grid-column:1/-1}
+.bh .wam-card input,.bh .wam-card select{height:44px;border:1px solid rgba(0,0,0,.14);border-radius:8px;padding:0 10px;font:400 16px Inter,sans-serif;color:#111B21;background:#fff;min-width:0;width:100%}
+.bh .wam-card select{-webkit-appearance:none;appearance:none;padding-right:28px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%23111B21' stroke-width='1.8'%3E%3Cpath d='m1 1.5 5 5 5-5'/%3E%3C/svg%3E") no-repeat right 10px center}
+.bh .wam-card input:focus,.bh .wam-card select:focus{outline:2px solid #25D366;outline-offset:0;border-color:transparent}
+.bh .wam-card [aria-invalid=true]{border-color:#D93025;background-color:#FFF5F4}
+.bh .wam-err{grid-column:1/-1;margin:0;font-size:13px;color:#B3261E}
+.bh .wam-err:empty{display:none}
+.bh .wam-send{height:50px;border:0;border-radius:25px;background:#25D366;color:#fff;font:600 16px Inter,sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer}
+.bh .wam-send:hover{background:#1EBE5A}
+.bh .wam-lgpd{margin:0;text-align:center;font-size:12px;color:#667781}
+@media (max-width:560px){.bh .wam{padding:0;align-items:flex-end}.bh .wam-box{width:100%;max-height:92svh;border-radius:16px 16px 0 0}.bh .wam-card{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.bh .wam,.bh .wam-box,.bh .waf{transition:none}}
 </style>
 </head>
 <body style="margin:0;background:#fff">
@@ -580,6 +615,30 @@ html,body{touch-action:manipulation}
   </div>
 </section>
 
+<button class="waf" id="bhWaFab" type="button" aria-label="Falar com a BMC no WhatsApp"><svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><path fill="#fff" d="M16 3.2A12.8 12.8 0 0 0 5.1 22.7L3.4 28.8l6.3-1.6A12.8 12.8 0 1 0 16 3.2Zm0 2.3a10.5 10.5 0 1 1-5.5 19.4l-.4-.2-3.7 1 1-3.6-.3-.4A10.5 10.5 0 0 1 16 5.5Z"/><path fill="#fff" d="M12 9.6c-.3 0-.7 0-1 .5-.4.4-1.3 1.3-1.3 3.1s1.3 3.6 1.5 3.9c.2.2 2.6 4.1 6.4 5.6 3.1 1.2 3.8 1 4.5.9.7-.1 2.2-.9 2.5-1.8.3-.9.3-1.6.2-1.8-.1-.2-.3-.3-.7-.5l-2.4-1.2c-.3-.1-.6-.2-.8.2l-1.1 1.4c-.2.2-.4.3-.8.1-.4-.2-1.5-.6-2.9-1.8-1.1-1-1.8-2.1-2-2.5-.2-.4 0-.6.2-.8l.6-.7c.2-.2.2-.4.4-.6.1-.2 0-.5 0-.6l-1.1-2.7c-.3-.7-.6-.6-.8-.6H12Z"/></svg><span>Falar no WhatsApp</span></button>
+<div class="wam" id="bhWa" role="dialog" aria-modal="true" aria-labelledby="bhWaT" hidden>
+  <div class="wam-box">
+    <div class="wam-top">
+      <span class="wam-av" aria-hidden="true">B</span>
+      <div><b id="bhWaT">BMC Hyundai</b><small>Atendimento comercial · responde em horário comercial</small></div>
+      <button type="button" class="wam-x" aria-label="Fechar"><svg width="16" height="16" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2"><path d="m4 4 10 10M14 4 4 14"/></svg></button>
+    </div>
+    <form class="wam-chat" id="bhWaForm" novalidate>
+      <p class="wam-msg">Olá! Para o consultor já te atender com tudo em mãos, conta pra gente quem é você.<span class="wam-ctx" id="bhWaCtx"></span></p>
+      <div class="wam-card">
+        <label class="full">Nome completo<input name="nome" autocomplete="name" required></label>
+        <label>WhatsApp<input name="tel" type="tel" inputmode="tel" autocomplete="tel" placeholder="(00) 00000-0000" required></label>
+        <label>E-mail<input name="email" type="email" inputmode="email" autocomplete="email" required></label>
+        <label>Estado<select name="uf" autocomplete="address-level1" required><option value="">UF</option><option>AC</option><option>AL</option><option>AM</option><option>AP</option><option>BA</option><option>CE</option><option>DF</option><option>ES</option><option>GO</option><option>MA</option><option>MG</option><option>MS</option><option>MT</option><option>PA</option><option>PB</option><option>PE</option><option>PI</option><option>PR</option><option>RJ</option><option>RN</option><option>RO</option><option>RR</option><option>RS</option><option>SC</option><option>SE</option><option>SP</option><option>TO</option></select></label>
+        <label>Cidade<input name="cidade" autocomplete="address-level2" required></label>
+        <label class="full">Tipo de operação<select name="op" required><option value="">Escolha</option><option>Terraplenagem e obras pesadas</option><option>Agro e usinas</option><option>Pátios, agregados e mineração</option><option>Obras urbanas e saneamento</option><option>Indústria e logística</option><option>Locadora de máquinas</option><option>Prefeitura ou órgão público</option><option>Outro</option></select></label>
+        <p class="wam-err" id="bhWaErr" role="alert"></p>
+      </div>
+      <button class="wam-send" type="submit"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 20.5 21 12 3 3.5v6.6l12.8 1.9L3 13.9z"/></svg>Enviar no WhatsApp</button>
+      <p class="wam-lgpd">Usamos esses dados só para o atendimento da BMC Hyundai.</p>
+    </form>
+  </div>
+</div>
 <p class="proto">Versão B do protótipo da home da BMC Hyundai. <a href="../" style="text-decoration:underline">Ver a versão A</a>. Cabeçalho e rodapé finais vêm do tema do site.</p>
 </div>
 
@@ -588,6 +647,42 @@ html,body{touch-action:manipulation}
 if('scrollRestoration' in history) history.scrollRestoration='manual';
 window.scrollTo(0,0);
 addEventListener('pageshow',function(e){if(e.persisted) window.scrollTo(0,0)});
+</script>
+<script>
+/* origem da visita: primeira origem (como conheceu a BMC) e última origem com sinal (o que trouxe agora).
+   Fica no navegador do visitante e vai junto no lead (HubSpot) e no dataLayer (GTM). */
+(function(){
+  var KEYS=['utm_source','utm_medium','utm_campaign','utm_content','utm_term','utm_region','utm_placement','gclid','gbraid','wbraid','fbclid','ttclid','msclkid','li_fat_id'];
+  var DAY=864e5, TTL=90*DAY;
+  function ck(n){var m=document.cookie.match('(?:^|; )'+n+'=([^;]*)');return m?decodeURIComponent(m[1]):''}
+  function get(k){try{return JSON.parse(localStorage.getItem(k)||'null')}catch(e){return null}}
+  function put(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+  var q=new URLSearchParams(location.search), t={ts:new Date().toISOString(),landing:location.origin+location.pathname,referrer:document.referrer||''};
+  var signal=false; KEYS.forEach(function(k){var v=q.get(k); if(v){t[k]=v; signal=true}});
+  var ref=t.referrer, host=''; try{host=ref?new URL(ref).hostname:''}catch(e){}
+  var external=host&&host!==location.hostname&&!/bmchyundai\.com\.br$/.test(host);
+  if(external) signal=true;
+  // canal legível para o comercial
+  var ch='Direto';
+  if(t.gclid||t.gbraid||t.wbraid) ch='Google Ads';
+  else if(t.fbclid||/^(fb|facebook|ig|instagram|meta)/i.test(t.utm_source||'')) ch=/paid|cpc|ads/i.test(t.utm_medium||'')||t.fbclid?'Meta Ads':'Meta orgânico';
+  else if(t.utm_source) ch=(t.utm_medium?t.utm_medium+' · ':'')+t.utm_source;
+  else if(external&&/google|bing|yahoo|duckduckgo|ecosia/.test(host)) ch='Busca orgânica';
+  else if(external&&/chatgpt|openai|perplexity|gemini|copilot|claude/.test(host)) ch='IA';
+  else if(external) ch='Referência: '+host;
+  t.channel=ch;
+  var now=Date.now(), ft=get('bmc_ft');
+  if(!ft||now-Date.parse(ft.ts)>TTL){ft=t; put('bmc_ft',ft)}
+  var lt=get('bmc_lt'); if(signal||!lt){lt=t; put('bmc_lt',lt)}
+  // Meta: monta o _fbc a partir do fbclid se o pixel ainda não criou
+  var fbc=ck('_fbc')||(t.fbclid?'fb.1.'+now+'.'+t.fbclid:'');
+  var ga=(ck('_ga').split('.').slice(-2).join('.'))||'';
+  var A={first:ft,last:lt,session_landing:t.landing+location.search,fbp:ck('_fbp'),fbc:fbc,ga_client_id:ga,hutk:ck('hubspotutk'),
+    device:/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)?'mobile':'desktop',screen:screen.width+'x'+screen.height,lang:navigator.language};
+  window.BMC_ATTR=A;
+  window.dataLayer=window.dataLayer||[];
+  window.dataLayer.push({event:'bmc_attribution',first_channel:ft.channel,last_channel:lt.channel,utm_campaign:lt.utm_campaign||'',utm_content:lt.utm_content||'',device:A.device});
+})();
 </script>
 <script>
 /* mostra no rodapé qualquer erro de script (diagnóstico em aparelho real) */
@@ -1092,8 +1187,77 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
   v.addEventListener('loadeddata',tryPlay); tryPlay();
   ['touchstart','scroll','click'].forEach(function(ev){window.addEventListener(ev,function once(){if(v.paused)tryPlay();window.removeEventListener(ev,once)},{passive:true})});
   if('IntersectionObserver' in window){new IntersectionObserver(function(es){es[0].isIntersecting?tryPlay():v.pause()}).observe(v)}
+
+  // WhatsApp: todo link wa.me e o botão flutuante abrem a janela; os dados viram a 1ª mensagem ao SDR
+  (function(){
+    var CFG={wa:'5511973718835', hsPortal:'9472165', hsForm:''}; // hsForm vazio = envio ao HubSpot desligado
+    var box=$('bhWa'), form=$('bhWaForm'), err=$('bhWaErr'), ctxEl=$('bhWaCtx'), last=null, ctx={};
+    if(!box) return;
+    function lock(o){document.body.classList.toggle('bh-lock',o);document.body.style.overflow=o||$('bhFan').classList.contains('open')?'hidden':''}
+    function mask(v){v=v.replace(/\D/g,'').slice(0,11);if(v.length>10)return '('+v.slice(0,2)+') '+v.slice(2,7)+'-'+v.slice(7);if(v.length>6)return '('+v.slice(0,2)+') '+v.slice(2,6)+'-'+v.slice(6);if(v.length>2)return '('+v.slice(0,2)+') '+v.slice(2);return v}
+    form.tel.addEventListener('input',function(){form.tel.value=mask(form.tel.value)});
+    try{var saved=JSON.parse(localStorage.getItem('bmc_wa')||'null'); if(saved)['nome','tel','email','uf','cidade','op'].forEach(function(k){if(saved[k])form[k].value=saved[k]})}catch(e){}
+    function open(c){
+      ctx=c||{}; last=document.activeElement;
+      ctxEl.textContent=ctx.maquina?'Assunto: '+ctx.maquina+'.':ctx.filial?'Filial: '+ctx.filial+'.':'';
+      if(ctx.uf&&!form.uf.value) form.uf.value=ctx.uf;
+      if(ctx.op&&!form.op.value) form.op.value=ctx.op;
+      box.hidden=false; requestAnimationFrame(function(){box.classList.add('open')}); lock(true);
+      setTimeout(function(){(form.querySelector('input:invalid,select:invalid')||form.nome).focus({preventScroll:true})},60);
+      window.dataLayer.push({event:'whatsapp_popup_open',wa_origem:ctx.origem||'link'});
+    }
+    function close(){box.classList.remove('open'); setTimeout(function(){box.hidden=true},200); lock(false); if(last&&last.focus) last.focus({preventScroll:true})}
+    box.querySelector('.wam-x').addEventListener('click',close);
+    box.addEventListener('click',function(e){if(e.target===box) close()});
+    document.addEventListener('keydown',function(e){if(!box.hidden&&e.key==='Escape') close()});
+    $('bhWaFab').addEventListener('click',function(){open({origem:'botao_flutuante'})});
+    // links wa.me da página (hero, leque, filiais) passam pela janela
+    document.addEventListener('click',function(e){
+      var a=e.target.closest('a[href*="wa.me/"]'); if(!a||!a.closest('.bh')) return;
+      e.preventDefault(); e.stopPropagation();
+      var c={origem:a.id==='bhBrWa'?'filial':a.closest('.fan')?'leque':a.closest('.hero')?'hero':'link'};
+      if(a.closest('.fan')) c.maquina=$('bhFanT').textContent;
+      if(a.id==='bhBrWa'){var t=$('bhBrCity').textContent; c.filial=t; c.uf=t.split(', ').pop()}
+      open(c);
+    },true);
+    function check(){
+      var bad=[], v={};
+      ['nome','tel','email','uf','cidade','op'].forEach(function(k){v[k]=form[k].value.trim(); form[k].removeAttribute('aria-invalid')});
+      if(v.nome.split(/\s+/).length<2) bad.push(['nome','Escreva nome e sobrenome.']);
+      if(v.tel.replace(/\D/g,'').length<10) bad.push(['tel','Confira o WhatsApp com DDD.']);
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.email)) bad.push(['email','Confira o e-mail.']);
+      if(!v.uf) bad.push(['uf','Escolha o estado.']);
+      if(!v.cidade) bad.push(['cidade','Escreva a cidade.']);
+      if(!v.op) bad.push(['op','Escolha o tipo de operação.']);
+      bad.forEach(function(b){form[b[0]].setAttribute('aria-invalid','true')});
+      err.textContent=bad.length?bad[0][1]:'';
+      if(bad.length) form[bad[0][0]].focus();
+      return bad.length?null:v;
+    }
+    form.addEventListener('submit',function(e){
+      e.preventDefault(); var v=check(); if(!v) return;
+      try{localStorage.setItem('bmc_wa',JSON.stringify(v))}catch(x){}
+      var OPF={'Locadora de máquinas':'Tenho uma locadora de máquinas','Prefeitura ou órgão público':'Falo por uma prefeitura ou órgão público','Outro':''};
+      var opf=v.op in OPF?OPF[v.op]:'Trabalho com '+v.op.toLowerCase(), interesse=ctx.maquina?'tenho interesse em '+ctx.maquina.toLowerCase():'';
+      var frase=opf&&interesse?opf+' e '+interesse:(opf||(interesse?interesse.charAt(0).toUpperCase()+interesse.slice(1):''));
+      var msg='Olá! Eu sou '+v.nome+', de '+v.cidade+'/'+v.uf+'.'+(frase?' '+frase+'.':'')+' Meu WhatsApp é '+v.tel+' e meu e-mail é '+v.email+'.';
+      var A=window.BMC_ATTR||{}, F=A.first||{}, L=A.last||{};
+      window.dataLayer.push({event:'whatsapp_lead',wa_origem:ctx.origem||'link',uf:v.uf,operacao:v.op,maquina:ctx.maquina||'',first_channel:F.channel||'',last_channel:L.channel||'',utm_campaign:L.utm_campaign||'',utm_content:L.utm_content||''});
+      // HubSpot (Forms API): o lead fica no CRM com a origem, mesmo se a pessoa não enviar a mensagem
+      if(CFG.hsForm){
+        var nm=v.nome.split(/\s+/), f=[['firstname',nm.shift()],['lastname',nm.join(' ')],['email',v.email],['phone',v.tel],['estado',v.uf],['city',v.cidade],['tipo_de_operacao',v.op],
+          ['utm_source',L.utm_source],['utm_medium',L.utm_medium],['utm_campaign',L.utm_campaign],['utm_content',L.utm_content],['utm_term',L.utm_term],['utm_region',L.utm_region],['utm_placement',L.utm_placement],
+          ['gclid',L.gclid||L.gbraid||L.wbraid],['fbclid',L.fbclid],['canal_primeira_origem',F.channel],['canal_ultima_origem',L.channel]]
+          .filter(function(x){return x[1]}).map(function(x){return {name:x[0],value:String(x[1])}});
+        fetch('https://api.hsforms.com/submissions/v3/integration/submit/'+CFG.hsPortal+'/'+CFG.hsForm,{method:'POST',keepalive:true,headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({fields:f,context:{hutk:A.hutk||undefined,pageUri:location.href,pageName:document.title}})}).catch(function(){});
+      }
+      window.open('https://wa.me/'+CFG.wa+'?text='+encodeURIComponent(msg),'_blank','noopener');
+      close();
+    });
+  })();
 })();
 </script>
-<span class="bh build">versão B · 29/10 · t</span>
+<span class="bh build">versão B · 29/10 · v</span>
 </body>
 </html>
