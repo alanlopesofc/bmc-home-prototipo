@@ -665,7 +665,6 @@ body.bh-lock .bh .waf{display:none}
     </form>
   </div>
 </div>
-<p class="proto">Versão B do protótipo da home da BMC Hyundai. <a href="../" style="text-decoration:underline">Ver a versão A</a>. Cabeçalho e rodapé finais vêm do tema do site.</p>
 </div>
 
 <script>
@@ -1183,7 +1182,7 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
   $('bhUf').innerHTML='<option value="">UF</option>'+FIL.map(function(f){return '<option>'+f[0]+'</option>'}).join('')+'<option>Outro</option>';
   // formulário de orçamento: abre a janela do WhatsApp já preenchida (o lead segue para o HubSpot e o SDR)
   $('bhForm').addEventListener('submit',function(e){e.preventDefault(); var f=e.target;
-    if(window.bhOpenWa) window.bhOpenWa({origem:'form_orcamento',maquina:f.maquina.value&&f.maquina.value.indexOf('Ainda')<0?f.maquina.value:'',uf:f.uf.value,pre:{nome:f.nome.value,tel:f.tel.value}})});
+    if(window.bhOpenWa) window.bhOpenWa({origem:'form_orcamento',maquina:f.maquina.value&&f.maquina.value.indexOf('Ainda')<0?f.maquina.value:'',uf:f.uf.value,empresa:f.empresa.value.trim(),pre:{nome:f.nome.value,tel:f.tel.value}})});
 
   // cabeçalho e menus
   var top=$('bhTop');
@@ -1274,7 +1273,7 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
       var A=window.BMC_ATTR||{}, F=A.first||{}, L=A.last||{};
       if(CFG.hsForm&&(/(^|\.)bmchyundai\.com\.br$/.test(location.hostname)||/[?&]hs=1\b/.test(location.search))){
         // só campos que existem no formulário; a origem vai pelo hutk e pela URL de entrada com as UTMs
-        var f=[['firstname',v.nome],['email',v.email],['phone',v.tel],['estado',v.uf],['city',v.cidade],['qual_o_segmento_da_sua_empresa',v.op],['qual_maquinas_voce_gostaria_de_investir',MAQ[ctx.maquina]]]
+        var f=[['firstname',v.nome],['email',v.email],['phone',v.tel],['estado',v.uf],['city',v.cidade],['qual_o_segmento_da_sua_empresa',v.op],['qual_maquinas_voce_gostaria_de_investir',MAQ[ctx.maquina]],['company',ctx.empresa]]
           .filter(function(x){return x[1]}).map(function(x){return {name:x[0],value:String(x[1])}});
         // campos do grupo "Rastreamento do site" (criados no HubSpot em 29/10/2026)
         if(CFG.hsExtra) f=f.concat([['utm_source',L.utm_source],['utm_medium',L.utm_medium],['utm_campaign',L.utm_campaign],['utm_content',L.utm_content],['utm_term',L.utm_term],['utm_region',L.utm_region],['utm_placement',L.utm_placement],
@@ -1300,7 +1299,7 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
       var OPF={'Construção Civil':'Trabalho com construção civil','Agronegócio / Fazenda':'Trabalho no agronegócio','Mineração':'Trabalho com mineração','Logística e Distribuição':'Trabalho com logística e distribuição','Indústria':'Trabalho na indústria','Locação de Equipamentos':'Tenho uma locadora de equipamentos','Prefeitura / Órgão Público':'Falo por uma prefeitura ou órgão público','Outro':''};
       var opf=OPF[v.op]||'', interesse=ctx.maquina?'tenho interesse em '+ctx.maquina.toLowerCase():'';
       var frase=opf&&interesse?opf+' e '+interesse:(opf||(interesse?interesse.charAt(0).toUpperCase()+interesse.slice(1):''));
-      var msg='Olá! Eu sou '+v.nome+', de '+v.cidade+'/'+v.uf+'.'+(frase?' '+frase+'.':'')+' Meu WhatsApp é '+v.tel+' e meu e-mail é '+v.email+'.';
+      var msg='Olá! Eu sou '+v.nome+(ctx.empresa?', da '+ctx.empresa:'')+', de '+v.cidade+'/'+v.uf+'.'+(frase?' '+frase+'.':'')+' Meu WhatsApp é '+v.tel+' e meu e-mail é '+v.email+'.';
       var A=window.BMC_ATTR||{}, F=A.first||{}, L=A.last||{};
       window.dataLayer.push({event:'whatsapp_lead',wa_origem:ctx.origem||'link',uf:v.uf,operacao:v.op,maquina:ctx.maquina||'',first_channel:F.channel||'',last_channel:L.channel||'',utm_campaign:L.utm_campaign||'',utm_content:L.utm_content||''});
       hsSend(v,ctx.origem||'link');
@@ -1310,6 +1309,6 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
   })();
 })();
 </script>
-<span class="bh build">versão B · 29/10 · z9</span>
+<span class="bh build">versão B · 29/10 · z10</span>
 </body>
 </html>
