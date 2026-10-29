@@ -54,10 +54,10 @@
 .bh .hero h1 .ln{text-wrap:balance}
 @media (min-width:1001px){.bh .hero h1{max-width:none}}
 .bh .hero h1 .ln{display:block;overflow:hidden;padding-bottom:.04em}
-.bh .hero h1 .ln span{display:block;transform:translateY(105%);animation:bhUp .9s cubic-bezier(.2,.8,.2,1) 1s forwards}
-.bh .hero h1 .ln:nth-child(2) span{animation-delay:1.12s}
-.bh .hero h1 .ln:nth-child(3) span{animation-delay:1.24s}
-.bh .hero-k,.bh .hero-sub,.bh .hero-cta{opacity:0;animation:bhIn .6s ease 1.5s forwards}
+.bh .hero h1 .ln span{display:block;transform:translateY(105%);animation:bhUp .8s cubic-bezier(.2,.8,.2,1) .15s forwards}
+.bh .hero h1 .ln:nth-child(2) span{animation-delay:.27s}
+.bh .hero h1 .ln:nth-child(3) span{animation-delay:.39s}
+.bh .hero-k,.bh .hero-sub,.bh .hero-cta{opacity:0;animation:bhIn .5s ease .55s forwards}
 @keyframes bhIn{to{opacity:1}}
 @keyframes bhUp{to{transform:none}}
 .bh .hero-sub .sub-short,.bh .hero-sub .sub-more{display:none}

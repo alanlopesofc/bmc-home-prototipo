@@ -64,10 +64,10 @@
 .bh .hero h1 .ln{text-wrap:balance}
 @media (min-width:1001px){.bh .hero h1{max-width:none}}
 .bh .hero h1 .ln{display:block;overflow:hidden;padding-bottom:.04em}
-.bh .hero h1 .ln span{display:block;transform:translateY(105%);animation:bhUp .9s cubic-bezier(.2,.8,.2,1) 1s forwards}
-.bh .hero h1 .ln:nth-child(2) span{animation-delay:1.12s}
-.bh .hero h1 .ln:nth-child(3) span{animation-delay:1.24s}
-.bh .hero-k,.bh .hero-sub,.bh .hero-cta{opacity:0;animation:bhIn .6s ease 1.5s forwards}
+.bh .hero h1 .ln span{display:block;transform:translateY(105%);animation:bhUp .8s cubic-bezier(.2,.8,.2,1) .15s forwards}
+.bh .hero h1 .ln:nth-child(2) span{animation-delay:.27s}
+.bh .hero h1 .ln:nth-child(3) span{animation-delay:.39s}
+.bh .hero-k,.bh .hero-sub,.bh .hero-cta{opacity:0;animation:bhIn .5s ease .55s forwards}
 @keyframes bhIn{to{opacity:1}}
 @keyframes bhUp{to{transform:none}}
 .bh .hero-sub .sub-short,.bh .hero-sub .sub-more{display:none}
@@ -828,6 +828,9 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
     if(bgOf){var bg=document.createElement('div');bg.className='arc-bg';
       bgs=items.map(function(it){var im=new Image();im.alt='';im.decoding='async';im.dataset.src=bgOf(it);bg.appendChild(im);return im});
       pin.insertBefore(bg,pin.firstChild)}
+    // fundos só carregam quando a seção chega perto da tela (não pesam na abertura da página)
+    var near=!('IntersectionObserver' in window);
+    if(!near){var io=new IntersectionObserver(function(es){if(!es[0].isIntersecting)return; near=true; io.disconnect(); bgs.forEach(function(im,i){if(Math.abs(i-capA)<=1&&!im.src) im.src=im.dataset.src})},{rootMargin:'800px 0px'}); io.observe(sec)}
     var st={rot:0}, setRot;
     if(HAS_GSAP&&!FREE) setRot=gsap.quickTo(st,'rot',{duration:RM?0:.9,ease:'power3.out',onUpdate:draw});
     else { // celular (ou sem GSAP): animação própria, sem depender de biblioteca
@@ -882,7 +885,7 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
     function applyCap(a){
         if(a===capA) return; var first=capA===-1; capA=a;
         bgs.forEach(function(im,i){
-          if(Math.abs(i-a)<=1&&!im.src) im.src=im.dataset.src;
+          if(near&&Math.abs(i-a)<=1&&!im.src) im.src=im.dataset.src;
           im.classList.toggle('on',i===a)});
         // só o texto esmaece; o botão fica parado e só troca o rótulo e o destino
         // (antes o bloco todo sumia e voltava durante o arrasto, parecia que o site travou)
@@ -1012,12 +1015,12 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
   }
 
   var works,cats; try{ works=arc(document.querySelector('[data-arc="works"]'),WORKS,
-    function(it,i,N){return '<button type="button" class="cv'+(it.cut?' cut':'')+'" aria-label="'+it.title+'"><img class="ph" src="'+it.img+'" alt="" style="object-position:'+(it.pos||'50% 50%')+'" draggable="false"><span class="cv-n">'+String(i+1).padStart(2,'0')+'</span><span class="cv-t"><b>'+it.title+'</b><small>'+it.sub+'</small></span></button>'},
+    function(it,i,N){return '<button type="button" class="cv'+(it.cut?' cut':'')+'" aria-label="'+it.title+'"><img class="ph" src="'+it.img+'" alt="" loading="lazy" decoding="async" style="object-position:'+(it.pos||'50% 50%')+'" draggable="false"><span class="cv-n">'+String(i+1).padStart(2,'0')+'</span><span class="cv-t"><b>'+it.title+'</b><small>'+it.sub+'</small></span></button>'},
     function(it){return '<h3>'+it.title+'</h3><p>'+it.desc+'</p><a class="btn btn-p" href="#maquinas" data-open="'+it.cat+'">Ver máquinas para este trabalho</a>'},
     function(it){openFan(it.cat)}); }catch(err){window.__errs.push('works: '+err.message);var b0=document.querySelector('.build');if(b0)b0.textContent+=' · ERRO works: '+err.message}
 
   try{ cats=arc(document.querySelector('[data-arc="cats"]'),CATS,
-    function(c,i,N){return '<button type="button" class="cv cut" aria-label="'+c.name+'"><img class="ph" src="'+A+c.cover+'.webp" alt="" draggable="false"><span class="cv-n">'+c.models.length+(c.models.length>1?' modelos':' modelo')+'</span><span class="cv-t"><b>'+c.name+'</b><small>'+(c.unit==='capacidade de carga'?'Carga de ':'De ')+range(c)+'</small></span></button>'},
+    function(c,i,N){return '<button type="button" class="cv cut" aria-label="'+c.name+'"><img class="ph" src="'+A+c.cover+'.webp" alt="" loading="lazy" decoding="async" draggable="false"><span class="cv-n">'+c.models.length+(c.models.length>1?' modelos':' modelo')+'</span><span class="cv-t"><b>'+c.name+'</b><small>'+(c.unit==='capacidade de carga'?'Carga de ':'De ')+range(c)+'</small></span></button>'},
     function(c){return '<h3>'+c.name+'</h3><p>'+c.pitch+'</p><button class="btn btn-p" type="button" data-open="'+c.id+'">Ver '+(c.models.length>1?'os '+c.models.length+' modelos':'o modelo')+'</button>'},
     function(c){openFan(c.id)},
     function(c){return '../assets/bg/'+c.id+'.webp'},.8); }catch(err){window.__errs.push('cats: '+err.message);var b1=document.querySelector('.build');if(b1)b1.textContent+=' · ERRO cats: '+err.message}
@@ -1044,7 +1047,7 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
     var c=byId[id]; if(!c) return; lastFocus=document.activeElement;
     $('bhFanT').textContent=c.name;
     $('bhFanS').textContent=c.models.length+(c.models.length>1?' modelos, de ':' modelo, ')+range(c)+' de '+c.unit;
-    track.innerHTML=c.models.map(function(m){return '<div class="fw"><article class="fc"><div class="im"><img src="'+A+m[2]+'.webp" alt="'+m[0]+'" decoding="async" draggable="false"></div><div class="bd"><div class="md">'+m[0]+'</div><div class="kg"><b>'+t(m[3])+'</b><span>'+c.unit+'</span></div><div class="ex">'+m[4]+'</div><div class="ac"><a href="'+href(m[1])+'">Ficha técnica</a><a class="q" href="#orcamento" data-quote="'+c.name+'">Pedir proposta</a></div></div></article></div>'}).join('');
+    track.innerHTML=c.models.map(function(m){return '<div class="fw"><article class="fc"><div class="im"><img src="'+A+m[2]+'.webp" alt="'+m[0]+'" loading="lazy" decoding="async" draggable="false"></div><div class="bd"><div class="md">'+m[0]+'</div><div class="kg"><b>'+t(m[3])+'</b><span>'+c.unit+'</span></div><div class="ex">'+m[4]+'</div><div class="ac"><a href="'+href(m[1])+'">Ficha técnica</a><a class="q" href="#orcamento" data-quote="'+c.name+'">Pedir proposta</a></div></div></article></div>'}).join('');
     fan.classList.add('open'); document.body.style.overflow='hidden';
     var ws=[].slice.call(track.children); fN=ws.length;
     FF=flow(ws,'translate(-50%,-50%) ',TOUCH?0:LAG); fanSize();
@@ -1309,6 +1312,6 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
   })();
 })();
 </script>
-<span class="bh build">versão B · 29/10 · z10</span>
+<span class="bh build">versão B · 29/10 · z11</span>
 </body>
 </html>
