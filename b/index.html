@@ -427,9 +427,14 @@ body.bh-lock .bh .waf{display:none}
 .bh .wam-card [aria-invalid=true]{border-color:#D93025;background-color:#FFF5F4}
 .bh .wam-err{grid-column:1/-1;margin:0;font-size:13px;color:#B3261E}
 .bh .wam-err:empty{display:none}
-.bh .wam-send{height:50px;border:0;border-radius:25px;background:#25D366;color:#fff;font:600 16px Inter,sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer}
+.bh .wam-send{flex:none;width:100%;height:58px;font-size:17px!important;border:0;border-radius:25px;background:#25D366;color:#fff;font:600 16px Inter,sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer}
 .bh .wam-send:hover{background:#1EBE5A}
 .bh .wam-lgpd{margin:0;text-align:center;font-size:12px;color:#667781}
+/* rodapé fixo na janela: aviso + botão grande sempre à vista, mesmo com o formulário rolando */
+.bh .wam-foot{position:sticky;bottom:-14px;margin:4px -14px -14px;padding:10px 14px max(14px,env(safe-area-inset-bottom));background:#EFEAE2;border-top:1px solid rgba(0,0,0,.08);display:flex;flex-direction:column;gap:8px;flex:none;z-index:2}
+.bh .wam-tip{margin:0;display:flex;gap:8px;align-items:flex-start;font-size:14px;line-height:1.4;color:#111B21;background:#FFF8D6;border:1px solid #F1DE8B;border-radius:8px;padding:9px 10px}
+.bh .wam-tip svg{flex:none;margin-top:1px}
+.bh .wam-card{flex:none}
 @media (max-width:560px){.bh .wam{padding:0;align-items:flex-end}.bh .wam-box{width:100%;max-height:92svh;border-radius:16px 16px 0 0}.bh .wam-card{grid-template-columns:1fr}}
 @media (prefers-reduced-motion:reduce){.bh .wam,.bh .wam-box,.bh .waf{transition:none}}
 </style>
@@ -634,8 +639,11 @@ body.bh-lock .bh .waf{display:none}
         <label class="full">Segmento da sua empresa<select name="op" required><option value="">Escolha</option><option>Construção Civil</option><option>Agronegócio / Fazenda</option><option>Mineração</option><option>Logística e Distribuição</option><option>Indústria</option><option>Locação de Equipamentos</option><option>Prefeitura / Órgão Público</option><option>Outro</option></select></label>
         <p class="wam-err" id="bhWaErr" role="alert"></p>
       </div>
+      <div class="wam-foot">
+      <p class="wam-tip"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#075E54"/><path d="M12 7v6M12 16.5v.5" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg><span><b>Importante:</b> ao tocar no botão, o seu WhatsApp abre com a mensagem pronta. É só enviar.</span></p>
       <button class="wam-send" type="submit"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 20.5 21 12 3 3.5v6.6l12.8 1.9L3 13.9z"/></svg>Enviar no WhatsApp</button>
       <p class="wam-lgpd">Usamos esses dados só para o atendimento da BMC Hyundai.</p>
+      </div>
     </form>
   </div>
 </div>
@@ -1192,7 +1200,7 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
   (function(){
     var CFG={wa:'5511973718835', hsPortal:'9472165', hsForm:'d141674c-20a8-4a6f-97dd-5cd11c92360c', hsExtra:true}; // campos ocultos de rastreamento adicionados ao formulário em 29/10/2026 // mesmo formulário do site atual (SDR Bruno no número central)
     var MAQ={'Escavadeiras':'Escavadeira','Pás carregadeiras':'Pá Carregadeira','Mini escavadeiras':'Mini Escavadeira','Retroescavadeira':'Retroescavadeira','Motoniveladora':'Motoniveladora','Empilhadeiras':'Empilhadeiras'};
-    var box=$('bhWa'), form=$('bhWaForm'), err=$('bhWaErr'), ctxEl=$('bhWaCtx'), last=null, ctx={};
+    var box=$('bhWa'), form=$('bhWaForm'), err=$('bhWaErr'), ctxEl=$('bhWaCtx'), last=null, ctx={}, sentKey='';
     if(!box) return;
     function lock(o){document.body.classList.toggle('bh-lock',o);document.body.style.overflow=o||$('bhFan').classList.contains('open')?'hidden':''}
     function mask(v){v=v.replace(/\D/g,'').slice(0,11);if(v.length>10)return '('+v.slice(0,2)+') '+v.slice(2,7)+'-'+v.slice(7);if(v.length>6)return '('+v.slice(0,2)+') '+v.slice(2,6)+'-'+v.slice(6);if(v.length>2)return '('+v.slice(0,2)+') '+v.slice(2);return v}
@@ -1207,7 +1215,7 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
       setTimeout(function(){(form.querySelector('input:invalid,select:invalid')||form.nome).focus({preventScroll:true})},60);
       window.dataLayer.push({event:'whatsapp_popup_open',wa_origem:ctx.origem||'link'});
     }
-    function close(){box.classList.remove('open'); setTimeout(function(){box.hidden=true},200); lock(false); if(last&&last.focus) last.focus({preventScroll:true})}
+    function close(){partial(); box.classList.remove('open'); setTimeout(function(){box.hidden=true},200); lock(false); if(last&&last.focus) last.focus({preventScroll:true})}
     box.querySelector('.wam-x').addEventListener('click',close);
     box.addEventListener('click',function(e){if(e.target===box) close()});
     document.addEventListener('keydown',function(e){if(!box.hidden&&e.key==='Escape') close()});
@@ -1235,6 +1243,33 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
       if(bad.length) form[bad[0][0]].focus();
       return bad.length?null:v;
     }
+    // HubSpot (Forms API): o lead fica no CRM com a origem, mesmo se a pessoa não enviar a mensagem
+      // envia ao HubSpot só no site oficial; no protótipo, apenas com ?hs=1 (evita lead de teste no CRM)
+    function hsSend(v,origem){
+      var key=v.email+'|'+v.tel; if(sentKey===key) return; sentKey=key;
+      var A=window.BMC_ATTR||{}, F=A.first||{}, L=A.last||{};
+      if(CFG.hsForm&&(/(^|\.)bmchyundai\.com\.br$/.test(location.hostname)||/[?&]hs=1\b/.test(location.search))){
+        // só campos que existem no formulário; a origem vai pelo hutk e pela URL de entrada com as UTMs
+        var f=[['firstname',v.nome],['email',v.email],['phone',v.tel],['estado',v.uf],['city',v.cidade],['qual_o_segmento_da_sua_empresa',v.op],['qual_maquinas_voce_gostaria_de_investir',MAQ[ctx.maquina]]]
+          .filter(function(x){return x[1]}).map(function(x){return {name:x[0],value:String(x[1])}});
+        // campos do grupo "Rastreamento do site" (criados no HubSpot em 29/10/2026)
+        if(CFG.hsExtra) f=f.concat([['utm_source',L.utm_source],['utm_medium',L.utm_medium],['utm_campaign',L.utm_campaign],['utm_content',L.utm_content],['utm_term',L.utm_term],['utm_region',L.utm_region],['utm_placement',L.utm_placement],
+          ['gclid',L.gclid||L.gbraid||L.wbraid],['fbclid',L.fbclid],['canal_primeira_origem',F.channel],['canal_ultima_origem',L.channel],['pagina_de_entrada',A.session_landing],['origem_clique_whatsapp',origem]]
+          .filter(function(x){return x[1]}).map(function(x){return {name:x[0],value:String(x[1]).slice(0,500)}}));
+        fetch('https://api.hsforms.com/submissions/v3/integration/submit/'+CFG.hsPortal+'/'+CFG.hsForm,{method:'POST',keepalive:true,headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({fields:f,context:{hutk:A.hutk||undefined,pageUri:(L.landing&&L.utm_source?L.landing+'?'+['utm_source','utm_medium','utm_campaign','utm_content','utm_term'].filter(function(k){return L[k]}).map(function(k){return k+'='+encodeURIComponent(L[k])}).join('&'):location.href),pageName:'Home BMC — WhatsApp ('+origem+')'}})}).catch(function(){});
+      }
+    }
+    // preencheu tudo e fechou a janela ou saiu da página sem tocar no botão: o lead vai mesmo assim
+    function silent(){var v={},ok=true;['nome','tel','email','uf','cidade','op'].forEach(function(k){v[k]=form[k].value.trim()});
+      ok=v.nome.split(/\s+/).length>1&&v.tel.replace(/\D/g,'').length>=10&&/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.email); return ok?v:null}
+    function partial(){
+      if(box.hidden) return; var v=silent(); if(!v) return;
+      window.dataLayer.push({event:'whatsapp_lead_parcial',wa_origem:ctx.origem||'link',uf:v.uf,operacao:v.op});
+      hsSend(v,'preencheu_sem_enviar:'+(ctx.origem||'link'));
+    }
+    addEventListener('pagehide',partial);
+    document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden') partial()});
     form.addEventListener('submit',function(e){
       e.preventDefault(); var v=check(); if(!v) return;
       try{localStorage.setItem('bmc_wa',JSON.stringify(v))}catch(x){}
@@ -1244,25 +1279,13 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
       var msg='Olá! Eu sou '+v.nome+', de '+v.cidade+'/'+v.uf+'.'+(frase?' '+frase+'.':'')+' Meu WhatsApp é '+v.tel+' e meu e-mail é '+v.email+'.';
       var A=window.BMC_ATTR||{}, F=A.first||{}, L=A.last||{};
       window.dataLayer.push({event:'whatsapp_lead',wa_origem:ctx.origem||'link',uf:v.uf,operacao:v.op,maquina:ctx.maquina||'',first_channel:F.channel||'',last_channel:L.channel||'',utm_campaign:L.utm_campaign||'',utm_content:L.utm_content||''});
-      // HubSpot (Forms API): o lead fica no CRM com a origem, mesmo se a pessoa não enviar a mensagem
-      // envia ao HubSpot só no site oficial; no protótipo, apenas com ?hs=1 (evita lead de teste no CRM)
-      if(CFG.hsForm&&(/(^|\.)bmchyundai\.com\.br$/.test(location.hostname)||/[?&]hs=1\b/.test(location.search))){
-        // só campos que existem no formulário; a origem vai pelo hutk e pela URL de entrada com as UTMs
-        var f=[['firstname',v.nome],['email',v.email],['phone',v.tel],['estado',v.uf],['city',v.cidade],['qual_o_segmento_da_sua_empresa',v.op],['qual_maquinas_voce_gostaria_de_investir',MAQ[ctx.maquina]]]
-          .filter(function(x){return x[1]}).map(function(x){return {name:x[0],value:String(x[1])}});
-        // campos do grupo "Rastreamento do site" (criados no HubSpot em 29/10/2026)
-        if(CFG.hsExtra) f=f.concat([['utm_source',L.utm_source],['utm_medium',L.utm_medium],['utm_campaign',L.utm_campaign],['utm_content',L.utm_content],['utm_term',L.utm_term],['utm_region',L.utm_region],['utm_placement',L.utm_placement],
-          ['gclid',L.gclid||L.gbraid||L.wbraid],['fbclid',L.fbclid],['canal_primeira_origem',F.channel],['canal_ultima_origem',L.channel],['pagina_de_entrada',A.session_landing],['origem_clique_whatsapp',ctx.origem]]
-          .filter(function(x){return x[1]}).map(function(x){return {name:x[0],value:String(x[1]).slice(0,500)}}));
-        fetch('https://api.hsforms.com/submissions/v3/integration/submit/'+CFG.hsPortal+'/'+CFG.hsForm,{method:'POST',keepalive:true,headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({fields:f,context:{hutk:A.hutk||undefined,pageUri:(L.landing&&L.utm_source?L.landing+'?'+['utm_source','utm_medium','utm_campaign','utm_content','utm_term'].filter(function(k){return L[k]}).map(function(k){return k+'='+encodeURIComponent(L[k])}).join('&'):location.href),pageName:'Home BMC — WhatsApp ('+(ctx.origem||'link')+')'}})}).catch(function(){});
-      }
+      hsSend(v,ctx.origem||'link');
       window.open('https://wa.me/'+CFG.wa+'?text='+encodeURIComponent(msg),'_blank','noopener');
       close();
     });
   })();
 })();
 </script>
-<span class="bh build">versão B · 29/10 · y</span>
+<span class="bh build">versão B · 29/10 · z</span>
 </body>
 </html>
