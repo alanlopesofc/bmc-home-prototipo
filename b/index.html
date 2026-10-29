@@ -361,25 +361,25 @@ html,body{touch-action:manipulation}
 .bh .net h2{font-size:clamp(30px,3.8vw,48px)}
 .bh .net-txt>p{color:rgba(255,255,255,.72);margin-top:16px;line-height:1.55;max-width:42ch}
 .bh .net-n{list-style:none;margin:32px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:22px 28px}
-.bh .net-n li{border-top:1px solid var(--line-d);padding-top:14px;opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.8,.2,1);transition-delay:calc(var(--i,0)*120ms + 200ms)}
+.bh .net-n li{border-top:1px solid var(--line-d);padding-top:14px;opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.8,.2,1);transition-delay:calc(var(--i,0)*80ms + 100ms)}
 .bh .net-n li:first-child{grid-column:1/-1}
 .bh .net-n b{display:block;font:800 clamp(28px,3vw,40px)/1 Montserrat,sans-serif;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
 .bh .net-n b small{font:600 14px Inter,sans-serif;letter-spacing:0;color:rgba(255,255,255,.66);margin-right:2px}
 .bh .net-n li>span{display:block;margin-top:6px;color:rgba(255,255,255,.66);font-size:14px;line-height:1.45}
 .bh .net-map svg{width:100%;height:auto;display:block;overflow:visible}
-.bh .net .ufs path{fill:rgba(255,255,255,.05);stroke:rgba(255,255,255,.22);stroke-width:.7;stroke-linejoin:round;opacity:0;transition:opacity .7s ease,fill .3s;transition-delay:calc(var(--i)*25ms)}
+.bh .net .ufs path{fill:rgba(255,255,255,.05);stroke:rgba(255,255,255,.22);stroke-width:.7;stroke-linejoin:round;opacity:0;transition:opacity .5s ease,fill .3s;transition-delay:calc(var(--i)*12ms)}
 .bh .net .ufs path.on{fill:rgba(5,126,236,.28)}
 .bh .net .ufs path.sel{fill:rgba(49,152,247,.5)}
 .bh .net .pin{cursor:pointer;outline:none}
 .bh .net .pin .dot{fill:#3198F7;stroke:#fff;stroke-width:1.6}
 .bh .net .pin .pulse{fill:none;stroke:#3198F7;stroke-width:1.4;opacity:0;transform-box:fill-box;transform-origin:center}
-.bh .net .pin .drop{opacity:0;transform:translateY(-26px);transition:opacity .4s ease,transform .7s cubic-bezier(.3,1.5,.5,1);transition-delay:calc(var(--i)*110ms + 700ms)}
+.bh .net .pin .drop{opacity:0;transform:translateY(-26px);transition:opacity .3s ease,transform .55s cubic-bezier(.3,1.5,.5,1);transition-delay:calc(var(--i)*55ms + 250ms)}
 .bh .net .pin text{font:600 12px Inter,sans-serif;fill:#fff;paint-order:stroke;stroke:#0B1640;stroke-width:4px;opacity:0;transition:opacity .2s;pointer-events:none}
 .bh .net .pin:hover text,.bh .net .pin:focus-visible text,.bh .net .pin.sel text{opacity:1}
 .bh .net .pin:focus-visible .dot{stroke:#FFD34D;stroke-width:2.4}
 .bh .net.go .ufs path,.bh .net.go .net-n li{opacity:1;transform:none}
 .bh .net.go .pin .drop{opacity:1;transform:none}
-.bh .net.go .pin .pulse{animation:bhPulse 2.6s ease-out infinite;animation-delay:calc(var(--i)*110ms + 1.4s)}
+.bh .net.go .pin .pulse{animation:bhPulse 2.6s ease-out infinite;animation-delay:calc(var(--i)*55ms + .9s)}
 /* depois dos pins: técnicos (brancos) e revendas (amarelas) se espalham a partir das filiais */
 .bh .net .dots circle{opacity:0;transform:scale(0);transform-box:fill-box;transform-origin:center}
 .bh .net .dots .t{fill:#fff}
@@ -550,8 +550,8 @@ body.bh-lock .bh .waf{display:none}
         <li><b><small>desde </small><span data-to="2003" data-year>2003</span></b><span>revenda oficial Hyundai</span></li>
         <li><b><span data-to="13">13</span> filiais</b><span>em 13 estados</span></li>
         <li><b><span data-to="40">40</span> modelos</b><span>da mini de 1,85 t à escavadeira de 49,9 t</span></li>
-        <li><b>+<span data-to="550" data-at="2900">550</span></b><span><i class="k t"></i>técnicos homologados, assistência em todo o Brasil</span></li>
-        <li><b>+<span data-to="300" data-at="5000">300</span></b><span><i class="k r"></i>revendas homologadas de peças originais em todo o Brasil</span></li>
+        <li><b>+<span data-to="550" data-at="900">550</span></b><span><i class="k t"></i>técnicos homologados, assistência em todo o Brasil</span></li>
+        <li><b>+<span data-to="300" data-at="900">300</span></b><span><i class="k r"></i>revendas homologadas de peças originais em todo o Brasil</span></li>
       </ul>
     </div>
     <div class="net-map">
@@ -631,7 +631,7 @@ body.bh-lock .bh .waf{display:none}
         <label>E-mail<input name="email" type="email" inputmode="email" autocomplete="email" required></label>
         <label>Estado<select name="uf" autocomplete="address-level1" required><option value="">UF</option><option>AC</option><option>AL</option><option>AM</option><option>AP</option><option>BA</option><option>CE</option><option>DF</option><option>ES</option><option>GO</option><option>MA</option><option>MG</option><option>MS</option><option>MT</option><option>PA</option><option>PB</option><option>PE</option><option>PI</option><option>PR</option><option>RJ</option><option>RN</option><option>RO</option><option>RR</option><option>RS</option><option>SC</option><option>SE</option><option>SP</option><option>TO</option></select></label>
         <label>Cidade<input name="cidade" autocomplete="address-level2" required></label>
-        <label class="full">Tipo de operação<select name="op" required><option value="">Escolha</option><option>Terraplenagem e obras pesadas</option><option>Agro e usinas</option><option>Pátios, agregados e mineração</option><option>Obras urbanas e saneamento</option><option>Indústria e logística</option><option>Locadora de máquinas</option><option>Prefeitura ou órgão público</option><option>Outro</option></select></label>
+        <label class="full">Segmento da sua empresa<select name="op" required><option value="">Escolha</option><option>Construção Civil</option><option>Agronegócio / Fazenda</option><option>Mineração</option><option>Logística e Distribuição</option><option>Indústria</option><option>Locação de Equipamentos</option><option>Prefeitura / Órgão Público</option><option>Outro</option></select></label>
         <p class="wam-err" id="bhWaErr" role="alert"></p>
       </div>
       <button class="wam-send" type="submit"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 20.5 21 12 3 3.5v6.6l12.8 1.9L3 13.9z"/></svg>Enviar no WhatsApp</button>
@@ -1132,13 +1132,13 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
     g.addEventListener('click',function(e){var p=e.target.closest('.pin'); if(p) pick(+p.dataset.i)});
     g.addEventListener('keydown',function(e){var p=e.target.closest('.pin'); if(p&&(e.key==='Enter'||e.key===' ')){e.preventDefault();pick(+p.dataset.i)}});
     var DOTS={"t":[[370.3,426.4,213],[308.7,414.7,393],[356.0,388.4,428],[382.2,378.4,309],[375.7,423.9,318],[412.0,432.7,113],[341.0,389.2,522],[324.5,408.6,306],[383.6,425.9,61],[371.9,451.5,137],[389.0,421.3,245],[341.7,408.3,513],[359.7,431.9,138],[332.7,409.2,403],[369.0,384.4,394],[355.1,394.1,475],[320.8,416.3,315],[390.9,407.6,243],[376.0,419.0,199],[362.4,401.8,429],[407.3,433.1,132],[351.0,401.4,505],[351.6,384.7,364],[347.5,383.6,344],[331.3,416.6,426],[377.2,434.9,217],[348.8,409.9,280],[367.7,405.6,347],[351.8,423.7,200],[380.4,444.4,299],[361.3,416.7,359],[369.4,444.5,294],[322.7,392.9,384],[369.9,392.3,322],[334.6,399.4,394],[424.6,419.7,262],[381.7,382.3,478],[409.7,417.0,125],[385.5,390.6,432],[344.1,390.5,334],[353.0,378.4,312],[369.1,379.5,339],[357.2,384.6,517],[346.8,418.8,335],[376.5,382.0,361],[355.5,380.8,493],[365.9,412.7,231],[402.0,397.2,290],[358.8,359.5,296],[448.0,348.8,353],[383.5,353.7,380],[420.6,319.2,460],[455.6,355.1,251],[421.6,322.4,364],[429.8,355.4,147],[413.6,331.1,461],[403.9,351.8,356],[443.8,307.3,545],[421.2,298.6,407],[350.6,363.6,296],[457.5,304.6,585],[437.5,402.4,282],[395.2,357.8,242],[357.0,365.0,306],[414.1,377.0,312],[362.5,379.7,327],[420.4,363.8,135],[399.1,302.7,329],[463.1,387.4,300],[423.0,330.1,452],[442.0,365.8,114],[433.3,317.0,344],[404.2,377.0,204],[449.6,418.4,316],[437.4,415.8,335],[461.3,406.2,227],[466.2,410.8,273],[442.0,407.9,218],[459.8,402.9,424],[442.7,414.1,384],[422.8,422.6,176],[434.2,421.3,450],[469.1,401.6,168],[436.4,409.8,270],[474.9,406.4,396],[446.7,408.1,379],[422.1,426.8,326],[452.9,407.1,300],[460.3,393.5,199],[465.4,395.5,293],[472.9,221.8,81],[486.2,251.1,218],[412.6,299.8,419],[408.9,230.2,208],[469.5,260.7,325],[478.6,252.9,374],[501.5,243.0,330],[462.1,274.2,429],[493.4,315.7,487],[492.4,322.6,409],[460.9,296.6,451],[458.9,252.5,363],[497.4,262.3,336],[494.2,308.1,554],[485.2,310.1,583],[463.9,284.6,459],[504.5,210.8,261],[322.2,460.8,323],[299.4,418.3,308],[299.5,441.2,279],[292.9,444.8,394],[301.4,421.3,441],[325.7,476.1,290],[292.8,456.1,336],[309.5,424.9,472],[365.2,459.5,215],[314.8,453.0,320],[306.6,419.0,339],[303.1,461.0,196],[328.0,465.7,293],[314.9,417.7,274],[308.1,491.7,148],[319.8,537.8,481],[322.1,518.5,372],[289.9,548.5,505],[269.9,509.1,300],[311.0,552.7,462],[299.7,543.4,425],[301.1,494.3,222],[321.8,541.6,409],[283.3,530.5,443],[293.5,520.0,435],[281.6,538.3,359],[338.5,535.5,473],[484.8,207.3,255],[554.2,194.7,165],[487.2,199.1,227],[520.9,201.4,458],[501.0,199.4,146],[525.0,198.6,344],[558.9,203.6,138],[536.0,203.0,363],[495.6,189.6,399],[494.4,134.5,381],[490.1,175.4,252],[527.3,149.3,404],[485.5,141.7,330],[483.8,160.0,356],[493.0,177.0,349],[495.6,158.7,396],[506.3,171.2,480],[276.8,158.5,539],[254.2,85.9,848],[263.5,213.6,666],[266.7,210.0,462],[349.1,142.7,459],[261.0,148.3,604],[332.5,100.5,699],[322.6,156.4,277],[354.3,188.7,314],[263.5,180.1,521],[246.1,61.5,884],[336.4,500.4,237],[354.6,483.9,231],[357.1,470.6,66],[364.2,498.1,312],[359.1,494.2,290],[337.8,485.5,326],[353.5,489.2,247],[321.9,489.1,142],[341.3,470.9,157],[338.4,316.4,296],[314.6,339.8,459],[320.0,356.4,370],[382.4,346.3,217],[342.0,280.1,457],[322.2,327.5,275],[312.2,343.7,295],[362.6,311.5,122],[365.6,337.4,261],[343.6,308.1,324],[344.2,300.0,315],[408.8,171.6,345],[440.6,124.6,302],[414.6,179.9,279],[437.5,119.8,431],[413.3,100.3,425],[414.4,105.3,472],[414.8,188.0,453],[165.2,160.5,1116],[225.6,125.3,839],[150.8,66.3,1283],[163.5,154.2,1081],[477.3,387.8,93],[483.6,346.7,376],[481.8,363.0,175],[479.5,351.2,361],[467.4,385.2,166],[514.2,190.5,310],[520.9,182.8,281],[543.8,186.5,207],[513.6,181.0,297],[556.1,157.9,145],[531.7,174.5,352],[540.0,171.7,208],[544.4,168.7,190],[332.4,231.0,255],[245.0,310.2,187],[187.8,223.7,685],[211.1,251.0,554],[261.7,245.7,505],[229.1,300.2,251],[307.1,233.9,501],[300.9,273.8,507],[548.7,224.1,228],[530.6,216.6,440],[546.6,214.2,399],[461.5,209.4,317],[448.7,188.6,209],[467.8,177.9,359],[424.9,213.0,454],[381.2,310.6,158],[381.3,315.7,144],[253.2,344.6,409],[294.1,366.7,282],[277.3,351.6,232],[273.9,363.4,137],[287.8,406.4,157],[250.4,373.9,217],[524.8,247.1,453],[534.1,232.0,357],[174.3,220.2,675],[140.5,213.3,1014],[167.9,212.7,886],[381.3,244.2,132],[342.6,267.7,459],[390.4,254.4,312],[358.5,227.3,257],[30.0,202.0,1467],[302.2,70.0,921],[169.6,23.2,1473]],"r":[[359.6,410.4,315],[420.5,418.2,292],[366.7,408.1,270],[325.0,414.4,381],[382.5,391.2,323],[385.6,405.8,310],[369.4,451.7,144],[358.0,387.1,361],[368.2,403.8,388],[360.2,433.7,219],[400.1,423.6,284],[410.4,424.7,233],[401.7,434.4,225],[373.4,419.7,213],[325.8,396.2,469],[318.1,403.5,259],[340.4,383.6,353],[312.8,408.5,249],[332.5,407.0,480],[349.2,419.2,395],[425.0,416.7,227],[375.3,385.1,370],[332.0,398.5,507],[334.4,388.6,450],[378.2,432.4,113],[375.0,445.8,179],[347.9,383.1,345],[390.4,408.4,154],[363.4,396.3,355],[310.9,411.5,246],[346.6,400.1,541],[355.0,391.4,411],[381.8,425.1,204],[425.0,342.0,353],[448.5,370.6,288],[449.6,345.6,400],[402.0,312.2,360],[408.6,391.1,234],[443.6,356.5,230],[430.1,301.6,413],[477.1,335.3,346],[402.3,305.3,454],[363.0,365.1,452],[473.0,371.1,281],[425.0,379.9,207],[352.9,356.6,310],[466.0,310.9,395],[403.7,385.3,245],[365.5,367.3,307],[431.9,356.9,269],[445.3,347.0,204],[455.4,410.3,321],[465.5,390.4,254],[458.6,419.9,465],[446.7,420.7,463],[435.2,414.2,361],[459.3,407.4,251],[472.6,399.5,324],[469.6,396.7,356],[460.7,395.8,302],[467.4,400.8,243],[473.4,408.5,299],[467.6,405.9,212],[436.5,296.8,615],[507.9,220.7,383],[466.5,278.9,470],[448.4,235.3,389],[470.1,280.7,555],[487.2,343.0,248],[466.9,292.0,647],[430.8,283.3,597],[411.8,289.1,419],[503.9,220.7,136],[420.4,262.1,386],[486.7,305.5,549],[313.2,438.8,420],[289.4,431.8,348],[291.1,445.6,460],[303.2,465.2,194],[329.9,450.2,268],[315.1,451.7,209],[329.8,467.6,389],[298.8,438.0,288],[340.1,444.4,344],[349.9,426.8,313],[263.2,510.3,428],[282.0,514.4,363],[314.0,491.9,122],[293.8,507.2,380],[293.4,514.4,436],[299.1,531.4,472],[288.8,506.5,316],[273.3,536.2,378],[294.9,539.8,524],[495.9,206.4,171],[556.8,191.8,275],[519.3,212.0,262],[517.9,196.2,372],[548.7,210.6,369],[539.0,209.8,236],[529.6,198.2,335],[504.8,164.3,325],[516.5,155.8,310],[476.6,128.4,251],[516.9,148.7,570],[491.3,175.5,477],[510.9,153.2,500],[327.2,108.1,583],[263.8,43.8,1127],[267.8,146.7,696],[333.1,206.6,177],[318.0,212.2,317],[233.7,100.1,1018],[319.6,108.5,518],[286.8,136.8,517],[349.5,474.5,213],[354.6,485.4,184],[351.4,506.2,360],[354.7,498.3,361],[349.6,470.3,119],[298.4,472.6,210],[335.3,492.4,222],[371.7,338.2,242],[307.8,337.6,356],[375.9,296.3,364],[329.1,354.7,220],[337.0,292.9,388],[337.9,357.4,227],[374.3,309.5,380],[332.8,327.5,281],[388.9,182.1,371],[400.7,181.9,411],[403.7,178.6,440],[383.5,154.3,492],[418.6,153.8,361],[142.3,83.3,1468],[168.4,181.0,990],[135.9,87.5,1549],[475.7,379.6,265],[494.0,362.6,316],[478.9,369.4,168],[549.4,178.6,193],[555.4,180.0,193],[554.0,188.4,280],[532.6,178.3,304],[521.4,169.3,377],[513.8,173.1,387],[305.9,319.5,491],[208.6,313.4,351],[217.0,233.6,497],[276.1,312.3,280],[208.7,303.2,500],[206.6,227.2,725],[529.5,221.7,405],[537.2,229.9,472],[468.8,194.8,229],[457.1,212.8,294],[461.7,167.8,114],[373.0,317.1,138],[383.0,314.1,275],[256.1,383.0,254],[244.0,358.7,339],[328.1,377.6,282],[310.7,395.1,355],[530.1,235.3,405],[519.8,225.9,265],[135.2,256.6,814],[151.0,222.0,864],[361.5,194.7,149],[343.0,230.9,165],[395.7,198.8,452],[75.5,230.8,1336],[316.4,58.4,951],[185.0,72.6,1335]]}, dg=$('bhDots');
-    [['t',1.7,2900],['r',2.1,5000]].forEach(function(k){
-      DOTS[k[0]].forEach(function(d){var c=document.createElementNS(NS,'circle'); c.setAttribute('class',k[0]); c.setAttribute('cx',d[0]); c.setAttribute('cy',d[1]); c.setAttribute('r',k[1]); c.style.setProperty('--d',(k[2]+d[2])+'ms'); dg.appendChild(c)});
+    [['t',1.7,900],['r',2.1,950]].forEach(function(k){
+      DOTS[k[0]].forEach(function(d){var c=document.createElementNS(NS,'circle'); c.setAttribute('class',k[0]); c.setAttribute('cx',d[0]); c.setAttribute('cy',d[1]); c.setAttribute('r',k[1]); c.style.setProperty('--d',(k[2]+Math.round(d[2]*.55))+'ms'); dg.appendChild(c)});
     });
     [].forEach.call(net.querySelectorAll('.net-n li'),function(li,i){li.style.setProperty('--i',i)});
     function count(){
       [].forEach.call(net.querySelectorAll('[data-to]'),function(el,k){
-        var to=+el.dataset.to, from=el.hasAttribute('data-year')?1990:0, t0=0, at=el.dataset.at, d=at?1550:1600, delay=at?+at:300+k*120;
+        var to=+el.dataset.to, from=el.hasAttribute('data-year')?1990:0, t0=0, at=el.dataset.at, d=at?1100:1200, delay=at?+at:150+k*100;
         if(RM){el.textContent=to;return}
         el.textContent=from;
         function step(t){if(!t0)t0=t; var p=Math.max(0,Math.min(1,(t-t0-delay)/d)), e=1-Math.pow(1-p,3);
@@ -1190,7 +1190,8 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
 
   // WhatsApp: todo link wa.me e o botão flutuante abrem a janela; os dados viram a 1ª mensagem ao SDR
   (function(){
-    var CFG={wa:'5511973718835', hsPortal:'9472165', hsForm:''}; // hsForm vazio = envio ao HubSpot desligado
+    var CFG={wa:'5511973718835', hsPortal:'9472165', hsForm:'d141674c-20a8-4a6f-97dd-5cd11c92360c'}; // mesmo formulário do site atual (SDR Bruno no número central)
+    var MAQ={'Escavadeiras':'Escavadeira','Pás carregadeiras':'Pá Carregadeira','Mini escavadeiras':'Mini Escavadeira','Retroescavadeira':'Retroescavadeira','Motoniveladora':'Motoniveladora','Empilhadeiras':'Empilhadeiras'};
     var box=$('bhWa'), form=$('bhWaForm'), err=$('bhWaErr'), ctxEl=$('bhWaCtx'), last=null, ctx={};
     if(!box) return;
     function lock(o){document.body.classList.toggle('bh-lock',o);document.body.style.overflow=o||$('bhFan').classList.contains('open')?'hidden':''}
@@ -1228,7 +1229,7 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
       if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.email)) bad.push(['email','Confira o e-mail.']);
       if(!v.uf) bad.push(['uf','Escolha o estado.']);
       if(!v.cidade) bad.push(['cidade','Escreva a cidade.']);
-      if(!v.op) bad.push(['op','Escolha o tipo de operação.']);
+      if(!v.op) bad.push(['op','Escolha o segmento da sua empresa.']);
       bad.forEach(function(b){form[b[0]].setAttribute('aria-invalid','true')});
       err.textContent=bad.length?bad[0][1]:'';
       if(bad.length) form[bad[0][0]].focus();
@@ -1237,20 +1238,20 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
     form.addEventListener('submit',function(e){
       e.preventDefault(); var v=check(); if(!v) return;
       try{localStorage.setItem('bmc_wa',JSON.stringify(v))}catch(x){}
-      var OPF={'Locadora de máquinas':'Tenho uma locadora de máquinas','Prefeitura ou órgão público':'Falo por uma prefeitura ou órgão público','Outro':''};
-      var opf=v.op in OPF?OPF[v.op]:'Trabalho com '+v.op.toLowerCase(), interesse=ctx.maquina?'tenho interesse em '+ctx.maquina.toLowerCase():'';
+      var OPF={'Construção Civil':'Trabalho com construção civil','Agronegócio / Fazenda':'Trabalho no agronegócio','Mineração':'Trabalho com mineração','Logística e Distribuição':'Trabalho com logística e distribuição','Indústria':'Trabalho na indústria','Locação de Equipamentos':'Tenho uma locadora de equipamentos','Prefeitura / Órgão Público':'Falo por uma prefeitura ou órgão público','Outro':''};
+      var opf=OPF[v.op]||'', interesse=ctx.maquina?'tenho interesse em '+ctx.maquina.toLowerCase():'';
       var frase=opf&&interesse?opf+' e '+interesse:(opf||(interesse?interesse.charAt(0).toUpperCase()+interesse.slice(1):''));
       var msg='Olá! Eu sou '+v.nome+', de '+v.cidade+'/'+v.uf+'.'+(frase?' '+frase+'.':'')+' Meu WhatsApp é '+v.tel+' e meu e-mail é '+v.email+'.';
       var A=window.BMC_ATTR||{}, F=A.first||{}, L=A.last||{};
       window.dataLayer.push({event:'whatsapp_lead',wa_origem:ctx.origem||'link',uf:v.uf,operacao:v.op,maquina:ctx.maquina||'',first_channel:F.channel||'',last_channel:L.channel||'',utm_campaign:L.utm_campaign||'',utm_content:L.utm_content||''});
       // HubSpot (Forms API): o lead fica no CRM com a origem, mesmo se a pessoa não enviar a mensagem
-      if(CFG.hsForm){
-        var nm=v.nome.split(/\s+/), f=[['firstname',nm.shift()],['lastname',nm.join(' ')],['email',v.email],['phone',v.tel],['estado',v.uf],['city',v.cidade],['tipo_de_operacao',v.op],
-          ['utm_source',L.utm_source],['utm_medium',L.utm_medium],['utm_campaign',L.utm_campaign],['utm_content',L.utm_content],['utm_term',L.utm_term],['utm_region',L.utm_region],['utm_placement',L.utm_placement],
-          ['gclid',L.gclid||L.gbraid||L.wbraid],['fbclid',L.fbclid],['canal_primeira_origem',F.channel],['canal_ultima_origem',L.channel]]
+      // envia ao HubSpot só no site oficial; no protótipo, apenas com ?hs=1 (evita lead de teste no CRM)
+      if(CFG.hsForm&&(/(^|\.)bmchyundai\.com\.br$/.test(location.hostname)||/[?&]hs=1\b/.test(location.search))){
+        // só campos que existem no formulário; a origem vai pelo hutk e pela URL de entrada com as UTMs
+        var f=[['firstname',v.nome],['email',v.email],['phone',v.tel],['estado',v.uf],['city',v.cidade],['qual_o_segmento_da_sua_empresa',v.op],['qual_maquinas_voce_gostaria_de_investir',MAQ[ctx.maquina]]]
           .filter(function(x){return x[1]}).map(function(x){return {name:x[0],value:String(x[1])}});
         fetch('https://api.hsforms.com/submissions/v3/integration/submit/'+CFG.hsPortal+'/'+CFG.hsForm,{method:'POST',keepalive:true,headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({fields:f,context:{hutk:A.hutk||undefined,pageUri:location.href,pageName:document.title}})}).catch(function(){});
+          body:JSON.stringify({fields:f,context:{hutk:A.hutk||undefined,pageUri:(L.landing&&L.utm_source?L.landing+'?'+['utm_source','utm_medium','utm_campaign','utm_content','utm_term'].filter(function(k){return L[k]}).map(function(k){return k+'='+encodeURIComponent(L[k])}).join('&'):location.href),pageName:'Home BMC — WhatsApp ('+(ctx.origem||'link')+')'}})}).catch(function(){});
       }
       window.open('https://wa.me/'+CFG.wa+'?text='+encodeURIComponent(msg),'_blank','noopener');
       close();
@@ -1258,6 +1259,6 @@ document.addEventListener('DOMContentLoaded',function(){var b=document.querySele
   })();
 })();
 </script>
-<span class="bh build">versão B · 29/10 · v</span>
+<span class="bh build">versão B · 29/10 · w</span>
 </body>
 </html>
