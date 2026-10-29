@@ -172,7 +172,7 @@
 /* orçamento */
 .bh .quote{background:var(--deep);color:#fff;padding:clamp(72px,10vw,128px) 0;position:relative;overflow:hidden}
 .bh .quote::before{content:"";position:absolute;inset:0;background:url(https://bmchyundai.com.br/wp-content/uploads/2026/10/home-b-hl757-1.webp) center/cover;opacity:.16}
-.bh .q-g{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,5vw,72px);align-items:center}
+.bh .q-g{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,5vw,72px);align-items:center}
 .bh .quote h2{font-size:clamp(36px,5vw,64px)}
 .bh .quote .lead{color:rgba(255,255,255,.8);margin-top:18px;line-height:1.6;max-width:40ch}
 .bh .form{background:rgba(255,255,255,.96);color:var(--ink);border-radius:var(--r);padding:clamp(24px,3vw,36px);display:grid;grid-template-columns:1fr 1fr;gap:14px}
@@ -205,7 +205,7 @@
   .bh .panel{grid-template-columns:1fr}
   .bh .stage{border-right:0;border-bottom:1px solid var(--line);min-height:260px;padding:24px}
   .bh .stage img{max-height:220px}
-  .bh .launch-g,.bh .br-g,.bh .q-g{grid-template-columns:1fr}
+  .bh .launch-g,.bh .br-g,.bh .q-g{grid-template-columns:minmax(0,1fr)}
   .bh .rail{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 calc(var(--gut)*-1);padding:0 var(--gut);scrollbar-width:none}
   .bh .rail::-webkit-scrollbar{display:none}
   .bh .app{flex:0 0 72%;scroll-snap-align:start}
