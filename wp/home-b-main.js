@@ -462,7 +462,9 @@ document.getElementById('bhUfs')&&(document.getElementById('bhUfs').innerHTML="<
   // formulário
   $('bhSel').innerHTML='<option value="">Escolha a linha</option>'+CATS.map(function(c){return '<option>'+c.name+'</option>'}).join('')+'<option>Ainda não sei, quero ajuda para escolher</option>';
   $('bhUf').innerHTML='<option value="">UF</option>'+FIL.map(function(f){return '<option>'+f[0]+'</option>'}).join('')+'<option>Outro</option>';
-  $('bhForm').addEventListener('submit',function(e){e.preventDefault();$('bhOk').style.display='block'});
+  // formulário de orçamento: abre a janela do WhatsApp já preenchida (o lead segue para o HubSpot e o SDR)
+  $('bhForm').addEventListener('submit',function(e){e.preventDefault(); var f=e.target;
+    if(window.bhOpenWa) window.bhOpenWa({origem:'form_orcamento',maquina:f.maquina.value&&f.maquina.value.indexOf('Ainda')<0?f.maquina.value:'',uf:f.uf.value,pre:{nome:f.nome.value,tel:f.tel.value}})});
 
   // cabeçalho e menus
   var top=$('bhTop');
@@ -512,6 +514,7 @@ document.getElementById('bhUfs')&&(document.getElementById('bhUfs').innerHTML="<
       ctxEl.textContent=ctx.maquina?'Assunto: '+ctx.maquina+'.':ctx.filial?'Filial: '+ctx.filial+'.':'';
       if(ctx.uf&&!form.uf.value) form.uf.value=ctx.uf;
       if(ctx.op&&!form.op.value) form.op.value=ctx.op;
+      if(ctx.pre){if(ctx.pre.nome) form.nome.value=ctx.pre.nome; if(ctx.pre.tel) form.tel.value=mask(ctx.pre.tel)}
       box.hidden=false; requestAnimationFrame(function(){box.classList.add('open')}); lock(true);
       setTimeout(function(){(form.querySelector('input:invalid,select:invalid')||form.nome).focus({preventScroll:true})},60);
       window.dataLayer.push({event:'whatsapp_popup_open',wa_origem:ctx.origem||'link'});
@@ -521,6 +524,7 @@ document.getElementById('bhUfs')&&(document.getElementById('bhUfs').innerHTML="<
     box.addEventListener('click',function(e){if(e.target===box) close()});
     document.addEventListener('keydown',function(e){if(!box.hidden&&e.key==='Escape') close()});
     $('bhWaFab').addEventListener('click',function(){open({origem:'botao_flutuante'})});
+    window.bhOpenWa=open;
     // links wa.me da página (hero, leque, filiais) passam pela janela
     document.addEventListener('click',function(e){
       var a=e.target.closest('a[href*="wa.me/"]'); if(!a||!a.closest('.bh')) return;

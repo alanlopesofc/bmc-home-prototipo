@@ -1,0 +1,17 @@
+
+/* WordPress (tema Hello Elementor): neutraliza o reset de botões e links do tema nesta página */
+html,body{margin:0}
+.bh button,.bh [type=button],.bh [type=submit]{font-family:inherit;text-transform:none;letter-spacing:normal;white-space:normal}
+.bh button:hover,.bh button:focus,.bh [type=button]:hover,.bh [type=button]:focus,.bh [type=submit]:hover,.bh [type=submit]:focus{text-decoration:none}
+.bh .arc-ctl button:hover,.bh .arc-ctl button:focus{background:rgba(255,255,255,.08);color:inherit}
+.bh .arc.light .arc-ctl button:hover{background:#fff}
+.bh .fan-x:hover,.bh .fan-x:focus,.bh .wam-x:hover,.bh .wam-x:focus,.bh .burger:hover,.bh .burger:focus,.bh .nav>button:focus{background:rgba(255,255,255,.12);color:#fff}
+.bh .cv:hover,.bh .cv:focus{background:var(--deep);color:#fff}
+.bh .cv.cut:hover,.bh .cv.cut:focus{background:radial-gradient(ellipse 90% 60% at 50% 42%,#1D3AB0 0%,#0B1640 70%)}
+.bh .state:hover,.bh .state:focus{background:#fff;color:var(--deep)}
+.bh .state[aria-pressed=true]:hover,.bh .state[aria-pressed=true]:focus{background:var(--deep);color:#fff}
+.bh .sub-more:hover,.bh .sub-more:focus{background:none;color:#fff}
+.bh .tab:hover,.bh .tab:focus{background:none}
+.bh .btn-p:focus{background:var(--action);color:#fff}
+.bh .wam-send:hover,.bh .wam-send:focus{background:#1EBE5A;color:#fff}
+.bh .waf:hover,.bh .waf:focus{background:#25D366;color:#fff}
