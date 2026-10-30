@@ -494,15 +494,13 @@ document.getElementById('bhUfs')&&(document.getElementById('bhUfs').innerHTML="<
   // vídeo: versão leve vertical no celular; tenta tocar de novo no primeiro toque/rolagem (modo pouca energia do iPhone)
   var v=$('bhVideo');
   v.muted=true; v.defaultMuted=true; v.setAttribute('muted','');
-  // o vídeo só começa a baixar depois que a página abriu: no primeiro toque/rolagem/mouse ou 3 s após carregar.
+  // o vídeo só começa a baixar quando a pessoa mexe na página (toque, rolagem, mouse ou teclado).
   // até lá fica a foto do 1º quadro (poster), que é leve e aparece na hora.
   var vOn=false, vSrc=matchMedia('(max-width: 760px)').matches?'https://bmchyundai.com.br/wp-content/uploads/2026/10/home-b-hero-hx220-m.mp4':'https://bmchyundai.com.br/wp-content/uploads/2026/10/home-b-hero-hx220.mp4';
   function tryPlay(){if(!vOn) return; var pr=v.play(); if(pr&&pr.catch) pr.catch(function(){});}
   function startVideo(){if(vOn) return; vOn=true; v.preload='auto'; v.src=vSrc; v.addEventListener('loadeddata',tryPlay); tryPlay();
     ['touchstart','scroll','click'].forEach(function(ev){window.addEventListener(ev,function once(){if(v.paused)tryPlay();window.removeEventListener(ev,once)},{passive:true})})}
   ['touchstart','scroll','pointermove','keydown'].forEach(function(ev){window.addEventListener(ev,startVideo,{once:true,passive:true})});
-  function afterLoad(){setTimeout(startVideo,3000)}
-  if(document.readyState==='complete') afterLoad(); else window.addEventListener('load',afterLoad);
   if('IntersectionObserver' in window){new IntersectionObserver(function(es){es[0].isIntersecting?tryPlay():v.pause()}).observe(v)}
 
   (function(){var sub=$('bhSub'); if(!sub) return; var b=sub.querySelector('.sub-more');
