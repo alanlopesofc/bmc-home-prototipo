@@ -53,11 +53,11 @@
 .bh .hero h1{font-size:clamp(30px,3.3vw,52px);line-height:1.05;max-width:min(100%,24ch);text-wrap:balance}
 .bh .hero h1 .ln{text-wrap:balance}
 @media (min-width:1001px){.bh .hero h1{max-width:none}}
-.bh .hero h1 .ln{display:block;overflow:hidden;padding-bottom:.04em}
-.bh .hero h1 .ln span{display:block;transform:translateY(105%);animation:bhUp .8s cubic-bezier(.2,.8,.2,1) .15s forwards}
-.bh .hero h1 .ln:nth-child(2) span{animation-delay:.27s}
-.bh .hero h1 .ln:nth-child(3) span{animation-delay:.39s}
-.bh .hero-k,.bh .hero-sub,.bh .hero-cta{opacity:0;animation:bhIn .5s ease .55s forwards}
+.bh .hero h1 .ln{display:block;padding-bottom:.04em}
+.bh .hero h1 .ln span{display:block;transform:translateY(.35em);animation:bhUp .8s cubic-bezier(.2,.8,.2,1) .05s forwards}
+.bh .hero h1 .ln:nth-child(2) span{animation-delay:.15s}
+.bh .hero h1 .ln:nth-child(3) span{animation-delay:.25s}
+.bh .hero-k,.bh .hero-sub,.bh .hero-cta{transform:translateY(10px);animation:bhUp .6s cubic-bezier(.2,.8,.2,1) .2s forwards}
 @keyframes bhIn{to{opacity:1}}
 @keyframes bhUp{to{transform:none}}
 .bh .hero-sub .sub-short,.bh .hero-sub .sub-more{display:none}
