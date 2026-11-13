@@ -375,7 +375,7 @@ html,body{touch-action:manipulation}
 .bh .net-n b small{font:600 14px Inter,sans-serif;letter-spacing:0;color:rgba(255,255,255,.66);margin-right:2px}
 .bh .net-n li>span{display:block;margin-top:6px;color:rgba(255,255,255,.66);font-size:14px;line-height:1.45}
 .bh .net-map svg{width:100%;height:auto;display:block;overflow:visible}
-.bh .net .ufs path{fill:rgba(255,255,255,.05);stroke:rgba(255,255,255,.22);stroke-width:.7;stroke-linejoin:round;opacity:0;transition:opacity .5s ease,fill .3s;transition-delay:calc(var(--i)*12ms)}
+.bh .net .ufs path{fill:rgba(5,126,236,.14);stroke:rgba(255,255,255,.22);stroke-width:.7;stroke-linejoin:round;opacity:0;transition:opacity .5s ease,fill .3s;transition-delay:calc(var(--i)*12ms)}
 .bh .net .ufs path.on{fill:rgba(5,126,236,.28)}
 .bh .net .ufs path.sel{fill:rgba(49,152,247,.5)}
 .bh .net .pin{cursor:pointer;outline:none}
