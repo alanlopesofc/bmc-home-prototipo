@@ -404,7 +404,7 @@ document.getElementById('bhUfs')&&(document.getElementById('bhUfs').innerHTML="<
   });
   document.addEventListener('click',function(e){
     var o=e.target.closest('[data-open]'); if(o){e.preventDefault();e.stopPropagation(); if(typeof setMega==='function')setMega(false); openFan(o.dataset.open); return}
-    var q=e.target.closest('[data-quote]'); if(q){closeFan(); $('bhSel').value=q.dataset.quote}
+    var q=e.target.closest('[data-quote]'); if(q){closeFan(); if(window.bhSetQuote) window.bhSetQuote(q.dataset.quote)}
   },true);
 
   // filiais
@@ -502,12 +502,6 @@ document.getElementById('bhUfs')&&(document.getElementById('bhUfs').innerHTML="<
     } else net.classList.add('go');
   })();
 
-  // formulário
-  $('bhSel').innerHTML='<option value="">Escolha a linha</option>'+CATS.map(function(c){return '<option>'+c.name+'</option>'}).join('')+'<option>Ainda não sei, quero ajuda para escolher</option>';
-  $('bhUf').innerHTML='<option value="">UF</option>'+FIL.map(function(f){return '<option>'+f[0]+'</option>'}).join('')+'<option>Outro</option>';
-  // formulário de orçamento: abre a janela do WhatsApp já preenchida (o lead segue para o HubSpot e o SDR)
-  $('bhForm').addEventListener('submit',function(e){e.preventDefault(); var f=e.target;
-    if(window.bhOpenWa) window.bhOpenWa({origem:'form_orcamento',maquina:f.maquina.value&&f.maquina.value.indexOf('Ainda')<0?f.maquina.value:'',uf:f.uf.value,empresa:f.empresa.value.trim(),pre:{nome:f.nome.value,tel:f.tel.value}})});
 
   // cabeçalho e menus
   var top=$('bhTop');
@@ -580,18 +574,18 @@ document.getElementById('bhUfs')&&(document.getElementById('bhUfs').innerHTML="<
       if(a.id==='bhBrWa'){var t=$('bhBrCity').textContent; c.filial=t; c.uf=t.split(', ').pop()}
       open(c);
     },true);
-    function check(){
-      var bad=[], v={};
-      ['nome','tel','email','uf','cidade','op'].forEach(function(k){v[k]=form[k].value.trim(); form[k].removeAttribute('aria-invalid')});
+    function check(f,e){
+      f=f||form; e=e||err; var bad=[], v={};
+      ['nome','tel','email','uf','cidade','op'].forEach(function(k){v[k]=f[k].value.trim(); f[k].removeAttribute('aria-invalid')});
       if(v.nome.split(/\s+/).length<2) bad.push(['nome','Escreva nome e sobrenome.']);
       if(v.tel.replace(/\D/g,'').length<10) bad.push(['tel','Confira o WhatsApp com DDD.']);
       if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.email)) bad.push(['email','Confira o e-mail.']);
       if(!v.uf) bad.push(['uf','Escolha o estado.']);
       if(!v.cidade) bad.push(['cidade','Escreva a cidade.']);
       if(!v.op) bad.push(['op','Escolha o segmento da sua empresa.']);
-      bad.forEach(function(b){form[b[0]].setAttribute('aria-invalid','true')});
-      err.textContent=bad.length?bad[0][1]:'';
-      if(bad.length) form[bad[0][0]].focus();
+      bad.forEach(function(b){f[b[0]].setAttribute('aria-invalid','true')});
+      e.textContent=bad.length?bad[0][1]:'';
+      if(bad.length) f[bad[0][0]].focus();
       return bad.length?null:v;
     }
     // HubSpot (Forms API): o lead fica no CRM com a origem, mesmo se a pessoa não enviar a mensagem
@@ -621,8 +615,7 @@ document.getElementById('bhUfs')&&(document.getElementById('bhUfs').innerHTML="<
     }
     addEventListener('pagehide',partial);
     document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden') partial()});
-    form.addEventListener('submit',function(e){
-      e.preventDefault(); var v=check(); if(!v) return;
+    function send(v){
       try{localStorage.setItem('bmc_wa',JSON.stringify(v))}catch(x){}
       var OPF={'Construção Civil':'Trabalho com construção civil','Agronegócio / Fazenda':'Trabalho no agronegócio','Mineração':'Trabalho com mineração','Logística e Distribuição':'Trabalho com logística e distribuição','Indústria':'Trabalho na indústria','Locação de Equipamentos':'Tenho uma locadora de equipamentos','Prefeitura / Órgão Público':'Falo por uma prefeitura ou órgão público','Outro':''};
       var opf=OPF[v.op]||'', interesse=ctx.maquina?'tenho interesse em '+ctx.maquina.toLowerCase():'';
@@ -632,7 +625,20 @@ document.getElementById('bhUfs')&&(document.getElementById('bhUfs').innerHTML="<
       window.dataLayer.push({event:'whatsapp_lead',wa_origem:ctx.origem||'link',uf:v.uf,operacao:v.op,maquina:ctx.maquina||'',first_channel:F.channel||'',last_channel:L.channel||'',utm_campaign:L.utm_campaign||'',utm_content:L.utm_content||''});
       hsSend(v,ctx.origem||'link');
       window.open('https://wa.me/'+CFG.wa+'?text='+encodeURIComponent(msg),'_blank','noopener');
-      close();
-    });
+    }
+    form.addEventListener('submit',function(e){e.preventDefault(); var v=check(); if(!v) return; send(v); close()});
+    // formulário do fim da página: o mesmo da janela, dentro da página
+    var qf=$('bhQForm'), qerr=$('bhQErr'), qctxEl=$('bhQCtx'), qctx={};
+    if(qf){
+      ['uf','op'].forEach(function(k){qf[k].innerHTML=form[k].innerHTML});
+      qf.tel.addEventListener('input',function(){qf.tel.value=mask(qf.tel.value)});
+      try{var sv=JSON.parse(localStorage.getItem('bmc_wa')||'null'); if(sv)['nome','tel','email','uf','cidade','op'].forEach(function(k){if(sv[k])qf[k].value=sv[k]})}catch(x){}
+      window.bhSetQuote=function(m){qctx.maquina=m; qctxEl.textContent=m?'Assunto: '+m+'.':''};
+      qf.addEventListener('submit',function(e){
+        e.preventDefault(); qerr.className='note'; var v=check(qf,qerr); if(!v) return;
+        ctx={origem:'formulario_final',maquina:qctx.maquina||''}; send(v);
+        qerr.className='note okmsg'; qerr.textContent='Pronto! O WhatsApp abriu com a sua mensagem. É só enviar.';
+      });
+    }
   })();
 })();

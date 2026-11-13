@@ -236,6 +236,10 @@
 .bh .form input:focus,.bh .form select:focus{outline:2px solid var(--action);outline-offset:0;border-color:transparent}
 .bh .form .btn{width:100%;justify-content:center}
 .bh .form .note{grid-column:1/-1;font-size:13px;color:var(--muted);text-align:center}
+#bhQErr.note:not(:empty){color:#B3261E;font-weight:600}
+.bh .form #bhQErr.okmsg{color:#0B6B3A;font-weight:600}
+.bh .form .q-ctx{margin:0;font:600 14px Inter,sans-serif;color:var(--deep)}
+.bh .form .q-ctx:empty{display:none}
 .bh .form .ok{grid-column:1/-1;display:none;background:#EAF4FE;border:1px solid #BFDDFB;border-radius:4px;padding:14px;color:var(--deep);font-size:14px}
 
 .bh .proto{background:#FFF7D6;color:#5C4A00;font-size:13px;text-align:center;padding:8px 16px}
