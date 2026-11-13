@@ -409,11 +409,25 @@ document.getElementById('bhUfs')&&(document.getElementById('bhUfs').innerHTML="<
 
   // filiais
   $('bhStates').innerHTML=FIL.map(function(f,i){return '<button class="state" aria-pressed="'+(i===10)+'" data-i="'+i+'" aria-label="'+f[0]+', '+f[1]+'">'+f[0]+'<small>'+f[1]+'</small></button>'}).join('');
+  // responsáveis por região (texto, sem link)
+  var REG=[
+    {n:'Luis Garcia',t:'(62) 98121-8108',u:['AP','AM','RR','DF','GO','PA','TO']},
+    {n:'Ericksson Alcântara',t:'(27) 99864-6994',u:['BA','ES']},
+    {n:'Ronaldo Meyrelles',t:'(27) 99652-5104',u:['MA','PI','CE','RN','PB','PE','AL','SE']},
+    {n:'Thiago Rocha',t:'(65) 99985-6290',u:['MS','MT','RO','AC']},
+    {n:'Gustavo Campos',t:'(31) 99928-2737',u:['MG']},
+    {n:'Luiz Luvisário',t:'(11) 97238-5346',u:['SP']},
+    {n:'Leandro Câmara',t:'(49) 99194-4540',u:['SC']},
+    {n:'Roberto Vianna',t:'(11) 97146-8637',u:['RS','PR']}
+  ];
+  var UFN={AC:'Acre',AL:'Alagoas',AP:'Amapá',AM:'Amazonas',BA:'Bahia',CE:'Ceará',DF:'Distrito Federal',ES:'Espírito Santo',GO:'Goiás',MA:'Maranhão',MT:'Mato Grosso',MS:'Mato Grosso do Sul',MG:'Minas Gerais',PA:'Pará',PB:'Paraíba',PR:'Paraná',PE:'Pernambuco',PI:'Piauí',RN:'Rio Grande do Norte',RS:'Rio Grande do Sul',RO:'Rondônia',RR:'Roraima',SC:'Santa Catarina',SP:'São Paulo',SE:'Sergipe',TO:'Tocantins'};
   function filial(i){
     var f=FIL[i];
     [].forEach.call(document.querySelectorAll('.bh .state'),function(b){b.setAttribute('aria-pressed',b.dataset.i==i)});
     $('bhBrCity').textContent=f[1]+', '+f[0];
     $('bhBrAddr').textContent=f[2];
+    var g=REG.filter(function(r){return r.u.indexOf(f[0])>-1})[0];
+    if(g){$('bhBrName').textContent=g.n; $('bhBrPhone').textContent=g.t; $('bhBrCov').textContent='Atende: '+g.u.map(function(u){return UFN[u]}).join(', ')+'.'}
     $('bhBrWa').href=W+encodeURIComponent('Vim do site e quero falar com a filial de '+f[1]+'/'+f[0]);
     $('bhBrMap').href='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent('BMC Hyundai '+f[2]);
   }
@@ -421,6 +435,32 @@ document.getElementById('bhUfs')&&(document.getElementById('bhUfs').innerHTML="<
     if(innerWidth<=1000) document.querySelector('.bh .br-card').scrollIntoView({behavior:'smooth',block:'center'})});
   filial(10);
 
+  // destaques: 3 máquinas que se alternam (HX220L, HL635AL, HB640C)
+  (function(){
+    var sec=document.getElementById('destaques'); if(!sec) return;
+    var sl=[].slice.call(sec.querySelectorAll('.launch-sl>.launch-g')), tabs=[].slice.call(sec.querySelectorAll('.launch-tabs button')), cur=0, timer=0, stopped=false, vis=false, hov=false;
+    function show(i){
+      cur=(i+sl.length)%sl.length;
+      sl.forEach(function(el,k){var on=k===cur; el.classList.toggle('on',on); if(on){el.removeAttribute('aria-hidden'); el.removeAttribute('inert')} else {el.setAttribute('aria-hidden','true'); el.setAttribute('inert','')}});
+      tabs.forEach(function(b,k){b.classList.toggle('on',k===cur); b.setAttribute('aria-selected',k===cur?'true':'false')});
+    }
+    function stop(){clearTimeout(timer); timer=0; sec.classList.remove('run')}
+    function start(){
+      stop(); if(stopped||RM||!vis||hov||document.hidden) return;
+      void sec.offsetWidth; sec.classList.add('run');
+      timer=setTimeout(function(){show(cur+1); start()},7000);
+    }
+    function user(i){stopped=true; stop(); show(i)}
+    tabs.forEach(function(b,k){b.addEventListener('click',function(){user(k)})});
+    sec.querySelector('.la-p').addEventListener('click',function(){user(cur-1)});
+    sec.querySelector('.la-n').addEventListener('click',function(){user(cur+1)});
+    sec.addEventListener('mouseenter',function(){hov=true; stop()});
+    sec.addEventListener('mouseleave',function(){hov=false; start()});
+    var x0=null; sec.addEventListener('touchstart',function(e){x0=e.touches[0].clientX},{passive:true});
+    sec.addEventListener('touchend',function(e){if(x0===null) return; var dx=e.changedTouches[0].clientX-x0; x0=null; if(Math.abs(dx)>50) user(cur+(dx<0?1:-1))},{passive:true});
+    document.addEventListener('visibilitychange',start);
+    if('IntersectionObserver' in window) new IntersectionObserver(function(en){vis=en[0].isIntersecting; start()},{threshold:.35}).observe(sec);
+  })();
   // rede: pins das filiais no mapa; números contam quando a seção aparece
   (function(){
     var P={"ES": [485.8, 379.3], "GO": [356.6, 327.9], "MT": [258.1, 311.7], "MS": [279.4, 384.4], "MG": [431.8, 376.3], "PA": [345.6, 198.6], "PB": [563.3, 185.1], "PE": [483.0, 218.9], "PR": [356.5, 458.4], "PI": [449.8, 154.7], "SP": [394.6, 430.4], "SC": [308.3, 483.4], "TO": [370.1, 230.8]}, g=$('bhPins'), net=document.querySelector('.bh .net'); if(!g||!net) return;
