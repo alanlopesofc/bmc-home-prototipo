@@ -69,13 +69,15 @@
   .bh .hero-sub{font-size:16px}
   .bh .hero-cta .btn-g{display:none}
   .bh .hero-k{margin-bottom:14px;font-size:14px}
-  .bh .hero h1{font-size:clamp(26px,7.4vw,36px)}
+  .bh .hero h1{font-size:clamp(20px,6.4vw,34px)}
+  .bh .hero-sub{text-wrap:balance}
   /* o botão principal divide a linha com o botão flutuante do WhatsApp */
   .bh .hero-cta .btn.btn-p{width:calc(100% - 74px)}
   .bh .hero-sub{margin-top:14px}
   .bh .hero-cta{margin-top:22px}
 }
-.bh .hero-sub{max-width:58ch;margin-top:22px;font-size:clamp(17px,1.45vw,22px);line-height:1.5;color:rgba(255,255,255,.88);text-wrap:pretty}
+.bh .hero-sub .s2{display:block;margin-top:6px}
+.bh .hero-sub{max-width:64ch;margin-top:22px;font-size:clamp(17px,1.45vw,22px);line-height:1.5;color:rgba(255,255,255,.88);text-wrap:pretty}
 .bh .hero-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
 .bh .quick{position:relative;z-index:2;border-top:1px solid var(--line-d);background:rgba(7,14,43,.5);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
 .bh .quick .wrap{display:grid;grid-template-columns:repeat(6,1fr)}
