@@ -118,11 +118,11 @@
 
 /* lançamento */
 .bh .launch{background:var(--deeper);color:#fff;padding:clamp(72px,10vw,128px) 0}
-.bh .launch-g{display:grid;grid-template-columns:1.5fr 1fr;gap:clamp(24px,4vw,56px);align-items:end}
+.bh .launch-g{display:grid;grid-template-columns:1.5fr 1fr;gap:clamp(24px,4vw,56px);align-items:center}
 .bh .launch-img{position:relative;border-radius:var(--r);overflow:hidden;aspect-ratio:16/10}
 .bh .launch-img img{width:100%;height:100%;object-fit:cover}
 .bh .launch .tag{display:inline-block;font:600 13px Inter,sans-serif;color:var(--accent);border:1px solid rgba(49,152,247,.45);border-radius:var(--r);padding:6px 10px;margin-bottom:22px}
-.bh .launch .launch-head{margin-bottom:clamp(28px,4vw,48px)}
+.bh .launch .launch-head{margin-bottom:clamp(20px,2.4vw,32px)}
 .bh .launch .launch-head h2{font-size:clamp(32px,4.6vw,56px)}
 .bh .launch .launch-g h3{font-size:clamp(44px,6vw,84px)}
 .bh .launch p{color:rgba(255,255,255,.76);line-height:1.6;margin-top:18px;max-width:40ch}
